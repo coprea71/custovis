@@ -35,4 +35,28 @@ return [
         ],
     ],
 
+    // Fallback AI provider credentials used when a team has no per-team
+    // ai_settings row for a use case (6.md) — DB-configured keys always
+    // take precedence over these.
+    'openai' => [
+        'key' => env('OPENAI_API_KEY'),
+        'model' => env('OPENAI_MODEL', 'gpt-4o-mini'),
+    ],
+
+    'anthropic' => [
+        'key' => env('ANTHROPIC_API_KEY'),
+        'model' => env('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001'),
+    ],
+
+    'ollama' => [
+        'endpoint' => env('OLLAMA_ENDPOINT', 'http://localhost:11434'),
+        'model' => env('OLLAMA_MODEL', 'llama3'),
+    ],
+
+    'custom_ai' => [
+        'endpoint' => env('CUSTOM_AI_ENDPOINT'),
+        'key' => env('CUSTOM_AI_API_KEY'),
+        'model' => env('CUSTOM_AI_MODEL'),
+    ],
+
 ];
