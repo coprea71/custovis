@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Ticket extends Model
 {
@@ -31,6 +33,10 @@ class Ticket extends Model
         'requester_phone',
         'assigned_to',
         'tags',
+        'sla_policy_id',
+        'sla_response_due_at',
+        'sla_resolution_due_at',
+        'sla_breached_at',
         'closed_at',
     ];
 
@@ -39,6 +45,9 @@ class Ticket extends Model
         return [
             'closed_at' => 'datetime',
             'tags' => 'array',
+            'sla_response_due_at' => 'datetime',
+            'sla_resolution_due_at' => 'datetime',
+            'sla_breached_at' => 'datetime',
         ];
     }
 
@@ -88,5 +97,53 @@ class Ticket extends Model
     public function messages(): HasMany
     {
         return $this->hasMany(TicketMessage::class)->orderBy('created_at');
+    }
+
+    /**
+     * @return HasOne<TicketIncident, $this>
+     */
+    public function incident(): HasOne
+    {
+        return $this->hasOne(TicketIncident::class);
+    }
+
+    /**
+     * @return HasOne<TicketProblem, $this>
+     */
+    public function problem(): HasOne
+    {
+        return $this->hasOne(TicketProblem::class);
+    }
+
+    /**
+     * @return HasOne<TicketChange, $this>
+     */
+    public function change(): HasOne
+    {
+        return $this->hasOne(TicketChange::class);
+    }
+
+    /**
+     * @return HasOne<TicketServiceRequest, $this>
+     */
+    public function serviceRequest(): HasOne
+    {
+        return $this->hasOne(TicketServiceRequest::class);
+    }
+
+    /**
+     * @return BelongsTo<SlaPolicy, $this>
+     */
+    public function slaPolicy(): BelongsTo
+    {
+        return $this->belongsTo(SlaPolicy::class);
+    }
+
+    /**
+     * @return BelongsToMany<CmdbConfigurationItem, $this>
+     */
+    public function configurationItems(): BelongsToMany
+    {
+        return $this->belongsToMany(CmdbConfigurationItem::class, 'ticket_configuration_items');
     }
 }

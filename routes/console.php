@@ -18,6 +18,8 @@ Schedule::call(function () {
     );
 })->everyMinute()->name('mailboxes:fetch');
 
+Schedule::command('sla:check-breaches')->everyFiveMinutes()->name('sla:check-breaches');
+
 Schedule::call(function () {
     GitIssueConnection::query()
         ->where('sync_mode', GitIssueConnection::SYNC_POLL)

@@ -10,6 +10,16 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- ITIL-Erweiterung: Typ-Erweiterungstabellen (`ticket_incidents`,
+  `ticket_problems`, `ticket_changes`, `ticket_service_requests`) mit
+  State-Machines (`spatie/laravel-model-states`), CAB-Workflow
+  (`cab_approvals`, `ChangeApprovalService`, Regel: Einstimmigkeit),
+  SLA-Engine (`sla_policies`, `business_hours`, `TicketObserver`
+  berechnet Deadlines bei Ticket-Erstellung, `sla:check-breaches`
+  alle 5 Minuten), Service-Katalog (`service_catalog_items`,
+  Admin-UI, `ServiceCatalogService` erzeugt typisierte Tickets),
+  minimale CMDB (`cmdb_configuration_items`, `cmdb_ci_relations`,
+  `ticket_configuration_items`-Zuordnung).
 - WhatsApp-Business-Anbindung (Meta Cloud API direkt, kein BSP):
   `whatsapp_accounts`/`whatsapp_templates`, Webhook mit Verify-Handshake
   und `X-Hub-Signature-256`-Prüfung, „ein Chat = ein Ticket"
