@@ -10,6 +10,14 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- KI-Layer: austauschbare Provider-Architektur (`AiProviderInterface`,
+  OpenAI/Anthropic/Ollama/Custom-Endpoint-Adapter), `ai_settings`
+  (Provider je Team+Anwendungsfall, `.env`-Fallback, PII-Redaction-
+  Option), Queue-Jobs in `ai-processing` (`AutoTriageJob`,
+  `SummarizeTicketJob`, `SuggestReplyJob`, `FindSimilarTicketsJob` mit
+  Kosinus-Ähnlichkeit über `ticket_embeddings`, keine Vektor-DB nötig),
+  Kostenkontrolle (`ai_usage_logs`, `ai_budgets` je Team), Team-Admin-UI
+  unter `/agent/team/{team}/settings/ai`.
 - ITIL-Erweiterung: Typ-Erweiterungstabellen (`ticket_incidents`,
   `ticket_problems`, `ticket_changes`, `ticket_service_requests`) mit
   State-Machines (`spatie/laravel-model-states`), CAB-Workflow
