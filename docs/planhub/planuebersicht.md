@@ -2,7 +2,7 @@
 
 Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 
-- [ ] #1 [Fundament](1.md)
+- [x] #1 [Fundament](archiv/1.md)
 - [ ] #2 [Ticket-Kern (Mailbox)](2.md)
 - [ ] #3 [Externe Ticket-Anlage-API mit teamverwalteten API-Keys + GitHub-/GitLab-Issue-Import](3.md)
 - [ ] #4 [WhatsApp-Business-Anbindung mit Ticket je Chat](4.md)
