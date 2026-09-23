@@ -1,0 +1,6 @@
+{
+    "slug": "service-catalog",
+    "name": "ServiceCatalog",
+    "provider": "App\\Modules\\ServiceCatalog\\Providers\\ServiceCatalogServiceProvider",
+    "dependencies": []
+}

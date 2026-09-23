@@ -1,0 +1,6 @@
+{
+    "slug": "team-chat",
+    "name": "TeamChat",
+    "provider": "App\\Modules\\TeamChat\\Providers\\TeamChatServiceProvider",
+    "dependencies": []
+}

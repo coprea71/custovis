@@ -1,0 +1,6 @@
+{
+    "slug": "knowledge-base",
+    "name": "KnowledgeBase",
+    "provider": "App\\Modules\\KnowledgeBase\\Providers\\KnowledgeBaseServiceProvider",
+    "dependencies": []
+}

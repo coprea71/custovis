@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-[#F4F7F6]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraDesk - Harmony Ticket Management</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom Font: Inter for high legibility -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        calm: {
+                            50: '#F4F8F6',
+                            100: '#E8EFEB',
+                            200: '#D3E1DA',
+                            300: '#AEC8BC',
+                            400: '#7E9F90',
+                            500: '#567D6C',
+                            600: '#3D5E50',
+                            700: '#2F483E',
+                            800: '#22342D',
+                            900: '#17231E',
+                        },
+                        slatecalm: {
+                            50: '#F8FAF9',
+                            100: '#F0F4F3',
+                            200: '#E1E8E6',
+                            600: '#475569',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                        },
+                        ocean: {
+                            50: '#F0F7FF',
+                            100: '#E0EFFE',
+                            500: '#3B82F6',
+                            700: '#1D4ED8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for calm aesthetic */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F7F6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+        .modal-backdrop {
+            background-color: rgba(30, 41, 59, 0.35);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="h-full font-sans text-slate-700 antialiased selection:bg-calm-200 selection:text-calm-900 flex flex-col md:flex-row overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-full md:w-64 bg-slatecalm-50 border-r border-slatecalm-200 flex flex-col justify-between shrink-0 z-20 transition-all duration-300 hidden md:flex">
+        <div>
+            <!-- App Header / Logo -->
+            <div class="h-16 px-6 flex items-center justify-between border-b border-slatecalm-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-calm-600 flex items-center justify-center text-white shadow-sm">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-slate-800 text-base tracking-tight block leading-none">AuraDesk</span>
+                        <span class="text-[11px] text-calm-600 font-medium">Harmony Support</span>
+                    </div>
+                </div>
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Quick Action Button -->
+            <div class="p-4">
+                <button onclick="openNewTicketModal()" class="w-full py-2.5 px-4 bg-calm-600 hover:bg-calm-700 text-white font-medium rounded-xl shadow-sm hover:shadow transition flex items-center justify-center space-x-2 text-sm">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    <span>Neues Ticket</span>
+                </button>
+            </div>
+
+            <!-- Main Navigation Links -->
+            <nav class="px-3 space-y-1">
+                <a href="#" onclick="setActiveNav(this)" class="nav-item active flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-calm-100 text-calm-800">
+                    <i data-lucide="inbox" class="w-4 h-4 text-calm-600"></i>
+                    <span>Alle Tickets</span>
+                    <span class="ml-auto bg-calm-200 text-calm-800 text-xs px-2 py-0.5 rounded-full font-semibold" id="totalTicketCount">24</span>
+                </a>
+                <a href="#" onclick="setActiveNav(this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slatecalm-100 hover:text-slate-900 transition">
+                    <i data-lucide="user-check" class="w-4 h-4 text-slate-400"></i>
+                    <span>Mir zugewiesen</span>
+                    <span class="ml-auto text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-semibold">5</span>
+                </a>
+                <a href="#" onclick="setActiveNav(this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slatecalm-100 hover:text-slate-900 transition">
+                    <i data-lucide="clock" class="w-4 h-4 text-slate-400"></i>
+                    <span>Wartend / Offen</span>
+                    <span class="ml-auto text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-semibold">8</span>
+                </a>
+                <a href="#" onclick="setActiveNav(this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slatecalm-100 hover:text-slate-900 transition">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-400"></i>
+                    <span>Gelöst</span>
+                </a>
+                <div class="pt-4 pb-1">
+                    <p class="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Organisation</p>
+                </div>
+                <a href="#" onclick="setActiveNav(this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slatecalm-100 hover:text-slate-900 transition">
+                    <i data-lucide="book-open" class="w-4 h-4 text-slate-400"></i>
+                    <span>Wissensdatenbank</span>
+                </a>
+                <a href="#" onclick="setActiveNav(this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slatecalm-100 hover:text-slate-900 transition">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4 text-slate-400"></i>
+                    <span>Berichte & Stress-Index</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- User Profile Card -->
+        <div class="p-4 border-t border-slatecalm-200 bg-white/60">
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <div class="w-9 h-9 rounded-full bg-calm-200 text-calm-800 font-semibold flex items-center justify-center text-sm border border-calm-300">
+                        SS
+                    </div>
+                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" title="Fokusmodus aktiv"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold text-slate-800 truncate">Sarah Stegemann</p>
+                    <p class="text-xs text-calm-600 truncate flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                        Fokus-Modus aktiv
+                    </p>
+                </div>
+                <button title="Einstellungen" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col min-w-0 h-full overflow-hidden bg-[#F4F7F6]">
+
+        <!-- Top Header Bar -->
+        <header class="h-16 bg-white border-b border-slatecalm-200 px-4 md:px-6 flex items-center justify-between shrink-0 shadow-xs">
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleMobileSidebar()" class="md:hidden p-2 rounded-lg text-slate-500 hover:bg-slatecalm-100">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+                <h1 class="text-lg font-bold text-slate-800 hidden sm:block">Support Workspace</h1>
+                <span class="hidden sm:inline-block text-slate-300">|</span>
+                <p class="text-xs text-slate-500 hidden md:block">Ruhe und Übersicht für beste Kundenerfahrungen</p>
+            </div>
+
+            <!-- Global Search & Actions -->
+            <div class="flex items-center space-x-3">
+                <!-- Search Box -->
+                <div class="relative w-48 sm:w-64 md:w-80">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="searchInput" onkeyup="filterTickets()" placeholder="Tickets, Kunden oder IDs suchen..." class="w-full pl-9 pr-4 py-1.5 bg-slatecalm-100 border border-slatecalm-200 text-slate-700 text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-calm-400 focus:bg-white transition placeholder-slate-400">
+                </div>
+
+                <!-- Calm Health Indicator -->
+                <div class="hidden lg:flex items-center space-x-2 bg-calm-50 border border-calm-200 px-3 py-1 rounded-full text-xs text-calm-700" title="Systembelastung niedrig">
+                    <i data-lucide="smile" class="w-3.5 h-3.5 text-calm-600"></i>
+                    <span class="font-medium">Workload: Ausgeglichen</span>
+                </div>
+
+                <!-- Notifications -->
+                <button class="relative p-2 text-slate-500 hover:text-slate-700 hover:bg-slatecalm-100 rounded-xl transition" title="Benachrichtigungen">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-calm-500 rounded-full"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace: Master Detail Split -->
+        <div class="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden">
+
+            <!-- Left Pane: Ticket List -->
+            <div id="ticketListPane" class="w-full md:w-5/12 lg:w-4/12 border-r border-slatecalm-200 bg-white flex flex-col h-full overflow-hidden">
+
+                <!-- Filter & Sort Control Bar -->
+                <div class="p-4 border-b border-slatecalm-200 bg-slatecalm-50/50 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Tickets (1-5 von <span id="visibleCount">5</span>)</span>
+                        <div class="flex items-center space-x-2">
+                            <select id="sortSelect" onchange="filterTickets()" class="bg-white border border-slatecalm-200 text-xs rounded-lg px-2.5 py-1 text-slate-600 focus:ring-1 focus:ring-calm-500">
+                                <option value="newest">Neueste zuerst</option>
+                                <option value="oldest">Älteste zuerst</option>
+                                <option value="priority">Höchste Priorität</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Category Pills -->
+                    <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 text-xs">
+                        <button onclick="setFilterCategory('all')" class="cat-pill active px-3 py-1 rounded-lg font-medium bg-calm-600 text-white shrink-0">Alle</button>
+                        <button onclick="setFilterCategory('open')" class="cat-pill px-3 py-1 rounded-lg font-medium bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200 shrink-0">Offen (3)</button>
+                        <button onclick="setFilterCategory('in_progress')" class="cat-pill px-3 py-1 rounded-lg font-medium bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200 shrink-0">In Bearbeitung (2)</button>
+                        <button onclick="setFilterCategory('solved')" class="cat-pill px-3 py-1 rounded-lg font-medium bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200 shrink-0">Gelöst (0)</button>
+                    </div>
+                </div>
+
+                <!-- Ticket Scroll Area -->
+                <div id="ticketContainer" class="flex-1 overflow-y-auto divide-y divide-slatecalm-200">
+                    <!-- Ticket Item 1 (Selected by default) -->
+                    <div onclick="selectTicket(1)" id="ticket-item-1" class="ticket-card active p-4 cursor-pointer hover:bg-calm-50/60 transition bg-calm-50/90 border-l-4 border-calm-600">
+                        <div class="flex items-start justify-between gap-2 mb-1">
+                            <span class="text-xs font-mono font-semibold text-calm-700 bg-calm-100 px-2 py-0.5 rounded">#TK-1084</span>
+                            <span class="text-xs text-slate-400">vor 12 Min.</span>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-800 line-clamp-1 mb-1">Login nach Passwort-Reset schlägt fehl</h3>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-3">Ich erhalte immer die Fehlermeldung 'Ungültiger Token', obwohl der Link aus der E-Mail frisch ist...</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200">Hoch</span>
+                                <span class="px-2 py-0.5 rounded-md text-[11px] text-slate-600 bg-slatecalm-100">Kundenportal</span>
+                            </div>
+                            <div class="flex items-center space-x-1 text-slate-500">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>Dr. M. Weber</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Item 2 -->
+                    <div onclick="selectTicket(2)" id="ticket-item-2" class="ticket-card p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 border-transparent">
+                        <div class="flex items-start justify-between gap-2 mb-1">
+                            <span class="text-xs font-mono font-semibold text-slate-600 bg-slatecalm-100 px-2 py-0.5 rounded">#TK-1083</span>
+                            <span class="text-xs text-slate-400">vor 45 Min.</span>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-800 line-clamp-1 mb-1">Frage zu Abrechnung & Monatsrechnung Juli</h3>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-3">Können Sie mir die ausgewiesene USt. auf der aktuellen Rechnung noch einmal kurz erläutern?</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Niedrig</span>
+                                <span class="px-2 py-0.5 rounded-md text-[11px] text-slate-600 bg-slatecalm-100">Finanzen</span>
+                            </div>
+                            <div class="flex items-center space-x-1 text-slate-500">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>Anna Lindner</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Item 3 -->
+                    <div onclick="selectTicket(3)" id="ticket-item-3" class="ticket-card p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 border-transparent">
+                        <div class="flex items-start justify-between gap-2 mb-1">
+                            <span class="text-xs font-mono font-semibold text-slate-600 bg-slatecalm-100 px-2 py-0.5 rounded">#TK-1082</span>
+                            <span class="text-xs text-slate-400">vor 2 Std.</span>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-800 line-clamp-1 mb-1">Feature-Wunsch: Dunkler Modus für Export-Berichte</h3>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-3">Unsere Mitarbeiter nutzen das Dashboard spät abends und würden sich über ein dunkles Farbschema freuen.</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-sky-50 text-sky-700 border border-sky-200">Normal</span>
+                                <span class="px-2 py-0.5 rounded-md text-[11px] text-slate-600 bg-slatecalm-100">Feedback</span>
+                            </div>
+                            <div class="flex items-center space-x-1 text-slate-500">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>Lukas Meier</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Item 4 -->
+                    <div onclick="selectTicket(4)" id="ticket-item-4" class="ticket-card p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 border-transparent">
+                        <div class="flex items-start justify-between gap-2 mb-1">
+                            <span class="text-xs font-mono font-semibold text-slate-600 bg-slatecalm-100 px-2 py-0.5 rounded">#TK-1081</span>
+                            <span class="text-xs text-slate-400">Gestern</span>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-800 line-clamp-1 mb-1">API-Schnittstelle liefert Status 429 (Rate Limit)</h3>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-3">Bei automatisierten Synchronisationen erreichen wir schnell das Limit. Gibt es Optionen für ein Upload-Kontingent?</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200">Hoch</span>
+                                <span class="px-2 py-0.5 rounded-md text-[11px] text-slate-600 bg-slatecalm-100">Integration</span>
+                            </div>
+                            <div class="flex items-center space-x-1 text-slate-500">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>TechCorp GmbH</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Item 5 -->
+                    <div onclick="selectTicket(5)" id="ticket-item-5" class="ticket-card p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 border-transparent">
+                        <div class="flex items-start justify-between gap-2 mb-1">
+                            <span class="text-xs font-mono font-semibold text-slate-600 bg-slatecalm-100 px-2 py-0.5 rounded">#TK-1080</span>
+                            <span class="text-xs text-slate-400">vor 2 Tagen</span>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-800 line-clamp-1 mb-1">Adresse für Firmenkonto aktualisieren</h3>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-3">Wir sind in neue Büroräume umgezogen und möchten die Stammdaten aktualisieren.</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Niedrig</span>
+                                <span class="px-2 py-0.5 rounded-md text-[11px] text-slate-600 bg-slatecalm-100">Stammdaten</span>
+                            </div>
+                            <div class="flex items-center space-x-1 text-slate-500">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>Melanie Frank</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Pane: Ticket Detail View -->
+            <div id="ticketDetailPane" class="flex-1 bg-[#F4F7F6] flex flex-col h-full overflow-hidden">
+
+                <!-- Detail Header -->
+                <div class="bg-white border-b border-slatecalm-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shrink-0 shadow-xs">
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xs font-mono font-bold text-calm-700 bg-calm-100 px-2.5 py-1 rounded-md" id="detailTicketId">#TK-1084</span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200" id="detailStatusBadge">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
+                                In Bearbeitung
+                            </span>
+                            <span class="text-xs text-slate-400">Erstellt heute, 11:24 Uhr</span>
+                        </div>
+                        <h2 class="text-lg font-bold text-slate-800" id="detailTicketTitle">Login nach Passwort-Reset schlägt fehl</h2>
+                    </div>
+
+                    <!-- Action Controls -->
+                    <div class="flex items-center space-x-2">
+                        <!-- Status Selector -->
+                        <div class="relative">
+                            <select id="statusSelect" onchange="changeTicketStatus(this.value)" class="bg-slatecalm-100 border border-slatecalm-200 text-slate-700 text-xs rounded-xl px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-calm-400">
+                                <option value="Offen">Status: Offen</option>
+                                <option value="In Bearbeitung" selected>Status: In Bearbeitung</option>
+                                <option value="Wartend">Status: Wartend auf Kunde</option>
+                                <option value="Gelöst">Status: Gelöst / Erledigt</option>
+                            </select>
+                        </div>
+
+                        <!-- Assignee -->
+                        <button class="bg-slatecalm-100 hover:bg-slatecalm-200 text-slate-700 text-xs px-3 py-2 rounded-xl border border-slatecalm-200 font-medium flex items-center space-x-1.5 transition">
+                            <i data-lucide="user-plus" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span id="detailAssignee">Zugewiesen: Sarah S.</span>
+                        </button>
+
+                        <button onclick="shareTicket()" title="Link kopieren" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slatecalm-100 rounded-xl transition border border-transparent">
+                            <i data-lucide="share-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Scrollable Content: Messages + Meta Side Sidebar -->
+                <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+
+                    <!-- Conversation Timeline -->
+                    <div class="flex-1 overflow-y-auto p-6 space-y-6">
+
+                        <!-- Peaceful SLA & Support Context banner -->
+                        <div class="bg-calm-50/80 border border-calm-200 rounded-2xl p-4 flex items-center justify-between text-xs text-calm-800">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-calm-200 text-calm-700 flex items-center justify-center shrink-0">
+                                    <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-slate-800">Ruhiges Bearbeitungstempo gewahrt</p>
+                                    <p class="text-calm-600">SLA Reaktionszeit verbleibend: <strong>3 Stunden, 40 Minuten</strong>. Der Kunde wartet entspannt.</p>
+                                </div>
+                            </div>
+                            <span class="text-calm-600 font-medium hidden sm:inline">Priorität: Hoch</span>
+                        </div>
+
+                        <!-- Customer Message Card -->
+                        <div class="flex space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-sm shrink-0 border border-slate-300">
+                                DW
+                            </div>
+                            <div class="flex-1 bg-white rounded-2xl p-5 border border-slatecalm-200 shadow-xs space-y-3">
+                                <div class="flex items-center justify-between border-b border-slatecalm-100 pb-2">
+                                    <div>
+                                        <span class="font-semibold text-slate-800 text-sm" id="detailCustomerName">Dr. Martin Weber</span>
+                                        <span class="text-xs text-slate-400 ml-2">&lt;<span id="detailCustomerEmail">m.weber@praxis-weber.de</span>&gt;</span>
+                                    </div>
+                                    <span class="text-xs text-slate-400">Heute, 11:24 Uhr</span>
+                                </div>
+                                <div class="text-sm text-slate-700 leading-relaxed space-y-2" id="detailMessageContent">
+                                    <p>Guten Tag Support-Team,</p>
+                                    <p>ich habe soeben versucht, mein Passwort für das Kundenportal zurückzusetzen. Die E-Mail mit dem Bestätigungslink ist auch umgehend angekommen.</p>
+                                    <p>Sobald ich jedoch auf den Link klicke und ein neues Passwort eingebe, erscheint die Meldung: <em>"Token ungültig oder abgelaufen"</em>. Könnten Sie das bitte prüfen?</p>
+                                    <p>Mit freundlichen Grüßen,<br>Dr. Martin Weber</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Log / Note Divider -->
+                        <div class="flex items-center justify-center space-x-3 text-xs text-slate-400 py-1">
+                            <span class="h-px bg-slatecalm-200 flex-1"></span>
+                            <span class="flex items-center space-x-1 bg-slatecalm-100 px-3 py-1 rounded-full text-slate-500 font-medium">
+                                <i data-lucide="info" class="w-3 h-3 text-calm-600"></i>
+                                <span>Ticket automatisch der Kategorie "Kundenportal" zugeordnet</span>
+                            </span>
+                            <span class="h-px bg-slatecalm-200 flex-1"></span>
+                        </div>
+
+                        <!-- Internal Note Example -->
+                        <div class="flex space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 font-semibold flex items-center justify-center text-xs shrink-0 border border-amber-200">
+                                Intern
+                            </div>
+                            <div class="flex-1 bg-amber-50/60 rounded-2xl p-4 border border-amber-200/80 space-y-2">
+                                <div class="flex items-center justify-between text-xs text-amber-900">
+                                    <span class="font-semibold">Interne Notiz von Sarah Stegemann</span>
+                                    <span>Heute, 11:30 Uhr</span>
+                                </div>
+                                <p class="text-xs text-amber-900 leading-relaxed">
+                                    Das Auth-Log zeigt einen leichten Zeitdrift auf Server-Node #3. Der Token-Cache wurde gelöscht. Ich sende Herrn Weber gleich einen manuell generierten Link.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Timeline Container for new answers -->
+                        <div id="dynamicRepliesContainer" class="space-y-6"></div>
+
+                        <!-- Reply Box Area -->
+                        <div class="bg-white rounded-2xl border border-slatecalm-200 shadow-sm p-4 space-y-3 mt-6">
+                            <!-- Toggle Tabs (Antwort / Interne Notiz) -->
+                            <div class="flex items-center justify-between border-b border-slatecalm-100 pb-3">
+                                <div class="flex space-x-2">
+                                    <button id="tabPublicReply" onclick="toggleReplyMode('public')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-calm-600 text-white transition">
+                                        Öffentliche Antwort
+                                    </button>
+                                    <button id="tabInternalNote" onclick="toggleReplyMode('internal')" class="px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slatecalm-100 transition">
+                                        Interne Notiz
+                                    </button>
+                                </div>
+
+                                <!-- Text Templates -->
+                                <div class="flex items-center space-x-2">
+                                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-calm-500"></i>
+                                    <select id="templateSelect" onchange="insertTemplate(this.value)" class="text-xs bg-slatecalm-100 border border-slatecalm-200 rounded-lg px-2.5 py-1 text-slate-600 focus:outline-none focus:ring-1 focus:ring-calm-400">
+                                        <option value="">Textbaustein wählen...</option>
+                                        <option value="greeting">Freundliche Eingangsbestätigung</option>
+                                        <option value="fixed">Problem gelöst & Anleitung</option>
+                                        <option value="more_info">Rückfrage nach Screenshots</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Textarea -->
+                            <textarea id="replyInput" rows="4" placeholder="Schreiben Sie eine beruhigende, klare Antwort an den Kunden..." class="w-full text-sm p-3 border border-slatecalm-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-calm-400 focus:border-transparent text-slate-700 placeholder-slate-400 resize-none"></textarea>
+
+                            <!-- Bottom Toolbar & Send Button -->
+                            <div class="flex items-center justify-between pt-1">
+                                <div class="flex items-center space-x-1 text-slate-400">
+                                    <button title="Datei anhängen" class="p-2 hover:text-slate-600 hover:bg-slatecalm-100 rounded-lg transition">
+                                        <i data-lucide="paperclip" class="w-4 h-4"></i>
+                                    </button>
+                                    <button title="Formatierung" class="p-2 hover:text-slate-600 hover:bg-slatecalm-100 rounded-lg transition">
+                                        <i data-lucide="bold" class="w-4 h-4"></i>
+                                    </button>
+                                    <button title="Link einfügen" class="p-2 hover:text-slate-600 hover:bg-slatecalm-100 rounded-lg transition">
+                                        <i data-lucide="link" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="sendReply(true)" class="px-4 py-2 bg-slatecalm-100 hover:bg-slatecalm-200 text-slate-700 text-xs font-medium rounded-xl transition">
+                                        Senden & Gelöst
+                                    </button>
+                                    <button onclick="sendReply(false)" class="px-5 py-2 bg-calm-600 hover:bg-calm-700 text-white text-xs font-semibold rounded-xl shadow-xs transition flex items-center space-x-1.5">
+                                        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                                        <span>Antworten</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Customer & Context Sidebar (Right Side Panel) -->
+                    <div class="w-full md:w-64 lg:w-72 bg-white border-l border-slatecalm-200 p-5 space-y-6 shrink-0 overflow-y-auto">
+                        <!-- Customer Info Card -->
+                        <div class="space-y-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Kunden-Profil</h4>
+                            <div class="flex items-center space-x-3 bg-slatecalm-50 p-3 rounded-xl border border-slatecalm-100">
+                                <div class="w-10 h-10 rounded-full bg-calm-200 text-calm-800 font-bold flex items-center justify-center text-sm shrink-0">
+                                    DW
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-sm font-bold text-slate-800 truncate" id="sideCustomerName">Dr. Martin Weber</p>
+                                    <p class="text-xs text-slate-500 truncate">Praxis Dr. Weber</p>
+                                    <span class="inline-block mt-1 px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-semibold rounded-full">VIP Kunde</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ticket Details Stats -->
+                        <div class="space-y-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Metadaten</h4>
+                            <div class="space-y-2.5 text-xs">
+                                <div class="flex justify-between py-1 border-b border-slatecalm-100">
+                                    <span class="text-slate-500">Kategorie</span>
+                                    <span class="font-medium text-slate-800" id="sideCategory">Kundenportal</span>
+                                </div>
+                                <div class="flex justify-between py-1 border-b border-slatecalm-100">
+                                    <span class="text-slate-500">Priorität</span>
+                                    <span class="font-medium text-amber-700" id="sidePriority">Hoch</span>
+                                </div>
+                                <div class="flex justify-between py-1 border-b border-slatecalm-100">
+                                    <span class="text-slate-500">Kanal</span>
+                                    <span class="font-medium text-slate-800">E-Mail Formulardienst</span>
+                                </div>
+                                <div class="flex justify-between py-1 border-b border-slatecalm-100">
+                                    <span class="text-slate-500">Bisherige Tickets</span>
+                                    <span class="font-medium text-slate-800">3 Tickets (alle gelöst)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tags Section -->
+                        <div class="space-y-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Schlagwörter</h4>
+                            <div class="flex flex-wrap gap-1.5" id="tagContainer">
+                                <span class="px-2.5 py-1 bg-slatecalm-100 text-slate-600 rounded-lg text-xs font-medium hover:bg-slatecalm-200 cursor-pointer">#Passwort</span>
+                                <span class="px-2.5 py-1 bg-slatecalm-100 text-slate-600 rounded-lg text-xs font-medium hover:bg-slatecalm-200 cursor-pointer">#Authentication</span>
+                                <span class="px-2.5 py-1 bg-slatecalm-100 text-slate-600 rounded-lg text-xs font-medium hover:bg-slatecalm-200 cursor-pointer">#Login</span>
+                                <button onclick="addTag()" class="px-2 py-1 text-calm-600 border border-dashed border-calm-300 rounded-lg text-xs hover:bg-calm-50 font-medium">+ Tag</button>
+                            </div>
+                        </div>
+
+                        <!-- Calm Advice / Tips Box -->
+                        <div class="bg-calm-50 p-4 rounded-xl border border-calm-200/80 space-y-2">
+                            <div class="flex items-center space-x-2 text-calm-800 font-semibold text-xs">
+                                <i data-lucide="leaf" class="w-4 h-4 text-calm-600"></i>
+                                <span>AuraDesk Achtsamkeits-Tipp</span>
+                            </div>
+                            <p class="text-xs text-calm-700 leading-relaxed">
+                                Klarheit schlägt Schnelligkeit. Eine empathische, präzise Antwort verringert Rückfragen um bis zu 60%.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Modal: Neues Ticket Erstellen -->
+    <div id="newTicketModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+        <div class="bg-white rounded-2xl border border-slatecalm-200 shadow-xl max-w-lg w-full overflow-hidden transform transition-all">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slatecalm-200 flex items-center justify-between bg-slatecalm-50/50">
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-lg bg-calm-600 text-white flex items-center justify-center">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-base">Neues Ticket anlegen</h3>
+                </div>
+                <button onclick="closeNewTicketModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slatecalm-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Form Body -->
+            <form id="newTicketForm" onsubmit="submitNewTicket(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Betreff / Anliegen *</label>
+                    <input type="text" id="newSubject" required placeholder="z. B. Abfragedauer im Bericht optimieren" class="w-full px-3.5 py-2 bg-slatecalm-50 border border-slatecalm-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-calm-400">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kunde / Firma *</label>
+                        <input type="text" id="newCustomer" required placeholder="z. B. Max Mustermann" class="w-full px-3.5 py-2 bg-slatecalm-50 border border-slatecalm-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-calm-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">E-Mail-Adresse *</label>
+                        <input type="email" id="newEmail" required placeholder="kunde@beispiel.de" class="w-full px-3.5 py-2 bg-slatecalm-50 border border-slatecalm-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-calm-400">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kategorie</label>
+                        <select id="newCategory" class="w-full px-3.5 py-2 bg-slatecalm-50 border border-slatecalm-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-calm-400 text-slate-700">
+                            <option value="Kundenportal">Kundenportal</option>
+                            <option value="Finanzen">Finanzen & Abrechnung</option>
+                            <option value="Integration">Integration / API</option>
+                            <option value="Feedback">Feedback & Wünsche</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Priorität</label>
+                        <select id="newPriority" class="w-full px-3.5 py-2 bg-slatecalm-50 border border-slatecalm-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-calm-400 text-slate-700">
+                            <option value="Niedrig">Niedrig (entspannt)</option>
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Hoch">Hoch (dringend)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Beschreibung *</label>
+                    <textarea id="newDescription" rows="4" required placeholder="Genaue Schilderung des Anliegens..." class="w-full px-3.5 py-2 bg-slatecalm-50 border border-slatecalm-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-calm-400 resize-none"></textarea>
+                </div>
+
+                <div class="pt-2 flex items-center justify-end space-x-3">
+                    <button type="button" onclick="closeNewTicketModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slatecalm-100 rounded-xl transition">
+                        Abbrechen
+                    </button>
+                    <button type="submit" class="px-5 py-2 text-xs font-semibold bg-calm-600 hover:bg-calm-700 text-white rounded-xl shadow-xs transition">
+                        Ticket Erstellen
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-800 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300">
+        <div class="w-7 h-7 rounded-full bg-calm-500 text-white flex items-center justify-center shrink-0">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <p class="text-xs font-medium" id="toastMessage">Aktion erfolgreich ausgeführt.</p>
+    </div>
+
+    <!-- Interactivity JavaScript -->
+    <script>
+        // Mock dataset for tickets
+        const ticketsData = [
+            {
+                id: 1,
+                code: '#TK-1084',
+                title: 'Login nach Passwort-Reset schlägt fehl',
+                customer: 'Dr. Martin Weber',
+                email: 'm.weber@praxis-weber.de',
+                time: 'vor 12 Min.',
+                priority: 'Hoch',
+                category: 'Kundenportal',
+                status: 'In Bearbeitung',
+                statusClass: 'open',
+                assignee: 'Sarah S.',
+                content: `Guten Tag Support-Team,<br><br>ich habe soeben versucht, mein Passwort für das Kundenportal zurückzusetzen. Die E-Mail mit dem Bestätigungslink ist auch umgehend angekommen.<br><br>Sobald ich jedoch auf den Link klicke und ein neues Passwort eingebe, erscheint die Meldung: <em>"Token ungültig oder abgelaufen"</em>. Könnten Sie das bitte prüfen?<br><br>Mit freundlichen Grüßen,<br>Dr. Martin Weber`
+            },
+            {
+                id: 2,
+                code: '#TK-1083',
+                title: 'Frage zu Abrechnung & Monatsrechnung Juli',
+                customer: 'Anna Lindner',
+                email: 'a.lindner@design-studio.de',
+                time: 'vor 45 Min.',
+                priority: 'Niedrig',
+                category: 'Finanzen',
+                status: 'Offen',
+                statusClass: 'open',
+                assignee: 'Unzugewiesen',
+                content: `Hallo liebes Team,<br><br>auf unserer aktuellen Abrechnung für den Monat Juli ist eine Position 'Zusätzlicher Speicher' aufgeführt. Ich wollte fragen, ob das mit dem Projekt-Upload aus der letzten Woche zusammenhängt?<br><br>Vielen Dank für eine kurze Erläuterung!`
+            },
+            {
+                id: 3,
+                code: '#TK-1082',
+                title: 'Feature-Wunsch: Dunkler Modus für Export-Berichte',
+                customer: 'Lukas Meier',
+                email: 'l.meier@innovate.ch',
+                time: 'vor 2 Std.',
+                priority: 'Normal',
+                category: 'Feedback',
+                status: 'In Bearbeitung',
+                statusClass: 'in_progress',
+                assignee: 'Sarah S.',
+                content: `Hallo Support,<br><br>wir nutzen eure Berichte täglich im Team-Meeting. Da wir oft im abgedunkelten Raum präsentieren, wäre ein optionaler dark-mode für PDF-Exports absolut fantastisch!<br><br>Gibt es dazu eventuell schon Pläne?`
+            },
+            {
+                id: 4,
+                code: '#TK-1081',
+                title: 'API-Schnittstelle liefert Status 429 (Rate Limit)',
+                customer: 'TechCorp GmbH',
+                email: 'dev@techcorp.de',
+                time: 'Gestern',
+                priority: 'Hoch',
+                category: 'Integration',
+                status: 'Offen',
+                statusClass: 'open',
+                assignee: 'Felix K.',
+                content: `Hi Dev-Support,<br><br>seit heute Morgen erhalten wir bei automatisierter Synchronisation der Kundendaten regelmäßig den Fehlercode 429 Too Many Requests.<br><br>Können wir unsere Limits vorübergehend erhöhen lassen?`
+            },
+            {
+                id: 5,
+                code: '#TK-1080',
+                title: 'Adresse für Firmenkonto aktualisieren',
+                customer: 'Melanie Frank',
+                email: 'm.frank@agentur-frank.de',
+                time: 'vor 2 Tagen',
+                priority: 'Niedrig',
+                category: 'Stammdaten',
+                status: 'Offen',
+                statusClass: 'open',
+                assignee: 'Sarah S.',
+                content: `Guten Tag,<br><br>wir sind mit unserer Agentur umgezogen. Bitte ändern Sie die Rechnungsadresse in unseren Stammdaten auf:<br>Neuer Wall 12, 20354 Hamburg.<br><br>Vielen Dank!`
+            }
+        ];
+
+        let activeTicketId = 1;
+        let replyMode = 'public'; // 'public' or 'internal'
+        let currentFilterCategory = 'all';
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Select ticket and refresh main pane
+        function selectTicket(id) {
+            activeTicketId = id;
+            const ticket = ticketsData.find(t => t.id === id);
+            if (!ticket) return;
+
+            // Update UI selected cards
+            document.querySelectorAll('.ticket-card').forEach(card => {
+                card.classList.remove('bg-calm-50/90', 'border-calm-600');
+                card.classList.add('border-transparent');
+            });
+            const activeCard = document.getElementById(`ticket-item-${id}`);
+            if (activeCard) {
+                activeCard.classList.add('bg-calm-50/90', 'border-calm-600');
+                activeCard.classList.remove('border-transparent');
+            }
+
+            // Fill Detail View
+            document.getElementById('detailTicketId').innerText = ticket.code;
+            document.getElementById('detailTicketTitle').innerText = ticket.title;
+            document.getElementById('detailCustomerName').innerText = ticket.customer;
+            document.getElementById('detailCustomerEmail').innerText = ticket.email;
+            document.getElementById('detailMessageContent').innerHTML = ticket.content;
+
+            document.getElementById('sideCustomerName').innerText = ticket.customer;
+            document.getElementById('sideCategory').innerText = ticket.category;
+            document.getElementById('sidePriority').innerText = ticket.priority;
+            document.getElementById('detailAssignee').innerText = `Zugewiesen: ${ticket.assignee}`;
+
+            // Priority badge styling in sidebar
+            const prioElement = document.getElementById('sidePriority');
+            if(ticket.priority === 'Hoch') {
+                prioElement.className = 'font-medium text-amber-700';
+            } else if(ticket.priority === 'Niedrig') {
+                prioElement.className = 'font-medium text-emerald-700';
+            } else {
+                prioElement.className = 'font-medium text-sky-700';
+            }
+
+            // Clear extra replies
+            document.getElementById('dynamicRepliesContainer').innerHTML = '';
+        }
+
+        // Toggle mobile menu
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+
+        // Active Navigation Highlight
+        function setActiveNav(element) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('bg-calm-100', 'text-calm-800');
+                item.classList.add('text-slate-600');
+            });
+            element.classList.add('bg-calm-100', 'text-calm-800');
+            element.classList.remove('text-slate-600');
+        }
+
+        // Filter Tickets by Category tab
+        function setFilterCategory(cat) {
+            currentFilterCategory = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                btn.classList.remove('bg-calm-600', 'text-white');
+                btn.classList.add('bg-slatecalm-100', 'text-slate-600');
+            });
+            event.target.classList.remove('bg-slatecalm-100', 'text-slate-600');
+            event.target.classList.add('bg-calm-600', 'text-white');
+
+            filterTickets();
+        }
+
+        // Search and Category Filter combined
+        function filterTickets() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            let visibleCount = 0;
+
+            ticketsData.forEach(ticket => {
+                const card = document.getElementById(`ticket-item-${ticket.id}`);
+                if (!card) return;
+
+                const matchesSearch = ticket.title.toLowerCase().includes(searchVal) ||
+                                      ticket.customer.toLowerCase().includes(searchVal) ||
+                                      ticket.code.toLowerCase().includes(searchVal);
+
+                let matchesCat = true;
+                if (currentFilterCategory === 'open') matchesCat = ticket.status === 'Offen';
+                if (currentFilterCategory === 'in_progress') matchesCat = ticket.status === 'In Bearbeitung';
+                if (currentFilterCategory === 'solved') matchesCat = ticket.status === 'Gelöst';
+
+                if (matchesSearch && matchesCat) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            document.getElementById('visibleCount').innerText = visibleCount;
+        }
+
+        // Toggle Mode: Public reply vs Internal note
+        function toggleReplyMode(mode) {
+            replyMode = mode;
+            const tabPublic = document.getElementById('tabPublicReply');
+            const tabInternal = document.getElementById('tabInternalNote');
+            const textarea = document.getElementById('replyInput');
+
+            if (mode === 'public') {
+                tabPublic.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-calm-600 text-white transition';
+                tabInternal.className = 'px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slatecalm-100 transition';
+                textarea.placeholder = 'Schreiben Sie eine beruhigende, klare Antwort an den Kunden...';
+                textarea.classList.remove('bg-amber-50/50');
+            } else {
+                tabInternal.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-600 text-white transition';
+                tabPublic.className = 'px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slatecalm-100 transition';
+                textarea.placeholder = 'Interne Notiz hinzufügen (nur für Teammitglieder sichtbar)...';
+                textarea.classList.add('bg-amber-50/50');
+            }
+        }
+
+        // Insert pre-made response templates
+        function insertTemplate(key) {
+            const textarea = document.getElementById('replyInput');
+            if (key === 'greeting') {
+                textarea.value = "Guten Tag,\n\nvielen Dank für Ihre Nachricht. Ich schaue mir das Anliegen umgehend an und gebe Ihnen zeitnah Rückmeldung.\n\nHerzliche Grüße,\nSarah Stegemann";
+            } else if (key === 'fixed') {
+                textarea.value = "Guten Tag,\n\nwir haben die Ursache für Sie behoben. Der Zugriff funktioniert ab sofort wieder einwandfrei.\n\nBitte geben Sie uns kurz Bescheid, falls Sie weitere Unterstützung benötigen.\n\nBeste Grüße,\nSarah Stegemann";
+            } else if (key === 'more_info') {
+                textarea.value = "Guten Tag,\n\num Ihr Anliegen genau nachzuvollziehen: Könnten Sie uns einen kurzen Screenshot der genauen Fehlermeldung zukommen lassen?\n\nVielen Dank für Ihre Mithilfe!";
+            }
+        }
+
+        // Send reply handler
+        function sendReply(markSolved) {
+            const input = document.getElementById('replyInput');
+            const val = input.value.trim();
+
+            if (!val) {
+                showToast('Bitte geben Sie zuerst eine Nachricht ein.');
+                return;
+            }
+
+            const container = document.getElementById('dynamicRepliesContainer');
+            const newReplyHTML = document.createElement('div');
+            newReplyHTML.className = 'flex space-x-4 animate-fade-in';
+
+            if (replyMode === 'public') {
+                newReplyHTML.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-calm-600 text-white font-bold flex items-center justify-center text-sm shrink-0 shadow-xs">
+                        SS
+                    </div>
+                    <div class="flex-1 bg-white rounded-2xl p-5 border border-calm-200 shadow-xs space-y-2">
+                        <div class="flex items-center justify-between border-b border-slatecalm-100 pb-2">
+                            <span class="font-semibold text-slate-800 text-sm">Sarah Stegemann (Support Specialist)</span>
+                            <span class="text-xs text-slate-400">Gerade eben</span>
+                        </div>
+                        <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">${val}</p>
+                    </div>
+                `;
+            } else {
+                newReplyHTML.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 font-semibold flex items-center justify-center text-xs shrink-0 border border-amber-200">
+                        Intern
+                    </div>
+                    <div class="flex-1 bg-amber-50/70 rounded-2xl p-4 border border-amber-200 space-y-2">
+                        <div class="flex items-center justify-between text-xs text-amber-900">
+                            <span class="font-semibold">Interne Notiz von Sarah Stegemann</span>
+                            <span>Gerade eben</span>
+                        </div>
+                        <p class="text-xs text-amber-900 leading-relaxed whitespace-pre-line">${val}</p>
+                    </div>
+                `;
+            }
+
+            container.appendChild(newReplyHTML);
+            input.value = '';
+
+            if (markSolved) {
+                changeTicketStatus('Gelöst');
+                showToast('Antwort gesendet & Ticket als Gelöst markiert.');
+            } else {
+                showToast(replyMode === 'public' ? 'Antwort erfolgreich versendet.' : 'Interne Notiz gespeichert.');
+            }
+
+            // Scroll to bottom
+            const pane = document.querySelector('#ticketDetailPane .flex-1');
+            pane.scrollTop = pane.scrollHeight;
+        }
+
+        // Change Status function
+        function changeTicketStatus(newStatus) {
+            const badge = document.getElementById('detailStatusBadge');
+            if (newStatus === 'Gelöst') {
+                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
+                badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Gelöst';
+            } else if (newStatus === 'Offen') {
+                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-50 text-sky-700 border border-sky-200';
+                badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-sky-500 mr-1.5"></span> Offen';
+            } else {
+                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200';
+                badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span> In Bearbeitung';
+            }
+        }
+
+        // Add Tag feature
+        function addTag() {
+            const tagContainer = document.getElementById('tagContainer');
+            const newTag = prompt('Neues Schlagwort eingeben:');
+            if (newTag && newTag.trim() !== '') {
+                const span = document.createElement('span');
+                span.className = 'px-2.5 py-1 bg-slatecalm-100 text-slate-600 rounded-lg text-xs font-medium hover:bg-slatecalm-200 cursor-pointer';
+                span.innerText = '#' + newTag.replace('#', '');
+                tagContainer.insertBefore(span, tagContainer.lastElementChild);
+                showToast('Tag hinzugefügt.');
+            }
+        }
+
+        // Copy Share Link
+        function shareTicket() {
+            const dummy = document.createElement('input');
+            document.body.appendChild(dummy);
+            dummy.value = window.location.href + '?ticket=#TK-1084';
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            showToast('Ticket-Link in die Zwischenablage kopiert.');
+        }
+
+        // New Ticket Modal Controls
+        function openNewTicketModal() {
+            document.getElementById('newTicketModal').classList.remove('hidden');
+        }
+
+        function closeNewTicketModal() {
+            document.getElementById('newTicketModal').classList.add('hidden');
+        }
+
+        function submitNewTicket(e) {
+            e.preventDefault();
+            const subject = document.getElementById('newSubject').value;
+            const customer = document.getElementById('newCustomer').value;
+            const email = document.getElementById('newEmail').value;
+            const category = document.getElementById('newCategory').value;
+            const priority = document.getElementById('newPriority').value;
+            const desc = document.getElementById('newDescription').value;
+
+            const newId = ticketsData.length + 1;
+            const newCode = `#TK-10${80 + newId}`;
+
+            const newTicket = {
+                id: newId,
+                code: newCode,
+                title: subject,
+                customer: customer,
+                email: email,
+                time: 'Gerade eben',
+                priority: priority,
+                category: category,
+                status: 'Offen',
+                statusClass: 'open',
+                assignee: 'Unzugewiesen',
+                content: desc
+            };
+
+            ticketsData.unshift(newTicket);
+
+            // Create Card Element
+            const container = document.getElementById('ticketContainer');
+            const cardHTML = document.createElement('div');
+            cardHTML.id = `ticket-item-${newId}`;
+            cardHTML.onclick = () => selectTicket(newId);
+            cardHTML.className = "ticket-card p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 border-transparent";
+            cardHTML.innerHTML = `
+                <div class="flex items-start justify-between gap-2 mb-1">
+                    <span class="text-xs font-mono font-semibold text-slate-600 bg-slatecalm-100 px-2 py-0.5 rounded">${newCode}</span>
+                    <span class="text-xs text-slate-400">Gerade eben</span>
+                </div>
+                <h3 class="text-sm font-semibold text-slate-800 line-clamp-1 mb-1">${subject}</h3>
+                <p class="text-xs text-slate-500 line-clamp-2 mb-3">${desc}</p>
+                <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-sky-50 text-sky-700 border border-sky-200">${priority}</span>
+                        <span class="px-2 py-0.5 rounded-md text-[11px] text-slate-600 bg-slatecalm-100">${category}</span>
+                    </div>
+                    <div class="flex items-center space-x-1 text-slate-500">
+                        <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                        <span>${customer}</span>
+                    </div>
+                </div>
+            `;
+
+            container.insertBefore(cardHTML, container.firstChild);
+            lucide.createIcons();
+
+            // Reset Form & Close
+            document.getElementById('newTicketForm').reset();
+            closeNewTicketModal();
+            showToast(`Neues Ticket ${newCode} erfolgreich erstellt!`);
+            
+            // Select newly created ticket
+            selectTicket(newId);
+            document.getElementById('totalTicketCount').innerText = ticketsData.length;
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

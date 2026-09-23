@@ -1,0 +1,6 @@
+{
+    "slug": "cmdb",
+    "name": "Cmdb",
+    "provider": "App\\Modules\\Cmdb\\Providers\\CmdbServiceProvider",
+    "dependencies": []
+}
