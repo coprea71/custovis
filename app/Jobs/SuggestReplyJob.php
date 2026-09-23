@@ -39,4 +39,9 @@ class SuggestReplyJob implements ShouldQueue
 
         $this->logUsage($this->ticket, 'suggest_reply', $factory->providerNameFor($this->ticket->team, 'suggest_reply'), $provider->lastUsageTokens());
     }
+
+    protected function aiUseCase(): string
+    {
+        return 'suggest_reply';
+    }
 }

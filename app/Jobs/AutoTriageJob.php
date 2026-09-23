@@ -34,4 +34,9 @@ class AutoTriageJob implements ShouldQueue
 
         $this->logUsage($this->ticket, 'classify', $factory->providerNameFor($this->ticket->team, 'classify'), $provider->lastUsageTokens());
     }
+
+    protected function aiUseCase(): string
+    {
+        return 'classify';
+    }
 }
