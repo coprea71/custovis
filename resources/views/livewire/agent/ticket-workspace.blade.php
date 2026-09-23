@@ -60,9 +60,17 @@
                             <h2 class="text-lg font-semibold text-slatecalm-900 mt-1">{{ $ticket->subject }}</h2>
                         </div>
 
-                        <div class="flex items-center gap-2 text-xs text-calm-700" x-show="others.length > 0" x-cloak>
-                            <span class="w-2 h-2 rounded-full bg-calm-500"></span>
-                            <span x-text="collisionLabel()"></span>
+                        <div class="flex items-center gap-3">
+                            @if ($ticket->source === 'whatsapp')
+                                <span class="text-xs px-2.5 py-1 rounded-full font-medium {{ $whatsappSessionOpen ? 'bg-calm-100 text-calm-800' : 'bg-amber-100 text-amber-800' }}">
+                                    {{ $whatsappSessionOpen ? '24-Std.-Fenster offen' : '24-Std.-Fenster abgelaufen — nur Vorlagen' }}
+                                </span>
+                            @endif
+
+                            <div class="flex items-center gap-2 text-xs text-calm-700" x-show="others.length > 0" x-cloak>
+                                <span class="w-2 h-2 rounded-full bg-calm-500"></span>
+                                <span x-text="collisionLabel()"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -121,21 +129,37 @@
                             @endif
                         </div>
 
-                        <textarea
-                            wire:model="replyBody"
-                            rows="3"
-                            placeholder="Antwort verfassen..."
-                            class="w-full border border-slatecalm-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-calm-400"
-                        ></textarea>
-                        @error('replyBody') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                        @if ($ticket->source === 'whatsapp' && ! $whatsappSessionOpen && $replyVisibility === 'public')
+                            <div class="flex gap-2">
+                                <select id="whatsappTemplateSelect" class="flex-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                                    <option value="">Genehmigte Vorlage wählen...</option>
+                                    @foreach ($whatsappTemplates as $template)
+                                        <option value="{{ $template->id }}">{{ $template->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button
+                                    type="button"
+                                    onclick="const v=document.getElementById('whatsappTemplateSelect').value; if(v){ @this.call('sendWhatsappTemplate', v); }"
+                                    class="py-2 px-5 bg-calm-600 hover:bg-calm-700 text-white font-medium rounded-xl shadow-sm text-sm"
+                                >Vorlage senden</button>
+                            </div>
+                        @else
+                            <textarea
+                                wire:model="replyBody"
+                                rows="3"
+                                placeholder="Antwort verfassen..."
+                                class="w-full border border-slatecalm-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-calm-400"
+                            ></textarea>
+                            @error('replyBody') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
 
-                        <div class="flex justify-end mt-2">
-                            <button
-                                type="button"
-                                wire:click="sendReply"
-                                class="py-2 px-5 bg-calm-600 hover:bg-calm-700 text-white font-medium rounded-xl shadow-sm text-sm"
-                            >Senden</button>
-                        </div>
+                            <div class="flex justify-end mt-2">
+                                <button
+                                    type="button"
+                                    wire:click="sendReply"
+                                    class="py-2 px-5 bg-calm-600 hover:bg-calm-700 text-white font-medium rounded-xl shadow-sm text-sm"
+                                >Senden</button>
+                            </div>
+                        @endif
                     </div>
                 </div>
 
@@ -143,7 +167,7 @@
                 <aside class="w-72 shrink-0 border-l border-slatecalm-200 bg-white p-5 overflow-y-auto hidden lg:block">
                     <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Kunde</h3>
                     <p class="text-sm font-medium text-slatecalm-900">{{ $ticket->requester_name ?: '—' }}</p>
-                    <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: '—' }}</p>
+                    <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: $ticket->requester_phone ?: '—' }}</p>
 
                     <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Status &amp; Priorität</h3>
                     <p class="text-sm text-slate-600 mb-4">{{ $ticket->status }} · {{ $ticket->priority }}</p>

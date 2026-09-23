@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Webhooks\WhatsappWebhookController;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -22,6 +23,17 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('admin')
                 ->name('admin.')
                 ->group(__DIR__.'/../routes/admin.php');
+
+            // Outside the '/api' URL prefix on purpose (see 4.md path
+            // /webhooks/whatsapp/{account}), but still under the 'api'
+            // middleware GROUP (not the 'web' group) so SubstituteBindings
+            // resolves {account} and route/model binding + throttling work
+            // without CSRF — Meta posts here unauthenticated and is
+            // verified via signature/verify-token instead.
+            Route::middleware('api')->group(function () {
+                Route::get('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'verify']);
+                Route::post('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'receive']);
+            });
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

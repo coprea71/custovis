@@ -58,4 +58,12 @@ class Team extends Model
     {
         return $this->hasMany(GitIssueConnection::class);
     }
+
+    /**
+     * @return HasMany<WhatsappAccount, $this>
+     */
+    public function whatsappAccounts(): HasMany
+    {
+        return $this->hasMany(WhatsappAccount::class);
+    }
 }

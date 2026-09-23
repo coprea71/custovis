@@ -3,9 +3,12 @@
 namespace App\Livewire\Agent;
 
 use App\Jobs\SendTicketReplyJob;
+use App\Jobs\SendWhatsappReplyJob;
 use App\Models\CannedResponse;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
+use App\Models\WhatsappTemplate;
+use App\Services\WhatsappMessageSender;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -65,11 +68,45 @@ class TicketWorkspace extends Component
             'message_id' => 'custovis-'.uniqid('', true).'@'.parse_url(config('app.url'), PHP_URL_HOST),
         ]);
 
-        if ($message->visibility === TicketMessage::VISIBILITY_PUBLIC && $ticket->source === 'mailbox') {
-            SendTicketReplyJob::dispatch($message);
+        if ($message->visibility === TicketMessage::VISIBILITY_PUBLIC) {
+            if ($ticket->source === 'mailbox') {
+                SendTicketReplyJob::dispatch($message);
+            } elseif ($ticket->source === 'whatsapp') {
+                SendWhatsappReplyJob::dispatch($message);
+            }
         }
 
         $this->replyBody = '';
+    }
+
+    public function sendWhatsappTemplate(int $templateId): void
+    {
+        $ticket = $this->selectedTicket();
+        abort_unless($ticket && $ticket->source === 'whatsapp', 404);
+
+        $template = WhatsappTemplate::query()->where('whatsapp_account_id', $ticket->whatsapp_account_id)->findOrFail($templateId);
+
+        $message = $ticket->messages()->create([
+            'visibility' => TicketMessage::VISIBILITY_PUBLIC,
+            'direction' => 'outgoing',
+            'author_user_id' => auth()->id(),
+            'body_text' => $template->approved_body,
+            'message_id' => 'custovis-'.uniqid('', true).'@'.parse_url(config('app.url'), PHP_URL_HOST),
+            'whatsapp_message_type' => 'template',
+        ]);
+
+        app(WhatsappMessageSender::class)->sendTemplate($message, $template);
+    }
+
+    public function whatsappSessionWindowOpen(): bool
+    {
+        $ticket = $this->selectedTicket();
+
+        if (! $ticket || $ticket->source !== 'whatsapp') {
+            return true;
+        }
+
+        return app(WhatsappMessageSender::class)->isWithinSessionWindow($ticket);
     }
 
     public function insertCannedResponse(int $cannedResponseId): void
@@ -132,6 +169,10 @@ class TicketWorkspace extends Component
             'ticket' => $ticket,
             'cannedResponses' => $ticket
                 ? CannedResponse::query()->where('team_id', $ticket->team_id)->orderBy('title')->get()
+                : collect(),
+            'whatsappSessionOpen' => $this->whatsappSessionWindowOpen(),
+            'whatsappTemplates' => $ticket && $ticket->source === 'whatsapp'
+                ? WhatsappTemplate::query()->where('whatsapp_account_id', $ticket->whatsapp_account_id)->orderBy('name')->get()
                 : collect(),
         ]);
     }

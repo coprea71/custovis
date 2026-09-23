@@ -10,6 +10,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- WhatsApp-Business-Anbindung (Meta Cloud API direkt, kein BSP):
+  `whatsapp_accounts`/`whatsapp_templates`, Webhook mit Verify-Handshake
+  und `X-Hub-Signature-256`-Prüfung, „ein Chat = ein Ticket"
+  (Zuordnung über `whatsapp_account_id`+Telefonnummer, automatisches
+  Reopen statt neuem Ticket), 24-Stunden-Regel (Freitext nur innerhalb
+  des Fensters, danach Pflicht zu genehmigten Templates), Team-Admin-UI
+  unter `/agent/team/{team}/settings/whatsapp` inkl. Verbindungstest.
 - Externe Ticket-Anlage-API (`POST /api/v1/tickets`, Sanctum-Guard,
   Ability `tickets.create`, 60 Anfragen/Minute je Token), teamverwaltete
   API-Keys (`api_clients`) mit Team-Admin-UI unter
