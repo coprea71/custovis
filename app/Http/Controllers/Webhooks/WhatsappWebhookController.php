@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Webhooks;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessWhatsappWebhookJob;
 use App\Models\WhatsappAccount;
-use App\Services\WhatsappImportService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -25,7 +25,7 @@ class WhatsappWebhookController extends Controller
         return response('', 403);
     }
 
-    public function receive(Request $request, WhatsappAccount $account, WhatsappImportService $importer): Response
+    public function receive(Request $request, WhatsappAccount $account): Response
     {
         if (! $account->active) {
             abort(404);
@@ -38,33 +38,12 @@ class WhatsappWebhookController extends Controller
         foreach ($entries as $entry) {
             foreach ($entry['changes'] ?? [] as $change) {
                 foreach ($change['value']['messages'] ?? [] as $message) {
-                    $this->importMessage($importer, $account, $change['value'], $message);
+                    ProcessWhatsappWebhookJob::dispatch($account, $change['value'], $message);
                 }
             }
         }
 
         return response()->noContent();
-    }
-
-    private function importMessage(WhatsappImportService $importer, WhatsappAccount $account, array $value, array $message): void
-    {
-        $contact = collect($value['contacts'] ?? [])->first();
-        $fromName = $contact['profile']['name'] ?? $message['from'];
-
-        $type = $message['type'];
-        $text = match ($type) {
-            'text' => $message['text']['body'] ?? null,
-            default => null,
-        };
-
-        $importer->importInboundMessage(
-            account: $account,
-            waMessageId: $message['id'],
-            type: $type,
-            text: $text,
-            fromPhone: $message['from'],
-            fromName: $fromName,
-        );
     }
 
     private function verifySignature(Request $request, WhatsappAccount $account): void
