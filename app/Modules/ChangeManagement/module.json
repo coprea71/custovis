@@ -1,0 +1,6 @@
+{
+    "slug": "change-management",
+    "name": "ChangeManagement",
+    "provider": "App\\Modules\\ChangeManagement\\Providers\\ChangeManagementServiceProvider",
+    "dependencies": []
+}

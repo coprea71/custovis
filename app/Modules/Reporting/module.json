@@ -1,0 +1,6 @@
+{
+    "slug": "reporting",
+    "name": "Reporting",
+    "provider": "App\\Modules\\Reporting\\Providers\\ReportingServiceProvider",
+    "dependencies": []
+}

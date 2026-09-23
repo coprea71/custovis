@@ -1,0 +1,6 @@
+{
+    "slug": "ai-agent",
+    "name": "AiAgent",
+    "provider": "App\\Modules\\AiAgent\\Providers\\AiAgentServiceProvider",
+    "dependencies": []
+}

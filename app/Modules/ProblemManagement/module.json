@@ -1,0 +1,6 @@
+{
+    "slug": "problem-management",
+    "name": "ProblemManagement",
+    "provider": "App\\Modules\\ProblemManagement\\Providers\\ProblemManagementServiceProvider",
+    "dependencies": []
+}

@@ -1,0 +1,6 @@
+{
+    "slug": "field-service",
+    "name": "FieldService",
+    "provider": "App\\Modules\\FieldService\\Providers\\FieldServiceServiceProvider",
+    "dependencies": []
+}

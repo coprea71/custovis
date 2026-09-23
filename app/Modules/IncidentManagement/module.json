@@ -1,0 +1,6 @@
+{
+    "slug": "incident-management",
+    "name": "IncidentManagement",
+    "provider": "App\\Modules\\IncidentManagement\\Providers\\IncidentManagementServiceProvider",
+    "dependencies": []
+}
