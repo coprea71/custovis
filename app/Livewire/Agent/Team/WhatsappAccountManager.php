@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Agent\Team;
 
+use App\Models\AuditLog;
 use App\Models\Team;
 use App\Models\WhatsappAccount;
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +59,12 @@ class WhatsappAccountManager extends Component
             'app_secret' => ['required', 'string'],
         ]);
 
-        WhatsappAccount::query()->create([...$data, 'team_id' => $this->team->id]);
+        $account = WhatsappAccount::query()->create([...$data, 'team_id' => $this->team->id]);
+
+        AuditLog::record('whatsapp_account.created', Auth::user(), $this->team, $account, [
+            'display_name' => $account->display_name,
+            'phone_number_id' => $account->phone_number_id,
+        ]);
 
         $this->reset(['display_name', 'phone_number_id', 'business_account_id', 'access_token', 'webhook_verify_token', 'app_secret']);
     }
