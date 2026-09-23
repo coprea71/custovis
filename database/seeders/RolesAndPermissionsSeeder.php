@@ -20,6 +20,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'team.manage',
             'team.api_keys.manage',
             'team.git_issues.manage',
+            'mailboxes.manage',
         ];
 
         $permissions = collect($slugs)->map(
