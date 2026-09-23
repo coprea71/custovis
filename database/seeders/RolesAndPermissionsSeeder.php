@@ -22,6 +22,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'team.git_issues.manage',
             'mailboxes.manage',
             'team.whatsapp.manage',
+            'service_catalog.manage',
         ];
 
         $permissions = collect($slugs)->map(
