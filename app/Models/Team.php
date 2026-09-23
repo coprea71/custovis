@@ -42,4 +42,20 @@ class Team extends Model
     {
         return $this->hasMany(Ticket::class);
     }
+
+    /**
+     * @return HasMany<ApiClient, $this>
+     */
+    public function apiClients(): HasMany
+    {
+        return $this->hasMany(ApiClient::class);
+    }
+
+    /**
+     * @return HasMany<GitIssueConnection, $this>
+     */
+    public function gitIssueConnections(): HasMany
+    {
+        return $this->hasMany(GitIssueConnection::class);
+    }
 }

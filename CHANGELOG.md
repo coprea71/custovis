@@ -10,6 +10,17 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Externe Ticket-Anlage-API (`POST /api/v1/tickets`, Sanctum-Guard,
+  Ability `tickets.create`, 60 Anfragen/Minute je Token), teamverwaltete
+  API-Keys (`api_clients`) mit Team-Admin-UI unter
+  `/agent/team/{team}/settings/api-keys` (System-Admin sieht nur lesend).
+- GitHub-/GitLab-Issue-Import (`git_issue_connections`): Webhook-Endpunkte
+  mit Signaturprüfung (HMAC-SHA256 bzw. Shared-Token) und
+  Polling-Fallback (`SyncGitIssuesJob`, Queue `git-sync`, alle 5 Minuten),
+  Dedup über `tickets.external_ref` bzw. `ticket_messages.message_id`,
+  Team-Admin-UI unter `/agent/team/{team}/settings/git-issues`.
+- `audit_logs` (polymorph) für API-Key- und Git-Issue-Connection-
+  Erstellung/-Widerruf.
 - Ticket-Kern: `tickets`/`ticket_messages`/`ticket_attachments`, Mailbox-
   Verwaltung (`mailboxes`, Admin-UI unter `/admin/mailboxes`), IMAP-Abruf
   (`FetchMailboxJob`, `webklex/laravel-imap`, minütlicher Scheduler je
