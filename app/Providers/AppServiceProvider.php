@@ -33,5 +33,12 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Ticket::observe(TicketObserver::class);
+
+        // One limiter per AI provider (6.md) — keeps a slow/rate-limited
+        // provider from blocking queue workers for the others, and caps
+        // spend velocity independent of the per-team budget check.
+        foreach (\App\Models\AiSetting::PROVIDERS as $provider) {
+            RateLimiter::for("ai-{$provider}", fn () => Limit::perMinute(20));
+        }
     }
 }

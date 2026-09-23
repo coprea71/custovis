@@ -7,9 +7,22 @@ use App\Core\Ai\Support\AiBudgetService;
 use App\Core\Ai\Support\AiUsageLogger;
 use App\Core\Ai\Support\PiiRedactor;
 use App\Models\Ticket;
+use Illuminate\Queue\Middleware\RateLimited;
 
 trait InteractsWithAi
 {
+    /**
+     * @return array<int, object>
+     */
+    public function middleware(): array
+    {
+        $provider = app(AiProviderFactory::class)->providerNameFor($this->ticket->team, $this->aiUseCase());
+
+        return [new RateLimited("ai-{$provider}")];
+    }
+
+    abstract protected function aiUseCase(): string;
+
     protected function budgetAllows(Ticket $ticket): bool
     {
         return app(AiBudgetService::class)->withinBudget($ticket->team);

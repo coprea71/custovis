@@ -39,4 +39,9 @@ class SummarizeTicketJob implements ShouldQueue
 
         $this->logUsage($this->ticket, 'summarize', $factory->providerNameFor($this->ticket->team, 'summarize'), $provider->lastUsageTokens());
     }
+
+    protected function aiUseCase(): string
+    {
+        return 'summarize';
+    }
 }

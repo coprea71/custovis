@@ -79,4 +79,9 @@ class FindSimilarTicketsJob implements ShouldQueue
             ->pluck('ticket_id')
             ->values();
     }
+
+    protected function aiUseCase(): string
+    {
+        return 'embed';
+    }
 }
