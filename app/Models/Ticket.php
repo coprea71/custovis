@@ -11,13 +11,14 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    public const STATUSES = ['open', 'pending', 'closed'];
+    public const STATUSES = ['open', 'pending', 'closed', 'reopened'];
 
     public const PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
     protected $fillable = [
         'team_id',
         'mailbox_id',
+        'whatsapp_account_id',
         'type',
         'source',
         'external_ref',
@@ -27,6 +28,7 @@ class Ticket extends Model
         'customer_id',
         'requester_email',
         'requester_name',
+        'requester_phone',
         'assigned_to',
         'tags',
         'closed_at',
@@ -54,6 +56,14 @@ class Ticket extends Model
     public function mailbox(): BelongsTo
     {
         return $this->belongsTo(Mailbox::class);
+    }
+
+    /**
+     * @return BelongsTo<WhatsappAccount, $this>
+     */
+    public function whatsappAccount(): BelongsTo
+    {
+        return $this->belongsTo(WhatsappAccount::class);
     }
 
     /**

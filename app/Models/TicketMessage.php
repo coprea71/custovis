@@ -26,6 +26,8 @@ class TicketMessage extends Model
         'body_html',
         'body_text',
         'message_id',
+        'whatsapp_message_id',
+        'whatsapp_message_type',
     ];
 
     /**
