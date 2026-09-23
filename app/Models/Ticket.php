@@ -28,6 +28,7 @@ class Ticket extends Model
         'requester_email',
         'requester_name',
         'assigned_to',
+        'tags',
         'closed_at',
     ];
 
@@ -35,6 +36,7 @@ class Ticket extends Model
     {
         return [
             'closed_at' => 'datetime',
+            'tags' => 'array',
         ];
     }
 

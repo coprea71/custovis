@@ -16,7 +16,8 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
   aktiver Mailbox), Mail-Versand (`MailSenderService`,
   `SendTicketReplyJob`), gemeinsamer `AttachmentService`.
 - Agenten-Arbeitsbereich unter `/agent` (Livewire, Master-Detail-Split,
-  öffentliche Antwort vs. interne Notiz, Farbpalette/Font aus der
+  öffentliche Antwort vs. interne Notiz, Textbausteine (`canned_responses`),
+  Kunden-/Metadaten-Sidebar mit Tags, Farbpalette/Font aus der
   UI-Layoutvorlage übernommen), Login-View für den `web`-Guard.
 - Collision Detection über Laravel Reverb (Presence-Channel je Ticket).
 - Laravel-12-Projekt-Grundgerüst.

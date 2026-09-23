@@ -3,6 +3,7 @@
 namespace App\Livewire\Agent;
 
 use App\Jobs\SendTicketReplyJob;
+use App\Models\CannedResponse;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use Livewire\Attributes\Layout;
@@ -23,6 +24,8 @@ class TicketWorkspace extends Component
     public string $replyVisibility = TicketMessage::VISIBILITY_PUBLIC;
 
     public string $replyBody = '';
+
+    public string $newTag = '';
 
     public function mount(?Ticket $ticket = null): void
     {
@@ -69,6 +72,39 @@ class TicketWorkspace extends Component
         $this->replyBody = '';
     }
 
+    public function insertCannedResponse(int $cannedResponseId): void
+    {
+        $response = CannedResponse::query()->findOrFail($cannedResponseId);
+        $this->replyBody = trim($this->replyBody."\n".$response->body);
+    }
+
+    public function addTag(): void
+    {
+        $tag = trim($this->newTag);
+        $this->newTag = '';
+
+        if ($tag === '') {
+            return;
+        }
+
+        $ticket = $this->selectedTicket();
+        abort_unless($ticket, 404);
+
+        $tags = $ticket->tags ?? [];
+        if (! in_array($tag, $tags, true)) {
+            $tags[] = $tag;
+            $ticket->update(['tags' => $tags]);
+        }
+    }
+
+    public function removeTag(string $tag): void
+    {
+        $ticket = $this->selectedTicket();
+        abort_unless($ticket, 404);
+
+        $ticket->update(['tags' => array_values(array_diff($ticket->tags ?? [], [$tag]))]);
+    }
+
     public function selectedTicket(): ?Ticket
     {
         if (! $this->ticketId) {
@@ -89,9 +125,14 @@ class TicketWorkspace extends Component
             ->latest()
             ->paginate(20);
 
+        $ticket = $this->selectedTicket();
+
         return view('livewire.agent.ticket-workspace', [
             'tickets' => $tickets,
-            'ticket' => $this->selectedTicket(),
+            'ticket' => $ticket,
+            'cannedResponses' => $ticket
+                ? CannedResponse::query()->where('team_id', $ticket->team_id)->orderBy('title')->get()
+                : collect(),
         ]);
     }
 }
