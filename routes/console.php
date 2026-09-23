@@ -1,6 +1,8 @@
 <?php
 
 use App\Jobs\FetchMailboxJob;
+use App\Jobs\SyncGitIssuesJob;
+use App\Models\GitIssueConnection;
 use App\Models\Mailbox;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -15,3 +17,10 @@ Schedule::call(function () {
         fn (Mailbox $mailbox) => FetchMailboxJob::dispatch($mailbox)
     );
 })->everyMinute()->name('mailboxes:fetch');
+
+Schedule::call(function () {
+    GitIssueConnection::query()
+        ->where('sync_mode', GitIssueConnection::SYNC_POLL)
+        ->whereNull('revoked_at')
+        ->each(fn (GitIssueConnection $connection) => SyncGitIssuesJob::dispatch($connection));
+})->everyFiveMinutes()->name('git-issues:sync');

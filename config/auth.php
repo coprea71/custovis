@@ -51,7 +51,13 @@ return [
 
         'sanctum' => [
             'driver' => 'sanctum',
-            'provider' => 'users',
+            // No provider restriction: personal_access_tokens is polymorphic
+            // and serves both User (personal agent tokens) and ApiClient
+            // (external ticket-creation tokens, see 3.md) — Sanctum::Guard
+            // rejects any tokenable outside the configured provider's model
+            // when one is set, which would silently 401 valid ApiClient
+            // tokens.
+            'provider' => null,
         ],
     ],
 
