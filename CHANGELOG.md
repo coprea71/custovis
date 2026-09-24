@@ -10,6 +10,21 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Techniker-Einsatzplanung: Technikerverwaltung unter `/admin/technicians`
+  (Profile mit Heimatstandort, Skills mit Level, Schichten, Abwesenheiten,
+  Einwilligung zur Standortübermittlung), Checklisten-Vorlagen unter
+  `/admin/checklists`, Einsatztermine (`service_appointments`, State-Machine
+  Vorgeschlagen → Geplant → Unterwegs → Vor Ort → Abgeschlossen/Storniert),
+  Dispatcher-Board `/agent/dispatch` mit Drag & Drop, Karte (Leaflet, über
+  Vite gebündelt) und regelbasierter Zuweisungs-Engine (Skill, Team,
+  Distanz, Verfügbarkeit, SLA-Risiko-Hinweis), `RoutingService` für
+  selbst gehostetes OSRM/Nominatim mit plausibilisierten Antworten und
+  Luftlinien-Fallback, Offline-fähige Techniker-PWA `/field` (Service
+  Worker, IndexedDB-Warteschlange, Sync über `field-sync`-Queue,
+  idempotent, Server gewinnt bei Statuskonflikten) mit Checkliste,
+  Unterschrift, Materialerfassung und Warenauslieferung inkl.
+  Empfangsbestätigung und Lieferschein-PDF am Ticket, opt-in GPS-Log mit
+  Löschfrist (`field:prune-locations`). Neue Rolle `technician`.
 - Globale MCP-API für KI-Telefonassistenten (`POST /mcp`, offizielles
   `laravel/mcp`, Streamable HTTP): Tools `create_ticket` (Idempotenz über
   Call-ID), `search_tickets` (Cursor-Paginierung), `get_ticket_status`,

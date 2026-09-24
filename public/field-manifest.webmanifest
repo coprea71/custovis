@@ -1,0 +1,10 @@
+{
+    "name": "Custovis Techniker",
+    "short_name": "Techniker",
+    "start_url": "/field",
+    "scope": "/field",
+    "display": "standalone",
+    "background_color": "#F4F7F6",
+    "theme_color": "#3D5E50",
+    "lang": "de"
+}

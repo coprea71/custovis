@@ -141,6 +141,14 @@ class Ticket extends Model
     }
 
     /**
+     * @return HasMany<ServiceAppointment, $this>
+     */
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(ServiceAppointment::class)->orderBy('scheduled_start');
+    }
+
+    /**
      * @return BelongsTo<KnowledgeBaseArticle, $this>
      */
     public function resolvedWithArticle(): BelongsTo

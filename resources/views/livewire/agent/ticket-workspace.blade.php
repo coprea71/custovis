@@ -198,6 +198,20 @@
                         <a href="{{ route('agent.chat.ticket', $ticket) }}" class="mt-5 block text-center text-xs px-3 py-2 rounded-lg bg-ocean-50 text-ocean-700 font-medium">Ticket-Chat mit Kollegen</a>
                     @endcan
 
+                    @can('appointments.view.team')
+                        @if ($ticket->appointments->isNotEmpty())
+                            <h3 class="mt-5 text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Vor-Ort-Einsätze</h3>
+                            <ul class="space-y-1.5">
+                                @foreach ($ticket->appointments as $appointment)
+                                    <li class="text-xs text-slate-600">
+                                        {{ $appointment->scheduled_start->format('d.m. H:i') }} · {{ $appointment->state->label() }}
+                                        · {{ $appointment->technician?->user->name ?? 'nicht zugewiesen' }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    @endcan
+
                     @can('kb.articles.view')
                         <div class="mt-5">
                             <livewire:agent.ticket-knowledge-panel :ticket-id="$ticket->id" :key="'kb-panel-'.$ticket->id" />
