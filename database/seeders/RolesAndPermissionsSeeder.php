@@ -25,6 +25,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'service_catalog.manage',
             'team.ai.manage',
             'system.settings.manage',
+            'dashboard.management.view',
         ];
 
         $permissions = collect($slugs)->map(
