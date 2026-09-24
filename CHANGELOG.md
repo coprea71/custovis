@@ -8,8 +8,20 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-09-24
+
 ### Hinzugefügt
 
+- Veröffentlichung: Web-Installer unter `/install` für FTP/SFTP-Hosting
+  (läuft ohne `APP_KEY`/Session, prüft Systemvoraussetzungen und
+  Datenbank, schreibt `.env` mit Schutz gegen Zeilen-Injection, legt den
+  ersten Admin an, optional Demo-Daten; danach durch
+  `storage/installed.lock` gesperrt und auf Systemen mit vorhandenen
+  Benutzern nie erreichbar), `php artisan custovis:install` für Hosts mit
+  Shell, Schema-Updates ohne Shell unter `/admin/system/migrate`
+  (Permission `system.maintain`), `DemoSeeder` für ein vorführbares
+  System, GitHub-Actions-CI (Tests auf PHP 8.2–8.4, Pint, `composer
+  audit`) und Release-Workflow mit upload-fertigem Archiv.
 - Compliance-Härtung: 2FA-Pflicht für Agenten/Admins in Produktion
   (Einrichtung unter `/account/security`, Abschalten gesperrt, optional nur
   lokal/Test oder mit `CUSTOVIS_DEV_MODE`), `Auditable`-Trait mit

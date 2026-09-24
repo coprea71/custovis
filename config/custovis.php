@@ -2,6 +2,11 @@
 
 return [
 
+    'version' => '0.1.0',
+
+    // Presence of this file permanently disables the web installer (12.md).
+    'install_lock_path' => storage_path('installed.lock'),
+
     /*
     | Directory scanned by ThemeServiceProvider for <slug>/theme.json
     | manifests (17.md). Configurable so tests can point at a temp dir.

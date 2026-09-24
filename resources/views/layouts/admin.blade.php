@@ -10,6 +10,7 @@
                 'admin.technicians' => 'Techniker',
                 'admin.compliance' => 'Datenschutz',
                 'admin.settings.theme' => 'Theme',
+                'admin.system.migrate' => 'System',
             ] as $route => $label)
                 <a href="{{ route($route) }}"
                    class="px-3 py-1.5 rounded-lg {{ request()->routeIs($route) ? 'bg-calm-100 text-calm-800 font-medium' : 'text-slate-600 hover:bg-slatecalm-100' }}">{{ $label }}</a>
