@@ -104,6 +104,7 @@ class DispatchBoard extends Component
             'unassigned' => $appointments->whereNull('technician_profile_id'),
             'byTechnician' => $appointments->whereNotNull('technician_profile_id')->groupBy('technician_profile_id'),
             'technicians' => $technicians,
+            'suggested' => $suggested,
             'suggestions' => $suggested ? $dispatch->rank($suggested) : collect(),
             'skills' => Skill::query()->orderBy('name')->get(),
             'templates' => AppointmentChecklist::query()->templates()->orderBy('name')->get(),

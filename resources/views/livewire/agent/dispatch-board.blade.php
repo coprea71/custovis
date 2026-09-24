@@ -1,6 +1,4 @@
 <div class="flex-1 overflow-y-auto p-6 space-y-4">
-    @vite(['resources/js/dispatch.js'])
-
     <div class="flex flex-wrap items-center justify-between gap-3">
         <h1 class="text-xl font-semibold text-slatecalm-900">Einsatzplanung</h1>
         <input type="date" wire:model.live="date" class="border border-slatecalm-200 rounded-xl px-3 py-2 text-sm" aria-label="Tag">
@@ -8,8 +6,11 @@
 
     @error('board') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
 
-    <div wire:key="map-{{ md5(json_encode($mapPoints)) }}" x-data="dispatchMap(@js($mapPoints), @js(config('custovis.field_service.tile_url')))"
-         class="h-64 rounded-2xl border border-slatecalm-200 z-0"></div>
+    {{-- Outer key rebuilds the map when markers change; wire:ignore keeps Livewire from wiping Leaflet's DOM on other updates. --}}
+    <div wire:key="map-{{ md5(json_encode($mapPoints)) }}">
+        <div wire:ignore x-data="dispatchMap(@js($mapPoints), @js(config('custovis.field_service.tile_url')))"
+             class="h-64 rounded-2xl border border-slatecalm-200 z-0"></div>
+    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {{-- Unassigned appointments (drag source) --}}
@@ -44,7 +45,7 @@
     @if ($suggestions->isNotEmpty())
         <section class="bg-white border border-slatecalm-200 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-2">
-                <h2 class="text-sm font-semibold text-slatecalm-900">Vorschläge für Einsatz #{{ $suggestFor }}</h2>
+                <h2 class="text-sm font-semibold text-slatecalm-900">Technikervorschläge für Ticket #{{ $suggested->ticket_id }} ({{ $suggested->scheduled_start->format('H:i') }} Uhr)</h2>
                 <button type="button" wire:click="$set('suggestFor', null)" class="text-xs text-slate-400">Schließen</button>
             </div>
             @if ($suggestions->first()['sla_risk'])
