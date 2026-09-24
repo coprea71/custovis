@@ -1,60 +1,32 @@
 <x-layouts.app title="Agent" body-class="selection:bg-calm-200 selection:text-calm-900 flex flex-col md:flex-row overflow-hidden">
-    <aside class="w-full md:w-64 bg-slatecalm-50 border-r border-slatecalm-200 flex flex-col justify-between shrink-0 z-20 hidden md:flex">
-        <div>
-            <div class="h-16 px-6 flex items-center justify-between border-b border-slatecalm-200">
-                <div class="flex items-center space-x-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-calm-600 flex items-center justify-center text-white shadow-sm font-bold">
-                        C
-                    </div>
-                    <div>
-                        <p class="font-semibold text-slatecalm-900 text-sm leading-tight">{{ config('app.name') }}</p>
+    {{-- Mobile header: the sidebar is hidden below md, so the same navigation opens as a panel. --}}
+    <div x-data="{ open: false }" class="md:hidden bg-slatecalm-50 border-b border-slatecalm-200 shrink-0">
+        <div class="h-14 px-4 flex items-center justify-between">
+            <span class="font-semibold text-slatecalm-900 text-sm">{{ config('app.name') }}</span>
+            <button type="button" @click="open = ! open" :aria-expanded="open" aria-label="Menü öffnen" class="px-3 py-1.5 rounded-lg bg-white border border-slatecalm-200 text-sm">Menü</button>
+        </div>
+        <div x-show="open" x-cloak class="border-t border-slatecalm-200 max-h-[70vh] overflow-y-auto">
+            @include('layouts.partials.agent-nav')
+            <x-account-menu class="px-6 pb-4" />
+        </div>
+    </div>
+
+    <aside class="w-64 bg-slatecalm-50 border-r border-slatecalm-200 flex-col justify-between shrink-0 z-20 hidden md:flex">
+        <div class="overflow-y-auto">
+            <div class="h-16 px-6 flex items-center border-b border-slatecalm-200">
+                <a href="{{ route('agent.tickets.index') }}" class="flex items-center space-x-2.5">
+                    <span class="w-9 h-9 rounded-xl bg-calm-600 flex items-center justify-center text-white shadow-sm font-bold">C</span>
+                    <span>
+                        <span class="block font-semibold text-slatecalm-900 text-sm leading-tight">{{ config('app.name') }}</span>
                         <span class="text-[11px] text-calm-600 font-medium">Agent-Bereich</span>
-                    </div>
-                </div>
+                    </span>
+                </a>
             </div>
 
-            <nav class="p-3 space-y-1">
-                <a href="{{ route('agent.tickets.index') }}"
-                   class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.tickets.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
-                    <span>Tickets</span>
-                </a>
-                @can('chat.channels.view')
-                    @php($chatUnread = app(\App\Services\Chat\ChatService::class)->totalUnread(auth()->user()))
-                    <a href="{{ route('agent.chat.index') }}"
-                       class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.chat.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
-                        <span>Team-Chat</span>
-                        @if ($chatUnread > 0)
-                            <span class="text-[11px] px-1.5 rounded-full bg-calm-600 text-white">{{ $chatUnread }}</span>
-                        @endif
-                    </a>
-                @endcan
-                @can('dispatch.manage')
-                    <a href="{{ route('agent.dispatch') }}"
-                       class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.dispatch') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
-                        <span>Einsatzplanung</span>
-                    </a>
-                @endcan
-                @can('appointments.view.own')
-                    <a href="{{ route('field.app') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slatecalm-100">
-                        <span>Techniker-App</span>
-                    </a>
-                @endcan
-                @can('kb.articles.view')
-                    <a href="{{ route('agent.kb.index') }}"
-                       class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.kb.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
-                        <span>Wissensdatenbank</span>
-                    </a>
-                @endcan
-                @foreach (auth()->user()->teams as $navTeam)
-                    <a href="{{ route('agent.team.dashboard', $navTeam) }}"
-                       class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->is('agent/team/'.$navTeam->id.'/dashboard') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
-                        <span>Dashboard {{ $navTeam->name }}</span>
-                    </a>
-                @endforeach
-            </nav>
+            @include('layouts.partials.agent-nav')
         </div>
 
-        <div class="p-4 border-t border-slatecalm-200 bg-white/60">
+        <div class="p-4 border-t border-slatecalm-200 bg-white/60 space-y-3">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-full bg-calm-200 text-calm-800 font-semibold flex items-center justify-center text-sm border border-calm-300">
                     {{ Str::of(auth()->user()->name)->substr(0, 1)->upper() }}
@@ -64,6 +36,7 @@
                     <p class="text-xs text-calm-600 truncate">{{ auth()->user()->email }}</p>
                 </div>
             </div>
+            <x-account-menu />
         </div>
     </aside>
 

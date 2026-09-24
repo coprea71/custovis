@@ -8,6 +8,16 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+### Hinzugefügt
+
+- Startseite `/` mit Einstieg in Kundenportal, Hilfe-Artikel und
+  Mitarbeiter-Login (Meta-Description, JSON-LD, Weiterleitung
+  angemeldeter Nutzer), Konto-Menü mit Kontosicherheit, Bereichswechsel
+  und Abmelden in Agenten- und Admin-Bereich, rechteabhängige
+  Admin-Navigation (`AdminNavigation`), mobile Navigation im
+  Agenten-Bereich, Team-Einstellungsübersicht
+  `/agent/team/{team}/settings` für Team-Admins.
+
 ## [0.1.0] - 2026-09-24
 
 ### Hinzugefügt
