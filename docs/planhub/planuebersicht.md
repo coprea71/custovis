@@ -19,3 +19,9 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [x] #15 [ERP-Kundendaten-Anbindung (Odoo/Shopware, read-only)](archiv/15.md)
 - [x] #16 [SaaS-Kommerzialisierung (Plan 1 Single-Tenant / Plan 2 Multi-Tenant, Modul-Store, SaaS-Admin)](archiv/16.md) — verworfen, Custovis bleibt bei der Free-Version
 - [x] #17 [Theme-System (wählbare, nachträglich erweiterbare Layouts, Default: Musterlayout)](archiv/17.md)
+- [ ] #18 [Startseite, Navigation & Konto-Menü](18.md)
+- [ ] #19 [Nutzer-, Team- & Rollenverwaltung (/admin)](19.md)
+- [ ] #20 [Ticket-Workspace-Grundfunktionen & Textbausteine](20.md)
+- [ ] #21 [ITIL-Oberflächen (Zustände, CAB, SLA, Geschäftszeiten, CMDB)](21.md)
+- [ ] #22 [Kundenverwaltung & Portal-Passwort-Reset](22.md)
+- [ ] #23 [Modulverwaltung & Modul-Zuschaltung](23.md)
