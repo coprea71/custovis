@@ -15,7 +15,7 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [ ] #11 [Compliance-Härtung](11.md)
 - [ ] #12 [Veröffentlichung](12.md)
 - [x] #13 [Globale MCP-API für KI-Telefonassistenten](archiv/13.md)
-- [ ] #14 [Techniker-Einsatzplanung & Technikerverwaltung](14.md)
+- [x] #14 [Techniker-Einsatzplanung & Technikerverwaltung](archiv/14.md)
 - [ ] #15 [ERP-Kundendaten-Anbindung (Odoo/Shopware, read-only)](15.md)
 - [x] #16 [SaaS-Kommerzialisierung (Plan 1 Single-Tenant / Plan 2 Multi-Tenant, Modul-Store, SaaS-Admin)](archiv/16.md) — verworfen, Custovis bleibt bei der Free-Version
 - [x] #17 [Theme-System (wählbare, nachträglich erweiterbare Layouts, Default: Musterlayout)](archiv/17.md)
