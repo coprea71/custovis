@@ -18,4 +18,4 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [ ] #14 [Techniker-Einsatzplanung & Technikerverwaltung](14.md)
 - [ ] #15 [ERP-Kundendaten-Anbindung (Odoo/Shopware, read-only)](15.md)
 - [x] #16 [SaaS-Kommerzialisierung (Plan 1 Single-Tenant / Plan 2 Multi-Tenant, Modul-Store, SaaS-Admin)](archiv/16.md) — verworfen, Custovis bleibt bei der Free-Version
-- [ ] #17 [Theme-System (wählbare, nachträglich erweiterbare Layouts, Default: Musterlayout)](17.md)
+- [x] #17 [Theme-System (wählbare, nachträglich erweiterbare Layouts, Default: Musterlayout)](archiv/17.md)
