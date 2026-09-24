@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\McpHealthController;
 use App\Http\Controllers\Webhooks\WhatsappWebhookController;
 use App\Http\Middleware\EnsureTwoFactorIsConfirmed;
+use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\ScopeTicketsToCustomer;
 use App\Mcp\Servers\CustovisServer;
 use Illuminate\Foundation\Application;
@@ -23,12 +24,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function () {
             // 2FA is enforced for every agent-facing area (11.md).
-            Route::middleware(['web', EnsureTwoFactorIsConfirmed::class])
+            Route::middleware(['web', EnsureUserIsActive::class, EnsureTwoFactorIsConfirmed::class])
                 ->prefix('agent')
                 ->name('agent.')
                 ->group(__DIR__.'/../routes/agent.php');
 
-            Route::middleware(['web', EnsureTwoFactorIsConfirmed::class])
+            Route::middleware(['web', EnsureUserIsActive::class, EnsureTwoFactorIsConfirmed::class])
                 ->prefix('field')
                 ->name('field.')
                 ->group(__DIR__.'/../routes/field.php');
@@ -38,7 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('portal.')
                 ->group(__DIR__.'/../routes/portal.php');
 
-            Route::middleware(['web', EnsureTwoFactorIsConfirmed::class])
+            Route::middleware(['web', EnsureUserIsActive::class, EnsureTwoFactorIsConfirmed::class])
                 ->prefix('admin')
                 ->name('admin.')
                 ->group(__DIR__.'/../routes/admin.php');

@@ -15,6 +15,9 @@ class AdminNavigation
      */
     private const ITEMS = [
         'admin.dashboard' => ['Dashboard', 'dashboard.management.view'],
+        'admin.users' => ['Nutzer', 'users.manage'],
+        'admin.teams' => ['Teams', 'team.manage'],
+        'admin.roles' => ['Rollen', 'roles.manage'],
         'admin.mailboxes.index' => ['Mailboxen', 'mailboxes.manage'],
         'admin.service-catalog.index' => ['Service-Katalog', 'service_catalog.manage'],
         'admin.kb.articles.index' => ['Wissensdatenbank', 'kb.articles.manage'],

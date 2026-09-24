@@ -26,5 +26,6 @@
                 Anmelden
             </button>
         </form>
+        <a href="{{ route('password.request') }}" class="block mt-4 text-center text-xs text-slate-500 hover:text-calm-700">Passwort vergessen?</a>
     </div>
 </x-layouts.app>

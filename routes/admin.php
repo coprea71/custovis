@@ -7,14 +7,20 @@ use App\Livewire\Admin\KnowledgeBase\ArticleIndex;
 use App\Livewire\Admin\KnowledgeBase\CategoryManager;
 use App\Livewire\Admin\MailboxManager;
 use App\Livewire\Admin\ManagementDashboard;
+use App\Livewire\Admin\RoleManager;
 use App\Livewire\Admin\ServiceCatalogManager;
 use App\Livewire\Admin\Settings\ThemeManager;
 use App\Livewire\Admin\SystemMaintenance;
+use App\Livewire\Admin\TeamManager;
 use App\Livewire\Admin\TechnicianManager;
+use App\Livewire\Admin\UserManager;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/dashboard', ManagementDashboard::class)->name('dashboard');
+    Route::get('/users', UserManager::class)->name('users');
+    Route::get('/teams', TeamManager::class)->name('teams');
+    Route::get('/roles', RoleManager::class)->name('roles');
     Route::get('/mailboxes', MailboxManager::class)->name('mailboxes.index');
     Route::get('/service-catalog', ServiceCatalogManager::class)->name('service-catalog.index');
     Route::get('/knowledge-base', ArticleIndex::class)->name('kb.articles.index');
