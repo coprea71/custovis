@@ -18,6 +18,12 @@
                    class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.tickets.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
                     <span>Tickets</span>
                 </a>
+                @can('kb.articles.view')
+                    <a href="{{ route('agent.kb.index') }}"
+                       class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.kb.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
+                        <span>Wissensdatenbank</span>
+                    </a>
+                @endcan
                 @foreach (auth()->user()->teams as $navTeam)
                     <a href="{{ route('agent.team.dashboard', $navTeam) }}"
                        class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->is('agent/team/'.$navTeam->id.'/dashboard') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">

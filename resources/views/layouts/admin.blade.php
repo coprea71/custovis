@@ -6,6 +6,7 @@
                 'admin.dashboard' => 'Dashboard',
                 'admin.mailboxes.index' => 'Mailboxen',
                 'admin.service-catalog.index' => 'Service-Katalog',
+                'admin.kb.articles.index' => 'Wissensdatenbank',
                 'admin.settings.theme' => 'Theme',
             ] as $route => $label)
                 <a href="{{ route($route) }}"

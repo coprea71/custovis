@@ -3,6 +3,7 @@
 namespace App\Services\Dashboard;
 
 use App\Models\AiUsageLog;
+use App\Models\KnowledgeBaseArticleFeedback;
 use App\Models\Team;
 use App\Models\Ticket;
 use App\Models\TicketChange;
@@ -37,7 +38,7 @@ class DashboardMetrics
 
         return $team
             ? $metrics + ['agent_load' => $this->agentLoad($team)]
-            : $metrics + ['open_by_team' => $this->openByTeam()];
+            : $metrics + ['open_by_team' => $this->openByTeam(), 'kb_feedback' => $this->knowledgeBaseFeedback()];
     }
 
     /**
@@ -155,6 +156,21 @@ class DashboardMetrics
         return $team->users()->orderBy('name')->get()
             ->mapWithKeys(fn ($user) => [$user->name => (int) ($load[$user->id] ?? 0)])
             ->all();
+    }
+
+    /**
+     * Knowledge base is installation-wide, so only the management view shows it.
+     *
+     * @return array{helpful: int, not_helpful: int}
+     */
+    private function knowledgeBaseFeedback(): array
+    {
+        $counts = KnowledgeBaseArticleFeedback::query()
+            ->groupBy('helpful')
+            ->selectRaw('helpful, count(*) as total')
+            ->pluck('total', 'helpful');
+
+        return ['helpful' => (int) ($counts[1] ?? 0), 'not_helpful' => (int) ($counts[0] ?? 0)];
     }
 
     /**

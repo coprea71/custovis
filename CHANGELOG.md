@@ -10,6 +10,16 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Knowledge Base: Kategorien-Baum (`knowledge_base_categories`),
+  Markdown-Artikel mit Sichtbarkeit intern/öffentlich, Versionierung
+  (`knowledge_base_article_versions`, jede Veröffentlichung = neue
+  Version, Diff-Ansicht und Rollback als neue Version), MySQL-Volltextsuche
+  (LIKE-Fallback auf SQLite), anonymes Feedback-Widget
+  (`knowledge_base_article_feedback`, Aggregat im Management-Dashboard),
+  Ticket-Verknüpfung (Artikel in Antwort einfügen, „gelöst mit Artikel"
+  über `tickets.resolved_with_article_id`), Admin-UI unter
+  `/admin/knowledge-base`, Agenten-Ansicht unter `/agent/kb`,
+  Permissions `kb.articles.view`/`kb.articles.manage`/`kb.categories.manage`.
 - Dashboards: `dashboard_snapshots` (stündlich per
   `dashboards:refresh-snapshots` aktualisiert), Management-Dashboard
   unter `/admin/dashboard` (Permission `dashboard.management.view`,
