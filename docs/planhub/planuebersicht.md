@@ -24,4 +24,4 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [x] #20 [Ticket-Workspace-Grundfunktionen & Textbausteine](archiv/20.md)
 - [x] #21 [ITIL-Oberflächen (Zustände, CAB, SLA, Geschäftszeiten, CMDB)](archiv/21.md)
 - [x] #22 [Kundenverwaltung & Portal-Passwort-Reset](archiv/22.md)
-- [ ] #23 [Modulverwaltung & Modul-Zuschaltung](23.md)
+- [x] #23 [Modulverwaltung & Modul-Zuschaltung](archiv/23.md)
