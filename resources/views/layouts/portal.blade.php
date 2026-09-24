@@ -1,4 +1,4 @@
-<x-layouts.app title="Kundenportal" body-class="bg-slatecalm-50">
+<x-layouts.app title="Kundenportal">
     <header class="bg-white border-b border-slatecalm-200">
         <div class="max-w-4xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
             <a href="{{ route('portal.tickets.index') }}" class="flex items-center gap-2">

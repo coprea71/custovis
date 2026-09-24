@@ -1,4 +1,4 @@
-<x-layouts.app title="Installation" body-class="bg-slatecalm-50" :scripts="false">
+<x-layouts.app title="Installation" :scripts="false">
     <main class="max-w-2xl mx-auto px-4 py-10 space-y-6">
         <div>
             <h1 class="text-2xl font-semibold text-slatecalm-900">{{ config('app.name') }} installieren</h1>
