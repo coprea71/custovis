@@ -5,11 +5,14 @@ namespace App\Livewire\Agent;
 use App\Jobs\SendTicketReplyJob;
 use App\Jobs\SendWhatsappReplyJob;
 use App\Models\CannedResponse;
+use App\Models\KnowledgeBaseArticle;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Models\WhatsappTemplate;
 use App\Services\WhatsappMessageSender;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -113,6 +116,15 @@ class TicketWorkspace extends Component
     {
         $response = CannedResponse::query()->findOrFail($cannedResponseId);
         $this->replyBody = trim($this->replyBody."\n".$response->body);
+    }
+
+    #[On('kb-article-insert')]
+    public function insertKnowledgeArticle(int $articleId): void
+    {
+        Gate::authorize('kb.articles.view');
+
+        $article = KnowledgeBaseArticle::query()->findOrFail($articleId);
+        $this->replyBody = trim($this->replyBody."\n\n".$article->title."\n\n".$article->body);
     }
 
     public function addTag(): void

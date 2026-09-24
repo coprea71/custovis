@@ -6,5 +6,9 @@
 
     <x-dashboard.overview :data="$snapshot->data" />
 
-    <x-dashboard.breakdown title="Offene Tickets je Team" :items="$snapshot->data['open_by_team']" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <x-dashboard.breakdown title="Offene Tickets je Team" :items="$snapshot->data['open_by_team']" />
+        <x-dashboard.breakdown title="Feedback Wissensdatenbank"
+                               :items="['Hilfreich' => $snapshot->data['kb_feedback']['helpful'] ?? 0, 'Nicht hilfreich' => $snapshot->data['kb_feedback']['not_helpful'] ?? 0]" />
+    </div>
 </div>

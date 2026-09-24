@@ -26,6 +26,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'team.ai.manage',
             'system.settings.manage',
             'dashboard.management.view',
+            'kb.articles.view',
+            'kb.articles.manage',
+            'kb.categories.manage',
         ];
 
         $permissions = collect($slugs)->map(
@@ -37,6 +40,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $systemAdmin = Role::findOrCreate('system_admin', 'web');
         $systemAdmin->syncPermissions($permissions);
 
-        Role::findOrCreate('agent', 'web');
+        // Additive on purpose: must not strip permissions an admin granted the role later.
+        Role::findOrCreate('agent', 'web')->givePermissionTo('kb.articles.view');
     }
 }

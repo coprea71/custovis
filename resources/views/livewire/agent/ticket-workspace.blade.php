@@ -193,6 +193,12 @@
                         >
                         <button type="button" wire:click="addTag" class="text-xs px-2.5 py-1 rounded-lg bg-slatecalm-100 text-slate-700">+</button>
                     </div>
+
+                    @can('kb.articles.view')
+                        <div class="mt-5">
+                            <livewire:agent.ticket-knowledge-panel :ticket-id="$ticket->id" :key="'kb-panel-'.$ticket->id" />
+                        </div>
+                    @endcan
                 </aside>
             </div>
         @else

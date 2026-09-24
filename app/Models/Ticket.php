@@ -33,6 +33,7 @@ class Ticket extends Model
         'requester_phone',
         'assigned_to',
         'tags',
+        'resolved_with_article_id',
         'sla_policy_id',
         'sla_response_due_at',
         'sla_resolution_due_at',
@@ -137,6 +138,14 @@ class Ticket extends Model
     public function slaPolicy(): BelongsTo
     {
         return $this->belongsTo(SlaPolicy::class);
+    }
+
+    /**
+     * @return BelongsTo<KnowledgeBaseArticle, $this>
+     */
+    public function resolvedWithArticle(): BelongsTo
+    {
+        return $this->belongsTo(KnowledgeBaseArticle::class, 'resolved_with_article_id');
     }
 
     /**
