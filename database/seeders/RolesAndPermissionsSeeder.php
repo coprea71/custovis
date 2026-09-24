@@ -60,6 +60,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'users.manage',
             'roles.manage',
             'customers.manage',
+            'changes.approve',
+            'sla.manage',
+            'cmdb.manage',
         ];
 
         $existing = Permission::query()->where('guard_name', 'web')->pluck('name')->all();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Admin\ChecklistTemplateManager;
+use App\Livewire\Admin\CmdbManager;
 use App\Livewire\Admin\ComplianceCenter;
 use App\Livewire\Admin\CustomerManager;
 use App\Livewire\Admin\KnowledgeBase\ArticleEditor;
@@ -11,6 +12,7 @@ use App\Livewire\Admin\ManagementDashboard;
 use App\Livewire\Admin\RoleManager;
 use App\Livewire\Admin\ServiceCatalogManager;
 use App\Livewire\Admin\Settings\ThemeManager;
+use App\Livewire\Admin\SlaManager;
 use App\Livewire\Admin\SystemMaintenance;
 use App\Livewire\Admin\TeamManager;
 use App\Livewire\Admin\TechnicianManager;
@@ -22,6 +24,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/users', UserManager::class)->name('users');
     Route::get('/teams', TeamManager::class)->name('teams');
     Route::get('/roles', RoleManager::class)->name('roles');
+    Route::get('/sla', SlaManager::class)->name('sla');
+    Route::get('/cmdb', CmdbManager::class)->name('cmdb');
     Route::get('/mailboxes', MailboxManager::class)->name('mailboxes.index');
     Route::get('/service-catalog', ServiceCatalogManager::class)->name('service-catalog.index');
     Route::get('/knowledge-base', ArticleIndex::class)->name('kb.articles.index');

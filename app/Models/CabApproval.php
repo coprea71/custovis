@@ -17,6 +17,7 @@ class CabApproval extends Model
         'ticket_id',
         'approver_user_id',
         'decision',
+        'comment',
         'decided_at',
     ];
 

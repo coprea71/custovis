@@ -177,6 +177,7 @@
                     @endcan
 
                     <livewire:agent.ticket-properties-panel :ticket-id="$ticket->id" :key="'props-'.$ticket->id" />
+                    <livewire:agent.ticket-itil-panel :ticket-id="$ticket->id" :key="'itil-'.$ticket->id" />
 
                     <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Tags</h3>
                     <div class="flex flex-wrap gap-1.5 mb-3">

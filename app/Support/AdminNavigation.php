@@ -19,6 +19,8 @@ class AdminNavigation
         'admin.teams' => ['Teams', 'team.manage'],
         'admin.roles' => ['Rollen', 'roles.manage'],
         'admin.mailboxes.index' => ['Mailboxen', 'mailboxes.manage'],
+        'admin.sla' => ['SLA', 'sla.manage'],
+        'admin.cmdb' => ['CMDB', 'cmdb.manage'],
         'admin.service-catalog.index' => ['Service-Katalog', 'service_catalog.manage'],
         'admin.kb.articles.index' => ['Wissensdatenbank', 'kb.articles.manage'],
         'admin.technicians' => ['Techniker', 'technicians.manage'],

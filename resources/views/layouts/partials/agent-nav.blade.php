@@ -4,6 +4,10 @@
         <x-nav-link :href="route('agent.chat.index')" :active="request()->routeIs('agent.chat.*')"
                     :badge="app(\App\Services\Chat\ChatService::class)->totalUnread(auth()->user()) ?: null">Team-Chat</x-nav-link>
     @endcan
+    @can('changes.approve')
+        <x-nav-link :href="route('agent.approvals')" :active="request()->routeIs('agent.approvals')"
+                    :badge="\App\Models\CabApproval::query()->where('approver_user_id', auth()->id())->where('decision', 'pending')->count() ?: null">CAB-Freigaben</x-nav-link>
+    @endcan
     @can('dispatch.manage')
         <x-nav-link :href="route('agent.dispatch')" :active="request()->routeIs('agent.dispatch')">Einsatzplanung</x-nav-link>
     @endcan
