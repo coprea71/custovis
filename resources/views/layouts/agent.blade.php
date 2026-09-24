@@ -18,6 +18,16 @@
                    class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.tickets.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
                     <span>Tickets</span>
                 </a>
+                @can('chat.channels.view')
+                    @php($chatUnread = app(\App\Services\Chat\ChatService::class)->totalUnread(auth()->user()))
+                    <a href="{{ route('agent.chat.index') }}"
+                       class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.chat.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
+                        <span>Team-Chat</span>
+                        @if ($chatUnread > 0)
+                            <span class="text-[11px] px-1.5 rounded-full bg-calm-600 text-white">{{ $chatUnread }}</span>
+                        @endif
+                    </a>
+                @endcan
                 @can('kb.articles.view')
                     <a href="{{ route('agent.kb.index') }}"
                        class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.kb.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">

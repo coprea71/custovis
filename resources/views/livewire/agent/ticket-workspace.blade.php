@@ -194,6 +194,10 @@
                         <button type="button" wire:click="addTag" class="text-xs px-2.5 py-1 rounded-lg bg-slatecalm-100 text-slate-700">+</button>
                     </div>
 
+                    @can('chat.channels.view')
+                        <a href="{{ route('agent.chat.ticket', $ticket) }}" class="mt-5 block text-center text-xs px-3 py-2 rounded-lg bg-ocean-50 text-ocean-700 font-medium">Ticket-Chat mit Kollegen</a>
+                    @endcan
+
                     @can('kb.articles.view')
                         <div class="mt-5">
                             <livewire:agent.ticket-knowledge-panel :ticket-id="$ticket->id" :key="'kb-panel-'.$ticket->id" />

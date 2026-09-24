@@ -10,6 +10,15 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Interner Team-Chat: Kanaltypen Team/Global/Ticket (`chat_channels`)
+  plus 1:1-Direktnachrichten (`chat_direct_threads`), Zugriff zentral
+  über `ChatAccess` (abgeleitet aus Teamzugehörigkeit/Ticket-Team, kein
+  kopierter Mitglieder-Stand), Echtzeit über Reverb (Private Channels,
+  nur IDs im Payload) mit Polling-Fallback, Ungelesen-Zähler
+  (`chat_read_states`) mit Badge in der Navigation, Dateianhänge über den
+  `AttachmentService`, Ticket-Chat getrennt von der Ticket-Historie,
+  `chat.global.post` für Schreibrecht im Firmen-Chat, opt-in
+  Aufbewahrungsfrist (`chat:prune`, Setting `chat.retention_days`).
 - Knowledge Base: Kategorien-Baum (`knowledge_base_categories`),
   Markdown-Artikel mit Sichtbarkeit intern/öffentlich, Versionierung
   (`knowledge_base_article_versions`, jede Veröffentlichung = neue

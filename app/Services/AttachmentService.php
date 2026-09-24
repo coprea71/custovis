@@ -19,15 +19,21 @@ class AttachmentService
 
     public function storeUploadedFile(TicketMessage $message, UploadedFile $file): TicketAttachment
     {
-        $path = $file->store($this->directoryFor($message), self::DISK);
+        return $message->attachments()->create($this->store($file, $this->directoryFor($message)));
+    }
 
-        return $message->attachments()->create([
+    /**
+     * @return array{disk: string, path: string, original_name: string, mime_type: string|null, size_bytes: int|false}
+     */
+    public function store(UploadedFile $file, string $directory): array
+    {
+        return [
             'disk' => self::DISK,
-            'path' => $path,
+            'path' => $file->store($directory, self::DISK),
             'original_name' => $file->getClientOriginalName(),
             'mime_type' => $file->getClientMimeType(),
             'size_bytes' => $file->getSize(),
-        ]);
+        ];
     }
 
     public function storeRawContent(TicketMessage $message, string $content, string $originalName, ?string $mimeType): TicketAttachment

@@ -27,4 +27,6 @@ Schedule::call(function () {
         ->each(fn (GitIssueConnection $connection) => SyncGitIssuesJob::dispatch($connection));
 })->everyFiveMinutes()->name('git-issues:sync');
 
+Schedule::command('chat:prune')->daily()->name('chat:prune');
+
 Schedule::command('dashboards:refresh-snapshots')->hourly()->name('dashboards:refresh-snapshots');
