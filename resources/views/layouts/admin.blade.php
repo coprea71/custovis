@@ -1,4 +1,4 @@
-<x-layouts.app title="Administration" body-class="bg-slatecalm-50">
+<x-layouts.app title="Administration">
     <header class="bg-white border-b border-slatecalm-200 px-6 py-3 space-y-2">
         <div class="flex flex-wrap items-center justify-between gap-3">
             <span class="font-semibold text-slatecalm-900">{{ config('app.name') }} — Administration</span>

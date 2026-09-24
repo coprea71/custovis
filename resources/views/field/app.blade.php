@@ -1,4 +1,4 @@
-<x-layouts.app title="Techniker" body-class="bg-slatecalm-50" :scripts="false">
+<x-layouts.app title="Techniker" :scripts="false">
     <x-slot:head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#3D5E50">

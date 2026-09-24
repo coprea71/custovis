@@ -1,4 +1,4 @@
-<x-layouts.app title="Kontosicherheit" body-class="bg-slatecalm-50" :scripts="false">
+<x-layouts.app title="Kontosicherheit" :scripts="false">
     <main class="max-w-xl mx-auto px-4 py-10 space-y-6">
         <div class="flex items-center justify-between">
             <h1 class="text-xl font-semibold text-slatecalm-900">Zwei-Faktor-Authentifizierung</h1>
