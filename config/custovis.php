@@ -11,6 +11,12 @@ return [
     'default_theme' => 'musterlayout',
 
     /*
+    | Developer/test mode (11.md): keeps 2FA optional outside local/testing,
+    | e.g. on a demo instance. Never enable on a production system.
+    */
+    'dev_mode' => (bool) env('CUSTOVIS_DEV_MODE', false),
+
+    /*
     | Field service (14.md): self-hosted OSRM/Nominatim keep addresses and
     | routes on own/EU infrastructure. Without URLs the RoutingService falls
     | back to a straight-line estimate and geocoding is skipped.

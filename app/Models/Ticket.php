@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,11 +13,30 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Ticket extends Model
 {
-    use HasFactory;
+    use Auditable, HasFactory;
 
     public const STATUSES = ['open', 'pending', 'closed', 'reopened'];
 
     public const PRIORITIES = ['low', 'normal', 'high', 'urgent'];
+
+    /**
+     * Mirrors the column defaults so a freshly created ticket already carries
+     * them (SLA matching by priority and audit diffs rely on real values).
+     */
+    protected $attributes = [
+        'type' => 'support_ticket',
+        'status' => 'open',
+        'priority' => 'normal',
+    ];
+
+    protected array $auditFields = [
+        'team_id',
+        'type',
+        'status',
+        'priority',
+        'assigned_to',
+        'resolved_with_article_id',
+    ];
 
     protected $fillable = [
         'team_id',
@@ -50,6 +71,22 @@ class Ticket extends Model
             'sla_resolution_due_at' => 'datetime',
             'sla_breached_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Query-side counterpart of TicketPolicy::view for agent lists.
+     *
+     * @param  Builder<Ticket>  $query
+     */
+    public function scopeVisibleTo(Builder $query, User $user): void
+    {
+        if ($user->can('tickets.view.all')) {
+            return;
+        }
+
+        $query->where(fn (Builder $inner) => $inner
+            ->whereIn('team_id', $user->teams()->select('teams.id'))
+            ->orWhere('assigned_to', $user->id));
     }
 
     /**

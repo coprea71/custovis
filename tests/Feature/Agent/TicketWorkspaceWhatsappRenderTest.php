@@ -48,6 +48,7 @@ class TicketWorkspaceWhatsappRenderTest extends TestCase
         $incoming->save();
 
         $user = User::factory()->create();
+        $team->users()->attach($user);
 
         Livewire::actingAs($user)
             ->test(TicketWorkspace::class, ['ticket' => $ticket])

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class GitIssueConnection extends Model
 {
-    use HasFactory;
+    use Auditable, HasFactory;
 
     public const PROVIDER_GITHUB = 'github';
 
@@ -17,6 +18,29 @@ class GitIssueConnection extends Model
     public const SYNC_WEBHOOK = 'webhook';
 
     public const SYNC_POLL = 'poll';
+
+    protected array $auditFields = [
+        'team_id',
+        'provider',
+        'repository',
+        'sync_mode',
+    ];
+
+    protected array $auditSecretFields = [
+        'access_token',
+        'webhook_secret',
+    ];
+
+    protected array $auditEvents = [
+        'updated',
+        'deleted',
+    ];
+
+    // Credentials must never leak through serialisation (Livewire/API payloads).
+    protected $hidden = [
+        'access_token',
+        'webhook_secret',
+    ];
 
     protected $fillable = [
         'team_id',

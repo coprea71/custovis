@@ -102,6 +102,7 @@ class KnowledgeBaseTest extends TestCase
         $agent = User::factory()->create();
         $agent->assignRole('agent');
         $team = Team::query()->create(['name' => 'Support', 'slug' => 'support']);
+        $team->users()->attach($agent);
         $ticket = Ticket::query()->create(['team_id' => $team->id, 'source' => 'api', 'subject' => 'Drucker']);
         $article = $this->article('Drucker neu starten', 'Aus- und einschalten', 'internal');
 

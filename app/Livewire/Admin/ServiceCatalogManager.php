@@ -24,6 +24,8 @@ class ServiceCatalogManager extends Component
 
     public function create(): void
     {
+        Gate::authorize('service_catalog.manage');
+
         $data = $this->validate([
             'team_id' => ['required', 'exists:teams,id'],
             'name' => ['required', 'string', 'max:255'],
@@ -37,6 +39,8 @@ class ServiceCatalogManager extends Component
 
     public function toggleActive(int $itemId): void
     {
+        Gate::authorize('service_catalog.manage');
+
         $item = ServiceCatalogItem::query()->findOrFail($itemId);
         $item->update(['active' => ! $item->active]);
     }

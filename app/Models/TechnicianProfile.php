@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -10,12 +11,25 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TechnicianProfile extends Model
 {
+    use Auditable;
+
     /**
      * Mirrors the column defaults so freshly created models behave like loaded ones.
      */
     protected $attributes = [
         'active' => true,
         'location_tracking_consent' => false,
+    ];
+
+    protected array $auditFields = [
+        'user_id',
+        'active',
+        'location_tracking_consent',
+    ];
+
+    protected array $auditEvents = [
+        'updated',
+        'deleted',
     ];
 
     protected $fillable = [

@@ -18,7 +18,9 @@ Broadcast::channel('chat.direct.{thread}', fn (User $user, ChatDirectThread $thr
 // Collision detection: presence channel per ticket, joined while an agent
 // has the ticket open in the workspace (see resources/js/collision.js).
 Broadcast::channel('ticket.{ticketId}', function (User $user, int $ticketId) {
-    if (! Ticket::query()->whereKey($ticketId)->exists()) {
+    $ticket = Ticket::query()->find($ticketId);
+
+    if (! $ticket || ! $user->can('view', $ticket)) {
         return false;
     }
 

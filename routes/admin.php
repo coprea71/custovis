@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Admin\ChecklistTemplateManager;
+use App\Livewire\Admin\ComplianceCenter;
 use App\Livewire\Admin\KnowledgeBase\ArticleEditor;
 use App\Livewire\Admin\KnowledgeBase\ArticleIndex;
 use App\Livewire\Admin\KnowledgeBase\CategoryManager;
@@ -21,5 +22,6 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/knowledge-base/articles/{article}', ArticleEditor::class)->name('kb.articles.edit');
     Route::get('/technicians', TechnicianManager::class)->name('technicians');
     Route::get('/checklists', ChecklistTemplateManager::class)->name('checklists');
+    Route::get('/compliance', ComplianceCenter::class)->name('compliance');
     Route::get('/settings/theme', ThemeManager::class)->name('settings.theme');
 });
