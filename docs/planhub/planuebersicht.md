@@ -8,7 +8,7 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [x] #4 [WhatsApp-Business-Anbindung mit Ticket je Chat](archiv/4.md)
 - [x] #5 [ITIL-Erweiterung](archiv/5.md)
 - [x] #6 [KI-Layer](archiv/6.md)
-- [ ] #7 [Dashboards](7.md)
+- [x] #7 [Dashboards](archiv/7.md)
 - [ ] #8 [Knowledge Base](8.md)
 - [ ] #9 [Interner Team-Chat](9.md)
 - [ ] #10 [Self-Service-Portal](10.md)
