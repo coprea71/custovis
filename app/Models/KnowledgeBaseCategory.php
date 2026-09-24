@@ -56,4 +56,26 @@ class KnowledgeBaseCategory extends Model
 
         return collect($flatten(null, 0));
     }
+
+    /**
+     * @param  array<int, int>  $ids
+     * @return array<int, int> the given ids plus all of their descendants
+     */
+    public static function withDescendantIds(array $ids): array
+    {
+        $childrenByParent = self::query()->whereNotNull('parent_id')->get(['id', 'parent_id'])->groupBy('parent_id');
+        $result = [];
+        $queue = array_map('intval', $ids);
+
+        while ($queue !== []) {
+            $id = array_shift($queue);
+
+            if (! in_array($id, $result, true)) {
+                $result[] = $id;
+                $queue = [...$queue, ...$childrenByParent->get($id, collect())->pluck('id')->all()];
+            }
+        }
+
+        return $result;
+    }
 }

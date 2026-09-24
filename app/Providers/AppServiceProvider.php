@@ -34,6 +34,13 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?? $request->ip());
         });
 
+        // One bucket per API key across all MCP tools (13.md) — parallel calls
+        // of a phone assistant cannot multiply their quota by switching tools.
+        RateLimiter::for('mcp', function (Request $request) {
+            return Limit::perMinute(60)->by('mcp|'.($request->user()?->id ?? $request->ip()));
+        });
+        RateLimiter::for('mcp-health', fn (Request $request) => Limit::perMinute(30)->by($request->ip()));
+
         Ticket::observe(TicketObserver::class);
 
         // Portal Livewire updates (/livewire/update) must stay customer-scoped too (10.md).
