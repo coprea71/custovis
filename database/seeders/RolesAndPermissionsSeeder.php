@@ -53,6 +53,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'technicians.manage',
             'appointments.view.own',
             'appointments.view.team',
+            'erp.customer.view',
+            'team.erp.manage',
         ];
 
         $existing = Permission::query()->where('guard_name', 'web')->pluck('name')->all();
