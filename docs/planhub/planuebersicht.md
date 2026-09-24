@@ -11,7 +11,7 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [x] #7 [Dashboards](archiv/7.md)
 - [x] #8 [Knowledge Base](archiv/8.md)
 - [x] #9 [Interner Team-Chat](archiv/9.md)
-- [ ] #10 [Self-Service-Portal](10.md)
+- [x] #10 [Self-Service-Portal](archiv/10.md)
 - [ ] #11 [Compliance-Härtung](11.md)
 - [ ] #12 [Veröffentlichung](12.md)
 - [ ] #13 [Globale MCP-API für KI-Telefonassistenten](13.md)
