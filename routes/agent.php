@@ -6,6 +6,7 @@ use App\Livewire\Agent\DispatchBoard;
 use App\Livewire\Agent\KnowledgeBase\ArticleBrowser;
 use App\Livewire\Agent\Team\AiSettingsManager;
 use App\Livewire\Agent\Team\ApiKeyManager;
+use App\Livewire\Agent\Team\ErpConnectionManager;
 use App\Livewire\Agent\Team\GitIssueConnectionManager;
 use App\Livewire\Agent\Team\TeamDashboard;
 use App\Livewire\Agent\Team\WhatsappAccountManager;
@@ -30,4 +31,5 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/team/{team}/settings/git-issues', GitIssueConnectionManager::class)->name('team.git-issues');
     Route::get('/team/{team}/settings/whatsapp', WhatsappAccountManager::class)->name('team.whatsapp');
     Route::get('/team/{team}/settings/ai', AiSettingsManager::class)->name('team.ai');
+    Route::get('/team/{team}/settings/erp', ErpConnectionManager::class)->name('team.erp');
 });

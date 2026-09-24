@@ -169,6 +169,12 @@
                     <p class="text-sm font-medium text-slatecalm-900">{{ $ticket->requester_name ?: '—' }}</p>
                     <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: $ticket->requester_phone ?: '—' }}</p>
 
+                    @can('erp.customer.view')
+                        <div class="mb-4">
+                            <livewire:agent.ticket-erp-panel :ticket-id="$ticket->id" :key="'erp-panel-'.$ticket->id" />
+                        </div>
+                    @endcan
+
                     <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Status &amp; Priorität</h3>
                     <p class="text-sm text-slate-600 mb-4">{{ $ticket->status }} · {{ $ticket->priority }}</p>
 
