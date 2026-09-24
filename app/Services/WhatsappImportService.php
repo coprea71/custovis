@@ -14,9 +14,7 @@ use App\Models\WhatsappAccount;
  */
 class WhatsappImportService
 {
-    public function __construct(private readonly AttachmentService $attachments)
-    {
-    }
+    public function __construct(private readonly AttachmentService $attachments) {}
 
     /**
      * @param  array<int, array{name: string, mimeType: ?string, content: string}>  $mediaAttachments

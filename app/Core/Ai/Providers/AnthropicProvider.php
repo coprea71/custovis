@@ -12,8 +12,7 @@ class AnthropicProvider implements AiProviderInterface
     public function __construct(
         private readonly string $apiKey,
         private readonly string $model = 'claude-haiku-4-5-20251001',
-    ) {
-    }
+    ) {}
 
     public function summarize(string $text): string
     {

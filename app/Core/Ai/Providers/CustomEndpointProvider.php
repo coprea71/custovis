@@ -17,8 +17,7 @@ class CustomEndpointProvider implements AiProviderInterface
         private readonly string $endpoint,
         private readonly ?string $apiKey,
         private readonly string $model,
-    ) {
-    }
+    ) {}
 
     public function summarize(string $text): string
     {

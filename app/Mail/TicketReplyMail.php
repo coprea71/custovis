@@ -16,9 +16,7 @@ class TicketReplyMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public TicketMessage $message)
-    {
-    }
+    public function __construct(public TicketMessage $message) {}
 
     public function envelope(): Envelope
     {

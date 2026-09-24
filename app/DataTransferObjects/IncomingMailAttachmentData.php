@@ -8,6 +8,5 @@ readonly class IncomingMailAttachmentData
         public string $name,
         public ?string $mimeType,
         public string $content,
-    ) {
-    }
+    ) {}
 }

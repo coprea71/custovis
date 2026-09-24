@@ -3,8 +3,8 @@
 use App\Models\ChatChannel;
 use App\Models\ChatDirectThread;
 use App\Models\Ticket;
-use App\Services\Chat\ChatAccess;
 use App\Models\User;
+use App\Services\Chat\ChatAccess;
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {

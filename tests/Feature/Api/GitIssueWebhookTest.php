@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\GitIssueConnection;
 use App\Models\Team;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -101,7 +102,7 @@ class GitIssueWebhookTest extends TestCase
             ], $body)->assertNoContent();
         }
 
-        $this->assertSame(1, \App\Models\Ticket::query()->where('external_ref', 'github:acme/widgets#7')->count());
+        $this->assertSame(1, Ticket::query()->where('external_ref', 'github:acme/widgets#7')->count());
     }
 
     public function test_gitlab_webhook_with_valid_token_creates_ticket(): void

@@ -13,8 +13,7 @@ class OpenAiProvider implements AiProviderInterface
         private readonly string $apiKey,
         private readonly string $model = 'gpt-4o-mini',
         private readonly string $embeddingModel = 'text-embedding-3-small',
-    ) {
-    }
+    ) {}
 
     public function summarize(string $text): string
     {

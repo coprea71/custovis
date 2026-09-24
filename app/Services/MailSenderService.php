@@ -37,7 +37,7 @@ class MailSenderService
             'password' => $mailbox->smtp_password,
         ]]);
 
-        config(["mail.from" => [
+        config(['mail.from' => [
             'address' => $mailbox->email_address,
             'name' => $mailbox->name,
         ]]);

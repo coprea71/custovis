@@ -10,6 +10,7 @@ use App\Models\TicketEmbedding;
 use App\Models\TicketMessage;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Collection;
 
 /**
  * Similarity via cosine distance computed in PHP over stored embeddings —
@@ -62,7 +63,7 @@ class FindSimilarTicketsJob implements ShouldQueue
 
     /**
      * @param  array<int, float>  $vector
-     * @return \Illuminate\Support\Collection<int, int>
+     * @return Collection<int, int>
      */
     private function findSimilar(array $vector)
     {

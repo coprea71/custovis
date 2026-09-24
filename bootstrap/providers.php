@@ -1,9 +1,15 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\FortifyServiceProvider;
+use App\Providers\ModuleServiceProvider;
+use App\Providers\ThemeServiceProvider;
+use App\Providers\VoltServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\FortifyServiceProvider::class,
-    App\Providers\ModuleServiceProvider::class,
-    App\Providers\ThemeServiceProvider::class,
-    App\Providers\VoltServiceProvider::class,
+    AppServiceProvider::class,
+    FortifyServiceProvider::class,
+    ModuleServiceProvider::class,
+    ThemeServiceProvider::class,
+    VoltServiceProvider::class,
 ];

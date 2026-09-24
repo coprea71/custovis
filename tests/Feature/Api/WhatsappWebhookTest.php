@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\Team;
 use App\Models\Ticket;
+use App\Models\TicketMessage;
 use App\Models\WhatsappAccount;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -133,6 +134,6 @@ class WhatsappWebhookTest extends TestCase
         $this->postWhatsapp($account, $payload);
         $this->postWhatsapp($account, $payload);
 
-        $this->assertSame(1, \App\Models\TicketMessage::query()->where('whatsapp_message_id', 'wamid.1')->count());
+        $this->assertSame(1, TicketMessage::query()->where('whatsapp_message_id', 'wamid.1')->count());
     }
 }

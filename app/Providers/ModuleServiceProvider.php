@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Module;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -128,7 +129,7 @@ class ModuleServiceProvider extends ServiceProvider
                 return [];
             }
 
-            return \App\Models\Module::query()->where('enabled', true)->pluck('slug')->all();
+            return Module::query()->where('enabled', true)->pluck('slug')->all();
         } catch (\Throwable $e) {
             // DB not reachable yet (e.g. during install/migrate) — boot without modules.
             return [];
