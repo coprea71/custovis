@@ -10,6 +10,18 @@ use Spatie\Permission\PermissionRegistrar;
 class RolesAndPermissionsSeeder extends Seeder
 {
     /**
+     * Default grants for the "agent" role. Applied only when a permission is
+     * created for the first time, so re-running the seeder (sync migrations)
+     * never re-grants something an admin revoked from the role afterwards.
+     */
+    private const AGENT_DEFAULTS = [
+        'kb.articles.view',
+        'chat.channels.view',
+        'chat.global.post',
+        'chat.direct.create',
+    ];
+
+    /**
      * Base roles/permissions for the foundation layer. Modules add their
      * own permission slugs when their feature work lands.
      */
@@ -29,7 +41,12 @@ class RolesAndPermissionsSeeder extends Seeder
             'kb.articles.view',
             'kb.articles.manage',
             'kb.categories.manage',
+            'chat.channels.view',
+            'chat.global.post',
+            'chat.direct.create',
         ];
+
+        $existing = Permission::query()->where('guard_name', 'web')->pluck('name')->all();
 
         $permissions = collect($slugs)->map(
             fn (string $slug) => Permission::findOrCreate($slug, 'web')
@@ -40,7 +57,6 @@ class RolesAndPermissionsSeeder extends Seeder
         $systemAdmin = Role::findOrCreate('system_admin', 'web');
         $systemAdmin->syncPermissions($permissions);
 
-        // Additive on purpose: must not strip permissions an admin granted the role later.
-        Role::findOrCreate('agent', 'web')->givePermissionTo('kb.articles.view');
+        Role::findOrCreate('agent', 'web')->givePermissionTo(array_values(array_diff(self::AGENT_DEFAULTS, $existing)));
     }
 }

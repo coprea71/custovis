@@ -75,7 +75,7 @@ class KnowledgeBaseTest extends TestCase
 
     public function test_article_markdown_is_rendered_without_raw_html(): void
     {
-        $article = $this->article('XSS', "**fett** <script>alert(1)</script> [x](javascript:alert(1))", 'public');
+        $article = $this->article('XSS', '**fett** <script>alert(1)</script> [x](javascript:alert(1))', 'public');
 
         $html = $article->bodyHtml();
 
