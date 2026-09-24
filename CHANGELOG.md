@@ -10,6 +10,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Nutzer-, Team- und Rollenverwaltung unter `/admin/users`, `/admin/teams`,
+  `/admin/roles`: Nutzer anlegen mit Einladungslink (Passwort setzt der
+  Nutzer selbst), bearbeiten, deaktivieren statt löschen (Sitzungen und
+  API-Tokens enden sofort), 2FA-Notfall-Reset; Teams mit Mitgliedern und
+  Team-Rollen; Rollen-/Berechtigungsmatrix (`system_admin` geschützt);
+  Schutz vor Aussperren des letzten System-Admins; „Passwort vergessen“
+  für Agenten; alle Änderungen im Audit-Log.
 - Startseite `/` mit Einstieg in Kundenportal, Hilfe-Artikel und
   Mitarbeiter-Login (Meta-Description, JSON-LD, Weiterleitung
   angemeldeter Nutzer), Konto-Menü mit Kontosicherheit, Bereichswechsel

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Middleware\EnsureTwoFactorIsConfirmed;
+use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\ScopeTicketsToCustomer;
 use App\Models\AiSetting;
 use App\Models\Ticket;
@@ -46,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         Ticket::observe(TicketObserver::class);
 
         // Portal Livewire updates (/livewire/update) must stay customer-scoped too (10.md).
-        Livewire::addPersistentMiddleware([ScopeTicketsToCustomer::class, EnsureTwoFactorIsConfirmed::class]);
+        Livewire::addPersistentMiddleware([ScopeTicketsToCustomer::class, EnsureUserIsActive::class, EnsureTwoFactorIsConfirmed::class]);
 
         // One limiter per AI provider (6.md) — keeps a slow/rate-limited
         // provider from blocking queue workers for the others, and caps

@@ -7,8 +7,10 @@ use App\Actions\Fortify\PreventDisablingMandatoryTwoFactor;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -32,6 +34,15 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::loginView(fn () => view('auth.login'));
+        Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
+        Fortify::resetPasswordView(fn ($request) => view('auth.reset-password', ['request' => $request]));
+
+        // Deactivated accounts (19.md) fail like a wrong password — no hint that the account exists.
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::query()->where('email', $request->input(Fortify::username()))->first();
+
+            return $user && $user->active && Hash::check((string) $request->input('password'), $user->password) ? $user : null;
+        });
         Fortify::twoFactorChallengeView(fn () => view('auth.two-factor-challenge'));
         Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));
 
