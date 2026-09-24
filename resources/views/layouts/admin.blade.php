@@ -3,6 +3,7 @@
         <span class="font-semibold text-slatecalm-900">{{ config('app.name') }} — Administration</span>
         <nav class="flex flex-wrap gap-1 text-sm">
             @foreach ([
+                'admin.dashboard' => 'Dashboard',
                 'admin.mailboxes.index' => 'Mailboxen',
                 'admin.service-catalog.index' => 'Service-Katalog',
                 'admin.settings.theme' => 'Theme',

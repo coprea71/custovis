@@ -26,3 +26,5 @@ Schedule::call(function () {
         ->whereNull('revoked_at')
         ->each(fn (GitIssueConnection $connection) => SyncGitIssuesJob::dispatch($connection));
 })->everyFiveMinutes()->name('git-issues:sync');
+
+Schedule::command('dashboards:refresh-snapshots')->hourly()->name('dashboards:refresh-snapshots');

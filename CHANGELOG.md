@@ -10,6 +10,12 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Dashboards: `dashboard_snapshots` (stündlich per
+  `dashboards:refresh-snapshots` aktualisiert), Management-Dashboard
+  unter `/admin/dashboard` (Permission `dashboard.management.view`,
+  KPIs über alle Teams), Team-Dashboard unter
+  `/agent/team/{team}/dashboard` (`TeamPolicy::viewDashboard`, nur
+  eigenes Team) mit gemeinsamen Kachel-Komponenten.
 - Theme-System: `themes`-Registry (`ThemeServiceProvider` scannt
   `resources/themes/<slug>/theme.json`, Whitelist-Validierung der
   CSS-Variablen, fehlerhafte Themes werden geloggt und übersprungen),
