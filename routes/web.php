@@ -7,8 +7,12 @@ use App\Http\Middleware\EnsureNotInstalled;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    if (auth('web')->check()) {
+        return redirect('/agent');
+    }
+
+    return auth('customer')->check() ? redirect()->route('portal.tickets.index') : view('welcome');
+})->name('home');
 
 // Web installer (12.md): deliberately outside the 'web' middleware group —
 // a fresh upload has no APP_KEY yet, so sessions/cookies cannot work.
