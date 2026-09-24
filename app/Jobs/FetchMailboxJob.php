@@ -28,7 +28,7 @@ class FetchMailboxJob implements ShouldQueue
             return;
         }
 
-        $client = (new ClientManager())->make([
+        $client = (new ClientManager)->make([
             'host' => $this->mailbox->imap_host,
             'port' => $this->mailbox->imap_port,
             'encryption' => $this->mailbox->imap_encryption === 'none' ? false : $this->mailbox->imap_encryption,

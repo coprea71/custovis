@@ -3,11 +3,13 @@
 use App\Http\Controllers\Api\McpHealthController;
 use App\Http\Controllers\Webhooks\WhatsappWebhookController;
 use App\Http\Middleware\EnsureTwoFactorIsConfirmed;
+use App\Http\Middleware\ScopeTicketsToCustomer;
 use App\Mcp\Servers\CustovisServer;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 use Laravel\Mcp\Facades\Mcp;
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
@@ -67,7 +69,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn (Request $request) => $request->is('portal', 'portal/*') ? route('portal.tickets.index') : '/agent');
 
         // Must run before SubstituteBindings so {ticket} is resolved through CustomerOwnedScope.
-        $middleware->prependToPriorityList(\Illuminate\Routing\Middleware\SubstituteBindings::class, \App\Http\Middleware\ScopeTicketsToCustomer::class);
+        $middleware->prependToPriorityList(SubstituteBindings::class, ScopeTicketsToCustomer::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

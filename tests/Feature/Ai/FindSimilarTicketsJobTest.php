@@ -62,9 +62,7 @@ class FindSimilarTicketsJobTest extends TestCase
 
         $factory = new class($fakeProvider) extends AiProviderFactory
         {
-            public function __construct(private AiProviderInterface $provider)
-            {
-            }
+            public function __construct(private AiProviderInterface $provider) {}
 
             public function make(Team $team, string $useCase): AiProviderInterface
             {

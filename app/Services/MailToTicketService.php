@@ -15,9 +15,7 @@ use App\Models\TicketMessage;
  */
 class MailToTicketService
 {
-    public function __construct(private readonly AttachmentService $attachments)
-    {
-    }
+    public function __construct(private readonly AttachmentService $attachments) {}
 
     public function import(Mailbox $mailbox, IncomingMailMessageData $data): TicketMessage
     {

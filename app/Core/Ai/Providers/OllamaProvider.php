@@ -15,8 +15,7 @@ class OllamaProvider implements AiProviderInterface
         private readonly string $endpoint,
         private readonly string $model = 'llama3',
         private readonly string $embeddingModel = 'nomic-embed-text',
-    ) {
-    }
+    ) {}
 
     public function summarize(string $text): string
     {

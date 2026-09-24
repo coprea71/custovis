@@ -3,6 +3,7 @@
 namespace Tests\Feature\Ai;
 
 use App\Core\Ai\AiProviderFactory;
+use App\Core\Ai\Contracts\AiProviderInterface;
 use App\Jobs\AutoTriageJob;
 use App\Jobs\SuggestReplyJob;
 use App\Jobs\SummarizeTicketJob;
@@ -22,7 +23,7 @@ class AiJobsTest extends TestCase
     {
         $fake = new class extends AiProviderFactory
         {
-            public function make(Team $team, string $useCase): \App\Core\Ai\Contracts\AiProviderInterface
+            public function make(Team $team, string $useCase): AiProviderInterface
             {
                 return new FakeAiProvider;
             }

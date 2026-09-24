@@ -18,6 +18,5 @@ readonly class IncomingMailMessageData
         public ?string $bodyHtml,
         public ?string $bodyText,
         public array $attachments,
-    ) {
-    }
+    ) {}
 }
