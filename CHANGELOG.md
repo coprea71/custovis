@@ -10,6 +10,16 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- ERP-Kundendaten-Anbindung (read-only): Agenten mit `erp.customer.view`
+  laden in der Ticket-Sidebar per Klick Kundendaten aus Odoo (JSON-RPC)
+  oder Shopware 6 (Admin-API, OAuth2) – nur für Mitglieder des
+  Ticket-Teams, nur die je Verbindung freigegebenen Felder, kein Import
+  (5 Minuten Cache). Team-Admins verwalten Verbindungen unter
+  `/agent/team/{team}/settings/erp` (verschlüsselte Zugangsdaten,
+  Rotation, nur HTTPS). 5 s Timeout und Circuit-Breaker (nach 3 Fehlern
+  5 Minuten Pause), Audit-Log je Abruf ohne Kundendaten, Permissions
+  `erp.customer.view`/`team.erp.manage`, AVV-/TOM-Hinweise unter
+  `docs/compliance/erp-integration.md`.
 - Techniker-Einsatzplanung: Technikerverwaltung unter `/admin/technicians`
   (Profile mit Heimatstandort, Skills mit Level, Schichten, Abwesenheiten,
   Einwilligung zur Standortübermittlung), Checklisten-Vorlagen unter
