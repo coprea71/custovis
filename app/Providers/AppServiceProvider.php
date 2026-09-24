@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\ScopeTicketsToCustomer;
 use App\Models\Ticket;
 use App\Observers\TicketObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Ticket::observe(TicketObserver::class);
+
+        // Portal Livewire updates (/livewire/update) must stay customer-scoped too (10.md).
+        Livewire::addPersistentMiddleware([ScopeTicketsToCustomer::class]);
 
         // One limiter per AI provider (6.md) — keeps a slow/rate-limited
         // provider from blocking queue workers for the others, and caps

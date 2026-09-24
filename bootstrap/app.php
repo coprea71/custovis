@@ -4,6 +4,7 @@ use App\Http\Controllers\Webhooks\WhatsappWebhookController;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -18,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('agent')
                 ->name('agent.')
                 ->group(__DIR__.'/../routes/agent.php');
+
+            Route::middleware('web')
+                ->prefix('portal')
+                ->name('portal.')
+                ->group(__DIR__.'/../routes/portal.php');
 
             Route::middleware('web')
                 ->prefix('admin')
@@ -37,7 +43,12 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Customers and agents have separate logins (guards customer/web).
+        $middleware->redirectGuestsTo(fn (Request $request) => $request->is('portal', 'portal/*') ? route('portal.login') : route('login'));
+        $middleware->redirectUsersTo(fn (Request $request) => $request->is('portal', 'portal/*') ? route('portal.tickets.index') : '/agent');
+
+        // Must run before SubstituteBindings so {ticket} is resolved through CustomerOwnedScope.
+        $middleware->prependToPriorityList(\Illuminate\Routing\Middleware\SubstituteBindings::class, \App\Http\Middleware\ScopeTicketsToCustomer::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
