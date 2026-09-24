@@ -9,7 +9,7 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [x] #5 [ITIL-Erweiterung](archiv/5.md)
 - [x] #6 [KI-Layer](archiv/6.md)
 - [x] #7 [Dashboards](archiv/7.md)
-- [ ] #8 [Knowledge Base](8.md)
+- [x] #8 [Knowledge Base](archiv/8.md)
 - [ ] #9 [Interner Team-Chat](9.md)
 - [ ] #10 [Self-Service-Portal](10.md)
 - [ ] #11 [Compliance-Härtung](11.md)
