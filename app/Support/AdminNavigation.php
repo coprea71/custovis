@@ -22,6 +22,7 @@ class AdminNavigation
         'admin.service-catalog.index' => ['Service-Katalog', 'service_catalog.manage'],
         'admin.kb.articles.index' => ['Wissensdatenbank', 'kb.articles.manage'],
         'admin.technicians' => ['Techniker', 'technicians.manage'],
+        'admin.customers' => ['Kunden', 'customers.manage'],
         'admin.compliance' => ['Datenschutz', 'compliance.manage'],
         'admin.settings.theme' => ['Theme', 'system.settings.manage'],
         'admin.system.migrate' => ['System', 'system.maintain'],

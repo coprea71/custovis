@@ -59,6 +59,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'compliance.manage',
             'users.manage',
             'roles.manage',
+            'customers.manage',
         ];
 
         $existing = Permission::query()->where('guard_name', 'web')->pluck('name')->all();

@@ -29,7 +29,8 @@ class PortalAuthController extends Controller
             throw ValidationException::withMessages(['email' => 'Zu viele Anmeldeversuche. Bitte in '.RateLimiter::availableIn($key).' Sekunden erneut versuchen.']);
         }
 
-        if (! Auth::guard('customer')->attempt($request->only('email', 'password'))) {
+        // Locked accounts fail with the same generic message as wrong credentials.
+        if (! Auth::guard('customer')->attempt($request->only('email', 'password') + ['active' => true])) {
             RateLimiter::hit($key);
 
             throw ValidationException::withMessages(['email' => 'Die Zugangsdaten sind ungültig.']);

@@ -20,6 +20,14 @@ class Customer extends Authenticatable
         'name',
         'email',
         'password',
+        'active',
+    ];
+
+    /**
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'active' => true,
     ];
 
     /**
@@ -33,11 +41,6 @@ class Customer extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    /**
      * @return HasMany<Ticket, $this>
      */
     public function tickets(): HasMany
@@ -45,11 +48,31 @@ class Customer extends Authenticatable
         return $this->hasMany(Ticket::class);
     }
 
+    /**
+     * Claims tickets that were created (e.g. by mail) before the account
+     * existed, so they stay linked even if the account e-mail changes later.
+     *
+     * @return int number of linked tickets
+     */
+    public function linkUnassignedTickets(): int
+    {
+        return Ticket::query()
+            ->whereNull('customer_id')
+            ->where('requester_email', $this->email)
+            ->update(['customer_id' => $this->id]);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'active' => 'boolean',
         ];
     }
 }
