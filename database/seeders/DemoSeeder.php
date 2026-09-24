@@ -172,9 +172,10 @@ class DemoSeeder extends Seeder
         $ticket = $this->ticket($field, $people['max'], 'Heizung ohne Funktion', 'Die Heizung bleibt seit gestern kalt.', ['type' => 'incident', 'priority' => 'high']);
         $start = now()->addWeekday()->setTime(9, 0);
 
+        // Fixed coordinates: the demo must show a map marker even without a configured geocoder.
         app(AppointmentService::class)->create($ticket, [
             'kind' => 'service', 'address' => 'Unter den Linden 10, Berlin', 'scheduled_start' => $start, 'scheduled_end' => $start->copy()->addHours(2),
             'required_skill_ids' => [$heating->id], 'notes' => 'Kunde ist ab 8:30 Uhr erreichbar.',
-        ], $people['dora']);
+        ], $people['dora'])->update(['lat' => 52.5170, 'lng' => 13.3889]);
     }
 }
