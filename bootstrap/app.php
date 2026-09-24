@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\McpHealthController;
 use App\Http\Controllers\Webhooks\WhatsappWebhookController;
+use App\Mcp\Servers\CustovisServer;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Mcp\Facades\Mcp;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -36,6 +40,14 @@ return Application::configure(basePath: dirname(__DIR__))
             // resolves {account} and route/model binding + throttling work
             // without CSRF — Meta posts here unauthenticated and is
             // verified via signature/verify-token instead.
+            // Global MCP endpoint for AI phone assistants (13.md). 'api' group = no
+            // session, so only bearer tokens authenticate, never an agent's cookie.
+            Route::middleware('api')->group(function () {
+                Mcp::web('/mcp', CustovisServer::class)
+                    ->middleware(['auth:sanctum', CheckAbilities::class.':mcp.tools.use', 'throttle:mcp']);
+                Route::get('/mcp/health', McpHealthController::class)->middleware('throttle:mcp-health');
+            });
+
             Route::middleware('api')->group(function () {
                 Route::get('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'verify']);
                 Route::post('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'receive']);

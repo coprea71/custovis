@@ -10,6 +10,16 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Globale MCP-API für KI-Telefonassistenten (`POST /mcp`, offizielles
+  `laravel/mcp`, Streamable HTTP): Tools `create_ticket` (Idempotenz über
+  Call-ID), `search_tickets` (Cursor-Paginierung), `get_ticket_status`,
+  `add_call_note`, `search_knowledge_base` (nur freigegebene Kategorien
+  inkl. Unterkategorien, fail-closed über `api_client_kb_categories`).
+  Team immer aus dem API-Key, Autorisierung bei jedem Tool-Aufruf,
+  strukturierte Fehlerklassen, Audit-Log je Aufruf, 60 Aufrufe/Minute je
+  Key über alle Tools, Health-Check `GET /mcp/health`. API-Keys erhalten
+  getrennte Abilities für REST (`tickets.create`) und MCP
+  (`mcp.tools.use`). Doku: `docs/mcp-integration.md`.
 - Self-Service-Portal unter `/portal` (Guard `customer`, eigener
   rate-limitierter Login): `CustomerOwnedScope` (per Middleware, auch für
   Livewire-Updates, vor dem Route-Model-Binding) zeigt nur eigene Tickets,

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Sanctum\HasApiTokens;
 
 class ApiClient extends Model
@@ -39,6 +40,16 @@ class ApiClient extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * KB categories this key may search via MCP (13.md, fail closed when empty).
+     *
+     * @return BelongsToMany<KnowledgeBaseCategory, $this>
+     */
+    public function kbCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(KnowledgeBaseCategory::class, 'api_client_kb_categories')->withTimestamps();
     }
 
     public function isRevoked(): bool
