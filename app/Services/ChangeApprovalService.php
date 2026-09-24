@@ -34,7 +34,7 @@ class ChangeApprovalService
         }
     }
 
-    public function recordDecision(Ticket $ticket, int $approverUserId, bool $approved): void
+    public function recordDecision(Ticket $ticket, int $approverUserId, bool $approved, ?string $comment = null): void
     {
         $approval = CabApproval::query()
             ->where('ticket_id', $ticket->id)
@@ -43,6 +43,7 @@ class ChangeApprovalService
 
         $approval->update([
             'decision' => $approved ? CabApproval::APPROVED : CabApproval::REJECTED,
+            'comment' => $comment,
             'decided_at' => now(),
         ]);
 

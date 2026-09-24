@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Chat\ChatAttachmentController;
+use App\Livewire\Agent\ApprovalInbox;
 use App\Livewire\Agent\Chat\ChatWorkspace;
 use App\Livewire\Agent\CreateTicket;
 use App\Livewire\Agent\DispatchBoard;
@@ -25,6 +26,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/chat/ticket/{ticket}', ChatWorkspace::class)->name('chat.ticket');
     Route::get('/chat/attachments/{message}', ChatAttachmentController::class)->name('chat.attachment');
 
+    Route::get('/approvals', ApprovalInbox::class)->name('approvals');
     Route::get('/dispatch', DispatchBoard::class)->name('dispatch');
 
     Route::get('/kb', ArticleBrowser::class)->name('kb.index');

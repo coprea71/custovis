@@ -10,6 +10,14 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- ITIL-Oberflächen: Ticket-Panel mit Zustandsübergängen aus der
+  State-Machine (CAB-Zustände nur über den Freigabe-Workflow),
+  Incident-Auswirkung/-Dringlichkeit, Problem-Ursache, Change-Typ/-Risiko/
+  -Zeitfenster, CAB-Anfrage und CI-Zuordnung; Freigabe-Eingang
+  `/agent/approvals` mit Kommentar; SLA-Ziele und Geschäftszeiten je Team
+  unter `/admin/sla` (Fristen laufen jetzt in Geschäftszeiten, ohne
+  Einträge weiter 24/7); CMDB-Verwaltung unter `/admin/cmdb`; Permissions
+  `changes.approve`, `sla.manage`, `cmdb.manage`.
 - Kundenverwaltung unter `/admin/customers` (Permission
   `customers.manage`): Suche, Anlage, Bearbeitung, Portal-Zugang sperren
   (laufende Sitzungen enden), Einladungslink zum Setzen des Passworts,
