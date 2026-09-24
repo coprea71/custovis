@@ -10,6 +10,12 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Ticket-Workspace: Status, Priorität, Team und Bearbeiter direkt in der
+  Sidebar ändern (nur eigene Teams, Bearbeiter nur aus dem Ticket-Team,
+  auditiert), „Neues Ticket“ für telefonische/persönliche Anfragen
+  (Quelle `manual`, ITIL-Typen mit Startzustand), Filter „Mir
+  zugewiesen“, Textbaustein-Verwaltung je Team unter
+  `/agent/team/{team}/settings/canned-responses`.
 - Nutzer-, Team- und Rollenverwaltung unter `/admin/users`, `/admin/teams`,
   `/admin/roles`: Nutzer anlegen mit Einladungslink (Passwort setzt der
   Nutzer selbst), bearbeiten, deaktivieren statt löschen (Sitzungen und

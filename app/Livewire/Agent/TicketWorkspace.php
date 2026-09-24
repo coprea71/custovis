@@ -49,8 +49,16 @@ class TicketWorkspace extends Component
         $this->replyVisibility = TicketMessage::VISIBILITY_PUBLIC;
     }
 
+    #[On('ticket-updated')]
+    public function refreshTicket(): void
+    {
+        // re-render only; the properties panel already saved the change
+    }
+
     public function setStatusFilter(string $status): void
     {
+        abort_unless(in_array($status, ['all', 'mine', ...Ticket::STATUSES], true), 422);
+
         $this->statusFilter = $status;
         $this->resetPage();
     }
@@ -172,7 +180,8 @@ class TicketWorkspace extends Component
     {
         $tickets = Ticket::query()
             ->visibleTo(auth()->user())
-            ->when($this->statusFilter !== 'all', fn ($query) => $query->where('status', $this->statusFilter))
+            ->when($this->statusFilter === 'mine', fn ($query) => $query->where('assigned_to', auth()->id())->where('status', '!=', 'closed'))
+            ->when(in_array($this->statusFilter, Ticket::STATUSES, true), fn ($query) => $query->where('status', $this->statusFilter))
             ->when($this->search !== '', fn ($query) => $query->where(
                 fn ($q) => $q->where('subject', 'like', "%{$this->search}%")
                     ->orWhere('requester_email', 'like', "%{$this->search}%")
