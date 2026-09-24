@@ -10,6 +10,12 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Modulverwaltung unter `/admin/modules` (Permission `modules.manage`):
+  Module global an-/abschalten und optional auf Rollen oder einzelne
+  Nutzer beschränken; abgeschaltete Module verschwinden aus Navigation,
+  Ticket-Sidebar und Portal und liefern 404 (Middleware `module:<slug>`,
+  Blade-Direktive `@module`). Neue Module WhatsApp und ERP im Katalog.
+  Bestandsschutz: beim Update werden alle bekannten Module aktiviert.
 - ITIL-Oberflächen: Ticket-Panel mit Zustandsübergängen aus der
   State-Machine (CAB-Zustände nur über den Freigabe-Workflow),
   Incident-Auswirkung/-Dringlichkeit, Problem-Ursache, Change-Typ/-Risiko/

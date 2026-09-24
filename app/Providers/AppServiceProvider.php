@@ -9,8 +9,10 @@ use App\Http\Middleware\ScopeTicketsToCustomer;
 use App\Models\AiSetting;
 use App\Models\Ticket;
 use App\Observers\TicketObserver;
+use App\Services\ModuleAccess;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
@@ -22,7 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Scoped: module switches are read once per request, never across requests.
+        $this->app->scoped(ModuleAccess::class);
     }
 
     /**
@@ -46,6 +49,8 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('mcp-health', fn (Request $request) => Limit::perMinute(30)->by($request->ip()));
 
         Ticket::observe(TicketObserver::class);
+
+        Blade::if('module', fn (string $slug) => app(ModuleAccess::class)->allows(auth('web')->user(), $slug));
 
         // Portal Livewire updates (/livewire/update) must stay customer-scoped too (10.md).
         Livewire::addPersistentMiddleware([ScopeTicketsToCustomer::class, EnsureCustomerIsActive::class, EnsureUserIsActive::class, EnsureTwoFactorIsConfirmed::class]);

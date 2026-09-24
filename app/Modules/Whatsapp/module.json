@@ -1,0 +1,6 @@
+{
+    "slug": "whatsapp",
+    "name": "Whatsapp",
+    "provider": "App\\Modules\\Whatsapp\\Providers\\WhatsappServiceProvider",
+    "dependencies": []
+}

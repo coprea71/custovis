@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\McpHealthController;
 use App\Http\Controllers\Webhooks\WhatsappWebhookController;
+use App\Http\Middleware\EnsureModuleIsAvailable;
 use App\Http\Middleware\EnsureTwoFactorIsConfirmed;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\ScopeTicketsToCustomer;
@@ -59,12 +60,14 @@ return Application::configure(basePath: dirname(__DIR__))
             });
 
             Route::middleware('api')->group(function () {
-                Route::get('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'verify']);
-                Route::post('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'receive']);
+                Route::get('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'verify'])->middleware('module:whatsapp');
+                Route::post('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'receive'])->middleware('module:whatsapp');
             });
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias(['module' => EnsureModuleIsAvailable::class]);
+
         // Customers and agents have separate logins (guards customer/web).
         $middleware->redirectGuestsTo(fn (Request $request) => $request->is('portal', 'portal/*') ? route('portal.login') : route('login'));
         $middleware->redirectUsersTo(fn (Request $request) => $request->is('portal', 'portal/*') ? route('portal.tickets.index') : '/agent');
