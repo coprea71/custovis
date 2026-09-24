@@ -10,6 +10,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Self-Service-Portal unter `/portal` (Guard `customer`, eigener
+  rate-limitierter Login): `CustomerOwnedScope` (per Middleware, auch für
+  Livewire-Updates, vor dem Route-Model-Binding) zeigt nur eigene Tickets,
+  `TicketPolicy` als zweite Absicherung, Status-Timeline ohne interne
+  Notizen, Antworten öffnen geschlossene Tickets wieder, neue Anfragen aus
+  dem Service-Katalog (nur aktive Einträge), Suche in öffentlichen
+  KB-Artikeln mit Feedback-Widget.
 - Interner Team-Chat: Kanaltypen Team/Global/Ticket (`chat_channels`)
   plus 1:1-Direktnachrichten (`chat_direct_threads`), Zugriff zentral
   über `ChatAccess` (abgeleitet aus Teamzugehörigkeit/Ticket-Team, kein
