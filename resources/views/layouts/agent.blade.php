@@ -28,6 +28,17 @@
                         @endif
                     </a>
                 @endcan
+                @can('dispatch.manage')
+                    <a href="{{ route('agent.dispatch') }}"
+                       class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.dispatch') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">
+                        <span>Einsatzplanung</span>
+                    </a>
+                @endcan
+                @can('appointments.view.own')
+                    <a href="{{ route('field.app') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slatecalm-100">
+                        <span>Techniker-App</span>
+                    </a>
+                @endcan
                 @can('kb.articles.view')
                     <a href="{{ route('agent.kb.index') }}"
                        class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium {{ request()->routeIs('agent.kb.*') ? 'bg-calm-100 text-calm-800' : 'text-slate-600 hover:bg-slatecalm-100' }}">

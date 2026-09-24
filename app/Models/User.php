@@ -6,6 +6,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,6 +59,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Team::class, 'team_user')
             ->withPivot('role_in_team')
             ->withTimestamps();
+    }
+
+    /**
+     * @return HasOne<TechnicianProfile, $this>
+     */
+    public function technicianProfile(): HasOne
+    {
+        return $this->hasOne(TechnicianProfile::class);
     }
 
     public function isTeamAdminOf(Team $team): bool

@@ -25,6 +25,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(__DIR__.'/../routes/agent.php');
 
             Route::middleware('web')
+                ->prefix('field')
+                ->name('field.')
+                ->group(__DIR__.'/../routes/field.php');
+
+            Route::middleware('web')
                 ->prefix('portal')
                 ->name('portal.')
                 ->group(__DIR__.'/../routes/portal.php');

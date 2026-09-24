@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Chat\ChatAttachmentController;
 use App\Livewire\Agent\Chat\ChatWorkspace;
+use App\Livewire\Agent\DispatchBoard;
 use App\Livewire\Agent\KnowledgeBase\ArticleBrowser;
 use App\Livewire\Agent\Team\AiSettingsManager;
 use App\Livewire\Agent\Team\ApiKeyManager;
@@ -18,6 +19,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/chat', ChatWorkspace::class)->name('chat.index');
     Route::get('/chat/ticket/{ticket}', ChatWorkspace::class)->name('chat.ticket');
     Route::get('/chat/attachments/{message}', ChatAttachmentController::class)->name('chat.attachment');
+
+    Route::get('/dispatch', DispatchBoard::class)->name('dispatch');
 
     Route::get('/kb', ArticleBrowser::class)->name('kb.index');
     Route::get('/kb/{article}', ArticleBrowser::class)->name('kb.show');

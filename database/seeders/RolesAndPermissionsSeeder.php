@@ -10,7 +10,7 @@ use Spatie\Permission\PermissionRegistrar;
 class RolesAndPermissionsSeeder extends Seeder
 {
     /**
-     * Default grants for the "agent" role. Applied only when a permission is
+     * Default grants for the "agent" / "technician" roles. Applied only when a permission is
      * created for the first time, so re-running the seeder (sync migrations)
      * never re-grants something an admin revoked from the role afterwards.
      */
@@ -19,6 +19,11 @@ class RolesAndPermissionsSeeder extends Seeder
         'chat.channels.view',
         'chat.global.post',
         'chat.direct.create',
+        'appointments.view.team',
+    ];
+
+    private const TECHNICIAN_DEFAULTS = [
+        'appointments.view.own',
     ];
 
     /**
@@ -44,6 +49,10 @@ class RolesAndPermissionsSeeder extends Seeder
             'chat.channels.view',
             'chat.global.post',
             'chat.direct.create',
+            'dispatch.manage',
+            'technicians.manage',
+            'appointments.view.own',
+            'appointments.view.team',
         ];
 
         $existing = Permission::query()->where('guard_name', 'web')->pluck('name')->all();
@@ -58,5 +67,6 @@ class RolesAndPermissionsSeeder extends Seeder
         $systemAdmin->syncPermissions($permissions);
 
         Role::findOrCreate('agent', 'web')->givePermissionTo(array_values(array_diff(self::AGENT_DEFAULTS, $existing)));
+        Role::findOrCreate('technician', 'web')->givePermissionTo(array_values(array_diff(self::TECHNICIAN_DEFAULTS, $existing)));
     }
 }
