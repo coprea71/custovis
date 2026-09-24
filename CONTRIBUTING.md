@@ -27,6 +27,8 @@ Neue Features werden nach Möglichkeit als eigenständiges Modul unter
 
 ## Code-Stil
 
-- PSR-12, Laravel-Konventionen.
+- PSR-12, Laravel-Konventionen; vor dem Commit `vendor/bin/pint` ausführen
+  (die CI prüft `pint --test`).
+- `php artisan test` muss grün sein.
 - Max. ~30 Zeilen pro Methode, max. 600 Zeilen pro Datei — sonst aufteilen.
 - Kommentare nur für nicht-offensichtliches WHY, nie für das WHAT.

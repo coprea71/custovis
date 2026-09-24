@@ -9,6 +9,7 @@ use App\Livewire\Admin\MailboxManager;
 use App\Livewire\Admin\ManagementDashboard;
 use App\Livewire\Admin\ServiceCatalogManager;
 use App\Livewire\Admin\Settings\ThemeManager;
+use App\Livewire\Admin\SystemMaintenance;
 use App\Livewire\Admin\TechnicianManager;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,6 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/technicians', TechnicianManager::class)->name('technicians');
     Route::get('/checklists', ChecklistTemplateManager::class)->name('checklists');
     Route::get('/compliance', ComplianceCenter::class)->name('compliance');
+    Route::get('/system/migrate', SystemMaintenance::class)->name('system.migrate');
     Route::get('/settings/theme', ThemeManager::class)->name('settings.theme');
 });

@@ -1,0 +1,51 @@
+name: Release
+
+# Builds an upload-ready archive (vendor/ and public/build included) for
+# FTP/SFTP-only hosting and attaches it to the GitHub release of the tag.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo_mysql, gd, zip, fileinfo, intl
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Abhängigkeiten ohne Dev-Pakete installieren
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-progress
+
+      - name: Frontend bauen
+        run: |
+          npm ci
+          npm run build
+
+      - name: Archiv erstellen
+        run: |
+          mkdir -p dist
+          zip -rq "dist/custovis-${GITHUB_REF_NAME}.zip" . \
+            -x '.git/*' '.github/*' 'node_modules/*' 'tests/*' 'dist/*' '.env' 'storage/logs/*.log' 'docs/planhub/*'
+
+      - name: Release-Notes aus dem CHANGELOG
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '$0 ~ "^## \\[" v "\\]" {flag=1; next} /^## \[/ {flag=0} flag' CHANGELOG.md > dist/notes.md
+
+      - name: GitHub-Release anlegen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "dist/custovis-${GITHUB_REF_NAME}.zip" --title "Custovis $GITHUB_REF_NAME" --notes-file dist/notes.md

@@ -1,11 +1,20 @@
 <?php
 
 use App\Http\Controllers\AccountSecurityController;
+use App\Http\Controllers\InstallController;
 use App\Http\Controllers\Themes\ThemePreviewController;
+use App\Http\Middleware\EnsureNotInstalled;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+// Web installer (12.md): deliberately outside the 'web' middleware group —
+// a fresh upload has no APP_KEY yet, so sessions/cookies cannot work.
+Route::withoutMiddleware('web')->middleware(EnsureNotInstalled::class)->group(function () {
+    Route::get('/install', [InstallController::class, 'show'])->name('install');
+    Route::post('/install', [InstallController::class, 'store'])->name('install.store');
 });
 
 Route::get('/account/security', AccountSecurityController::class)
