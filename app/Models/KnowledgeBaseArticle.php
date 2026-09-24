@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,11 +11,22 @@ use Illuminate\Support\Str;
 
 class KnowledgeBaseArticle extends Model
 {
+    use Auditable;
+
     public const VISIBILITY_INTERNAL = 'internal';
 
     public const VISIBILITY_PUBLIC = 'public';
 
     public const VISIBILITIES = [self::VISIBILITY_INTERNAL, self::VISIBILITY_PUBLIC];
+
+    protected array $auditFields = [
+        'category_id',
+        'visibility',
+    ];
+
+    protected array $auditEvents = [
+        'deleted',
+    ];
 
     protected $fillable = [
         'category_id',

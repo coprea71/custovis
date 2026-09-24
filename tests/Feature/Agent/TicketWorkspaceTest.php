@@ -15,9 +15,11 @@ class TicketWorkspaceTest extends TestCase
 {
     use RefreshDatabase;
 
+    private Team $team;
+
     private function makeTicket(): Ticket
     {
-        $team = Team::query()->create(['name' => 'Support', 'slug' => 'support']);
+        $team = $this->team = Team::query()->create(['name' => 'Support', 'slug' => 'support']);
 
         return Ticket::query()->create([
             'team_id' => $team->id,
@@ -38,6 +40,7 @@ class TicketWorkspaceTest extends TestCase
     {
         $user = User::factory()->create();
         $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
 
         $this->actingAs($user)
             ->get('/agent')
@@ -49,6 +52,7 @@ class TicketWorkspaceTest extends TestCase
     {
         $user = User::factory()->create();
         $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
 
         Livewire::actingAs($user)
             ->test(TicketWorkspace::class, ['ticket' => $ticket])

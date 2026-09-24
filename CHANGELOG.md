@@ -10,6 +10,15 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Compliance-Härtung: 2FA-Pflicht für Agenten/Admins in Produktion
+  (Einrichtung unter `/account/security`, Abschalten gesperrt, optional nur
+  lokal/Test oder mit `CUSTOVIS_DEV_MODE`), `Auditable`-Trait mit
+  Feld-Whitelist auf sicherheitsrelevanten Modellen (Secrets nur als
+  „geändert"), DSGVO-Auskunft und -Anonymisierung
+  (`gdpr:export-customer-data`, `gdpr:anonymize-customer`, bedienbar unter
+  `/admin/compliance`), konfigurierbare Aufbewahrungsfristen für
+  Team-Chat, Audit-Log und geschlossene Tickets (`retention:apply`),
+  Compliance-Dokumentation unter `docs/compliance/`.
 - ERP-Kundendaten-Anbindung (read-only): Agenten mit `erp.customer.view`
   laden in der Ticket-Sidebar per Klick Kundendaten aus Odoo (JSON-RPC)
   oder Shopware 6 (Admin-API, OAuth2) – nur für Mitglieder des
@@ -137,3 +146,14 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 - Modul-Registry (`modules`, `module_user`, `module_role`, `ModuleServiceProvider`)
   mit Platzhaltern für alle geplanten Module.
 - Repo-Grundgerüst (README, CHANGELOG, LICENSE, `.env.example`).
+
+### Sicherheit
+
+- Öffentliche Selbstregistrierung (`POST /register`) deaktiviert – bisher
+  konnte sich jeder ein Agenten-Konto anlegen.
+- Agenten sehen und bearbeiten nur noch Tickets ihrer Teams bzw. ihnen
+  zugewiesene Tickets (`TicketPolicy`, `Ticket::visibleTo`); Vollzugriff
+  nur mit `tickets.view.all`. Gilt auch für Collision-Presence-Channel und
+  KB-Panel.
+- Zugangsdaten-Felder zusätzlich per `$hidden` von jeder Serialisierung
+  ausgeschlossen; Berechtigungsprüfung im Service-Katalog auch je Aktion.

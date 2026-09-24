@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,18 @@ use Laravel\Sanctum\HasApiTokens;
 
 class ApiClient extends Model
 {
-    use HasApiTokens, HasFactory;
+    use Auditable, HasApiTokens, HasFactory;
+
+    protected array $auditFields = [
+        'team_id',
+        'name',
+        'revoked_at',
+    ];
+
+    protected array $auditEvents = [
+        'updated',
+        'deleted',
+    ];
 
     protected $fillable = [
         'team_id',

@@ -31,4 +31,6 @@ Schedule::command('chat:prune')->daily()->name('chat:prune');
 
 Schedule::command('field:prune-locations')->daily()->name('field:prune-locations');
 
+Schedule::command('retention:apply')->daily()->name('retention:apply');
+
 Schedule::command('dashboards:refresh-snapshots')->hourly()->name('dashboards:refresh-snapshots');

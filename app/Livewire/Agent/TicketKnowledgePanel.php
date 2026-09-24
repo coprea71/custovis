@@ -52,6 +52,6 @@ class TicketKnowledgePanel extends Component
 
     private function ticket(): Ticket
     {
-        return Ticket::query()->findOrFail($this->ticketId);
+        return Ticket::query()->visibleTo(auth()->user())->findOrFail($this->ticketId);
     }
 }

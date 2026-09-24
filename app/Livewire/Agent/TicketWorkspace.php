@@ -35,6 +35,10 @@ class TicketWorkspace extends Component
 
     public function mount(?Ticket $ticket = null): void
     {
+        if ($ticket?->exists) {
+            Gate::authorize('view', $ticket);
+        }
+
         $this->ticketId = $ticket?->id;
     }
 
@@ -160,12 +164,14 @@ class TicketWorkspace extends Component
             return null;
         }
 
-        return Ticket::query()->with('messages.attachments', 'assignee', 'customer')->find($this->ticketId);
+        // Scoped so a tampered ticketId can never reach another team's ticket.
+        return Ticket::query()->visibleTo(auth()->user())->with('messages.attachments', 'assignee', 'customer')->find($this->ticketId);
     }
 
     public function render()
     {
         $tickets = Ticket::query()
+            ->visibleTo(auth()->user())
             ->when($this->statusFilter !== 'all', fn ($query) => $query->where('status', $this->statusFilter))
             ->when($this->search !== '', fn ($query) => $query->where(
                 fn ($q) => $q->where('subject', 'like', "%{$this->search}%")
