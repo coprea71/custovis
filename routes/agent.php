@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Chat\ChatAttachmentController;
 use App\Livewire\Agent\Chat\ChatWorkspace;
+use App\Livewire\Agent\CreateTicket;
 use App\Livewire\Agent\DispatchBoard;
 use App\Livewire\Agent\KnowledgeBase\ArticleBrowser;
 use App\Livewire\Agent\Team\AiSettingsManager;
 use App\Livewire\Agent\Team\ApiKeyManager;
+use App\Livewire\Agent\Team\CannedResponseManager;
 use App\Livewire\Agent\Team\ErpConnectionManager;
 use App\Livewire\Agent\Team\GitIssueConnectionManager;
 use App\Livewire\Agent\Team\TeamDashboard;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/', TicketWorkspace::class)->name('tickets.index');
+    Route::get('/tickets/create', CreateTicket::class)->name('tickets.create');
     Route::get('/tickets/{ticket}', TicketWorkspace::class)->name('tickets.show');
 
     Route::get('/chat', ChatWorkspace::class)->name('chat.index');
@@ -29,6 +32,7 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::get('/team/{team}/dashboard', TeamDashboard::class)->name('team.dashboard');
     Route::get('/team/{team}/settings', TeamSettings::class)->name('team.settings');
+    Route::get('/team/{team}/settings/canned-responses', CannedResponseManager::class)->name('team.canned-responses');
     Route::get('/team/{team}/settings/api-keys', ApiKeyManager::class)->name('team.api-keys');
     Route::get('/team/{team}/settings/git-issues', GitIssueConnectionManager::class)->name('team.git-issues');
     Route::get('/team/{team}/settings/whatsapp', WhatsappAccountManager::class)->name('team.whatsapp');

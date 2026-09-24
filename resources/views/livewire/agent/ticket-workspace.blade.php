@@ -3,6 +3,7 @@
     {{-- Ticket list (master) --}}
     <div class="w-full md:w-5/12 lg:w-4/12 border-r border-slatecalm-200 bg-white flex flex-col h-full overflow-hidden">
         <div class="p-4 border-b border-slatecalm-200 bg-slatecalm-50/50 space-y-3">
+            <a href="{{ route('agent.tickets.create') }}" class="block w-full text-center py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium">+ Neues Ticket</a>
             <input
                 type="text"
                 wire:model.live.debounce.400ms="search"
@@ -11,7 +12,7 @@
             >
 
             <div class="flex items-center space-x-2 text-xs overflow-x-auto">
-                @foreach (['all' => 'Alle', 'open' => 'Offen', 'pending' => 'Wartend', 'closed' => 'Geschlossen'] as $value => $label)
+                @foreach (['all' => 'Alle', 'mine' => 'Mir zugewiesen', 'open' => 'Offen', 'pending' => 'Wartend', 'closed' => 'Geschlossen'] as $value => $label)
                     <button
                         type="button"
                         wire:click="setStatusFilter('{{ $value }}')"
@@ -175,8 +176,7 @@
                         </div>
                     @endcan
 
-                    <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Status &amp; Priorität</h3>
-                    <p class="text-sm text-slate-600 mb-4">{{ $ticket->status }} · {{ $ticket->priority }}</p>
+                    <livewire:agent.ticket-properties-panel :ticket-id="$ticket->id" :key="'props-'.$ticket->id" />
 
                     <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Tags</h3>
                     <div class="flex flex-wrap gap-1.5 mb-3">
