@@ -22,22 +22,22 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/tickets/create', CreateTicket::class)->name('tickets.create');
     Route::get('/tickets/{ticket}', TicketWorkspace::class)->name('tickets.show');
 
-    Route::get('/chat', ChatWorkspace::class)->name('chat.index');
-    Route::get('/chat/ticket/{ticket}', ChatWorkspace::class)->name('chat.ticket');
-    Route::get('/chat/attachments/{message}', ChatAttachmentController::class)->name('chat.attachment');
+    Route::get('/chat', ChatWorkspace::class)->middleware('module:team-chat')->name('chat.index');
+    Route::get('/chat/ticket/{ticket}', ChatWorkspace::class)->middleware('module:team-chat')->name('chat.ticket');
+    Route::get('/chat/attachments/{message}', ChatAttachmentController::class)->middleware('module:team-chat')->name('chat.attachment');
 
-    Route::get('/approvals', ApprovalInbox::class)->name('approvals');
-    Route::get('/dispatch', DispatchBoard::class)->name('dispatch');
+    Route::get('/approvals', ApprovalInbox::class)->middleware('module:change-management')->name('approvals');
+    Route::get('/dispatch', DispatchBoard::class)->middleware('module:field-service')->name('dispatch');
 
-    Route::get('/kb', ArticleBrowser::class)->name('kb.index');
-    Route::get('/kb/{article}', ArticleBrowser::class)->name('kb.show');
+    Route::get('/kb', ArticleBrowser::class)->middleware('module:knowledge-base')->name('kb.index');
+    Route::get('/kb/{article}', ArticleBrowser::class)->middleware('module:knowledge-base')->name('kb.show');
 
-    Route::get('/team/{team}/dashboard', TeamDashboard::class)->name('team.dashboard');
+    Route::get('/team/{team}/dashboard', TeamDashboard::class)->middleware('module:reporting')->name('team.dashboard');
     Route::get('/team/{team}/settings', TeamSettings::class)->name('team.settings');
     Route::get('/team/{team}/settings/canned-responses', CannedResponseManager::class)->name('team.canned-responses');
     Route::get('/team/{team}/settings/api-keys', ApiKeyManager::class)->name('team.api-keys');
     Route::get('/team/{team}/settings/git-issues', GitIssueConnectionManager::class)->name('team.git-issues');
-    Route::get('/team/{team}/settings/whatsapp', WhatsappAccountManager::class)->name('team.whatsapp');
-    Route::get('/team/{team}/settings/ai', AiSettingsManager::class)->name('team.ai');
-    Route::get('/team/{team}/settings/erp', ErpConnectionManager::class)->name('team.erp');
+    Route::get('/team/{team}/settings/whatsapp', WhatsappAccountManager::class)->middleware('module:whatsapp')->name('team.whatsapp');
+    Route::get('/team/{team}/settings/ai', AiSettingsManager::class)->middleware('module:ai-agent')->name('team.ai');
+    Route::get('/team/{team}/settings/erp', ErpConnectionManager::class)->middleware('module:erp-integration')->name('team.erp');
 });

@@ -26,7 +26,7 @@ Route::middleware(['auth:customer', EnsureCustomerIsActive::class, ScopeTicketsT
 
     Route::get('/', TicketList::class)->name('tickets.index');
     Route::get('/tickets/{ticket}', TicketDetail::class)->name('tickets.show');
-    Route::get('/requests/new', NewRequest::class)->name('requests.create');
-    Route::get('/kb', KnowledgeBase::class)->name('kb.index');
-    Route::get('/kb/{article}', KnowledgeBase::class)->whereNumber('article')->name('kb.show');
+    Route::get('/requests/new', NewRequest::class)->middleware('module:service-catalog')->name('requests.create');
+    Route::get('/kb', KnowledgeBase::class)->middleware('module:knowledge-base')->name('kb.index');
+    Route::get('/kb/{article}', KnowledgeBase::class)->whereNumber('article')->middleware('module:knowledge-base')->name('kb.show');
 });

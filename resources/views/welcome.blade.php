@@ -33,10 +33,12 @@
                     <h2 class="font-semibold text-slatecalm-900">Kundenportal</h2>
                     <p class="mt-1 text-sm text-slate-500">Anfragen stellen, Status verfolgen, mit dem Support schreiben.</p>
                 </a>
-                <a href="{{ route('portal.kb.index') }}" class="bg-white border border-slatecalm-200 rounded-2xl p-6 hover:border-calm-400">
-                    <h2 class="font-semibold text-slatecalm-900">Hilfe-Artikel</h2>
-                    <p class="mt-1 text-sm text-slate-500">Antworten auf häufige Fragen (nach Anmeldung im Kundenportal).</p>
-                </a>
+                @if (app(\App\Services\ModuleAccess::class)->enabled('knowledge-base'))
+                    <a href="{{ route('portal.kb.index') }}" class="bg-white border border-slatecalm-200 rounded-2xl p-6 hover:border-calm-400">
+                        <h2 class="font-semibold text-slatecalm-900">Hilfe-Artikel</h2>
+                        <p class="mt-1 text-sm text-slate-500">Antworten auf häufige Fragen (nach Anmeldung im Kundenportal).</p>
+                    </a>
+                @endif
                 <a href="{{ route('login') }}" class="bg-white border border-slatecalm-200 rounded-2xl p-6 hover:border-calm-400">
                     <h2 class="font-semibold text-slatecalm-900">Für Mitarbeitende</h2>
                     <p class="mt-1 text-sm text-slate-500">Anmeldung für Agenten, Administratoren und Techniker.</p>

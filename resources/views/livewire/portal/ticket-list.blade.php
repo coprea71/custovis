@@ -1,7 +1,9 @@
 <div class="space-y-4">
     <div class="flex items-center justify-between">
         <h1 class="text-xl font-semibold text-slatecalm-900">Meine Anfragen</h1>
-        <a href="{{ route('portal.requests.create') }}" class="px-4 py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium">Neue Anfrage</a>
+        @if (app(\App\Services\ModuleAccess::class)->enabled('service-catalog'))
+            <a href="{{ route('portal.requests.create') }}" class="px-4 py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium">Neue Anfrage</a>
+        @endif
     </div>
 
     <div class="bg-white border border-slatecalm-200 rounded-2xl divide-y divide-slatecalm-200">

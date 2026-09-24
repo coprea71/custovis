@@ -170,11 +170,13 @@
                     <p class="text-sm font-medium text-slatecalm-900">{{ $ticket->requester_name ?: '—' }}</p>
                     <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: $ticket->requester_phone ?: '—' }}</p>
 
-                    @can('erp.customer.view')
-                        <div class="mb-4">
-                            <livewire:agent.ticket-erp-panel :ticket-id="$ticket->id" :key="'erp-panel-'.$ticket->id" />
-                        </div>
-                    @endcan
+                    @module('erp-integration')
+                        @can('erp.customer.view')
+                            <div class="mb-4">
+                                <livewire:agent.ticket-erp-panel :ticket-id="$ticket->id" :key="'erp-panel-'.$ticket->id" />
+                            </div>
+                        @endcan
+                    @endmodule
 
                     <livewire:agent.ticket-properties-panel :ticket-id="$ticket->id" :key="'props-'.$ticket->id" />
                     <livewire:agent.ticket-itil-panel :ticket-id="$ticket->id" :key="'itil-'.$ticket->id" />
@@ -201,29 +203,35 @@
                         <button type="button" wire:click="addTag" class="text-xs px-2.5 py-1 rounded-lg bg-slatecalm-100 text-slate-700">+</button>
                     </div>
 
-                    @can('chat.channels.view')
-                        <a href="{{ route('agent.chat.ticket', $ticket) }}" class="mt-5 block text-center text-xs px-3 py-2 rounded-lg bg-ocean-50 text-ocean-700 font-medium">Ticket-Chat mit Kollegen</a>
-                    @endcan
+                    @module('team-chat')
+                        @can('chat.channels.view')
+                            <a href="{{ route('agent.chat.ticket', $ticket) }}" class="mt-5 block text-center text-xs px-3 py-2 rounded-lg bg-ocean-50 text-ocean-700 font-medium">Ticket-Chat mit Kollegen</a>
+                        @endcan
+                    @endmodule
 
-                    @can('appointments.view.team')
-                        @if ($ticket->appointments->isNotEmpty())
-                            <h3 class="mt-5 text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Vor-Ort-Einsätze</h3>
-                            <ul class="space-y-1.5">
-                                @foreach ($ticket->appointments as $appointment)
-                                    <li class="text-xs text-slate-600">
-                                        {{ $appointment->scheduled_start->format('d.m. H:i') }} · {{ $appointment->state->label() }}
-                                        · {{ $appointment->technician?->user->name ?? 'nicht zugewiesen' }}
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    @endcan
+                    @module('field-service')
+                        @can('appointments.view.team')
+                            @if ($ticket->appointments->isNotEmpty())
+                                <h3 class="mt-5 text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Vor-Ort-Einsätze</h3>
+                                <ul class="space-y-1.5">
+                                    @foreach ($ticket->appointments as $appointment)
+                                        <li class="text-xs text-slate-600">
+                                            {{ $appointment->scheduled_start->format('d.m. H:i') }} · {{ $appointment->state->label() }}
+                                            · {{ $appointment->technician?->user->name ?? 'nicht zugewiesen' }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        @endcan
+                    @endmodule
 
-                    @can('kb.articles.view')
-                        <div class="mt-5">
-                            <livewire:agent.ticket-knowledge-panel :ticket-id="$ticket->id" :key="'kb-panel-'.$ticket->id" />
-                        </div>
-                    @endcan
+                    @module('knowledge-base')
+                        @can('kb.articles.view')
+                            <div class="mt-5">
+                                <livewire:agent.ticket-knowledge-panel :ticket-id="$ticket->id" :key="'kb-panel-'.$ticket->id" />
+                            </div>
+                        @endcan
+                    @endmodule
                 </aside>
             </div>
         @else

@@ -6,7 +6,7 @@
                 <span class="font-semibold text-slatecalm-900 text-sm">{{ config('app.name') }}</span>
             </a>
             <nav class="flex flex-wrap items-center gap-1 text-sm">
-                @foreach (['portal.tickets.index' => 'Meine Anfragen', 'portal.requests.create' => 'Neue Anfrage', 'portal.kb.index' => 'Hilfe-Artikel'] as $route => $label)
+                @foreach (array_filter(['portal.tickets.index' => 'Meine Anfragen', 'portal.requests.create' => app(\App\Services\ModuleAccess::class)->enabled('service-catalog') ? 'Neue Anfrage' : null, 'portal.kb.index' => app(\App\Services\ModuleAccess::class)->enabled('knowledge-base') ? 'Hilfe-Artikel' : null]) as $route => $label)
                     <a href="{{ route($route) }}" class="px-3 py-1.5 rounded-lg {{ request()->routeIs($route) ? 'bg-calm-100 text-calm-800 font-medium' : 'text-slate-600 hover:bg-slatecalm-100' }}">{{ $label }}</a>
                 @endforeach
                 <form method="POST" action="{{ route('portal.logout') }}">

@@ -1,0 +1,6 @@
+{
+    "slug": "erp-integration",
+    "name": "ErpIntegration",
+    "provider": "App\\Modules\\ErpIntegration\\Providers\\ErpIntegrationServiceProvider",
+    "dependencies": []
+}

@@ -3,6 +3,7 @@
 namespace App\Livewire\Agent\Team;
 
 use App\Models\Team;
+use App\Services\ModuleAccess;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
@@ -16,15 +17,15 @@ use Livewire\Component;
 class TeamSettings extends Component
 {
     /**
-     * route name => [label, description, permission granting (read) access to non-team-admins]
+     * route name => [label, description, permission granting (read) access to non-team-admins, module slug (optional)]
      */
     public const PAGES = [
         'agent.team.canned-responses' => ['Textbausteine', 'Vorlagen für Antworten im Ticket', 'team.manage'],
         'agent.team.api-keys' => ['API-Keys', 'Ticket-API und MCP-Zugänge für Telefonassistenten', 'team.api_keys.manage'],
-        'agent.team.whatsapp' => ['WhatsApp', 'WhatsApp-Business-Konten und Vorlagen', 'team.whatsapp.manage'],
+        'agent.team.whatsapp' => ['WhatsApp', 'WhatsApp-Business-Konten und Vorlagen', 'team.whatsapp.manage', 'whatsapp'],
         'agent.team.git-issues' => ['Git-Issues', 'GitHub-/GitLab-Issue-Import', 'team.git_issues.manage'],
-        'agent.team.ai' => ['KI', 'KI-Provider, Budgets und Datenschutz', 'team.ai.manage'],
-        'agent.team.erp' => ['ERP', 'Kundendaten aus Odoo oder Shopware', 'team.erp.manage'],
+        'agent.team.ai' => ['KI', 'KI-Provider, Budgets und Datenschutz', 'team.ai.manage', 'ai-agent'],
+        'agent.team.erp' => ['ERP', 'Kundendaten aus Odoo oder Shopware', 'team.erp.manage', 'erp-integration'],
     ];
 
     #[Locked]
@@ -50,6 +51,9 @@ class TeamSettings extends Component
         $user = Auth::user();
         $isTeamAdmin = $user->isTeamAdminOf($team);
 
-        return array_filter(self::PAGES, fn (array $page) => $isTeamAdmin || $user->can($page[2]));
+        $modules = app(ModuleAccess::class);
+
+        return array_filter(self::PAGES, fn (array $page) => ($isTeamAdmin || $user->can($page[2]))
+            && (! isset($page[3]) || $modules->allows($user, $page[3])));
     }
 }
