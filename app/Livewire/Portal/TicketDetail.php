@@ -5,6 +5,7 @@ namespace App\Livewire\Portal;
 use App\Http\Requests\Portal\ReplyToTicketRequest;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -64,7 +65,7 @@ class TicketDetail extends Component
      * Customer-facing history: creation, public messages only (internal
      * notes never leave the agent area) and closing.
      *
-     * @return Collection<int, array{at: \Illuminate\Support\Carbon, label: string, body: string|null}>
+     * @return Collection<int, array{at: Carbon, label: string, body: string|null}>
      */
     private function timeline(Ticket $ticket): Collection
     {
