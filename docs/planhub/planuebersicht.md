@@ -21,7 +21,7 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [x] #17 [Theme-System (wählbare, nachträglich erweiterbare Layouts, Default: Musterlayout)](archiv/17.md)
 - [x] #18 [Startseite, Navigation & Konto-Menü](archiv/18.md)
 - [x] #19 [Nutzer-, Team- & Rollenverwaltung (/admin)](archiv/19.md)
-- [ ] #20 [Ticket-Workspace-Grundfunktionen & Textbausteine](20.md)
+- [x] #20 [Ticket-Workspace-Grundfunktionen & Textbausteine](archiv/20.md)
 - [ ] #21 [ITIL-Oberflächen (Zustände, CAB, SLA, Geschäftszeiten, CMDB)](21.md)
 - [ ] #22 [Kundenverwaltung & Portal-Passwort-Reset](22.md)
 - [ ] #23 [Modulverwaltung & Modul-Zuschaltung](23.md)
