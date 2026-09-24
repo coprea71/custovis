@@ -10,6 +10,12 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Kundenverwaltung unter `/admin/customers` (Permission
+  `customers.manage`): Suche, Anlage, Bearbeitung, Portal-Zugang sperren
+  (laufende Sitzungen enden), Einladungslink zum Setzen des Passworts,
+  automatische Zuordnung bestehender Tickets gleicher E-Mail; im Portal
+  „Passwort vergessen“ mit neutraler Antwort und Rate-Limit; Audit-Log
+  ohne personenbezogene Daten.
 - Ticket-Workspace: Status, Priorität, Team und Bearbeiter direkt in der
   Sidebar ändern (nur eigene Teams, Bearbeiter nur aus dem Ticket-Team,
   auditiert), „Neues Ticket“ für telefonische/persönliche Anfragen
