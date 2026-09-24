@@ -1,26 +1,19 @@
-<!DOCTYPE html>
-<html lang="de" class="h-full bg-[#F4F7F6]">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }} — Administration</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
-</head>
-<body class="h-full font-sans text-slate-700 antialiased bg-slatecalm-50">
-    <header class="h-16 bg-white border-b border-slatecalm-200 px-6 flex items-center">
+<x-layouts.app title="Administration" body-class="bg-slatecalm-50">
+    <header class="bg-white border-b border-slatecalm-200 px-6 py-3 flex flex-wrap items-center gap-x-6 gap-y-2">
         <span class="font-semibold text-slatecalm-900">{{ config('app.name') }} — Administration</span>
+        <nav class="flex flex-wrap gap-1 text-sm">
+            @foreach ([
+                'admin.mailboxes.index' => 'Mailboxen',
+                'admin.service-catalog.index' => 'Service-Katalog',
+                'admin.settings.theme' => 'Theme',
+            ] as $route => $label)
+                <a href="{{ route($route) }}"
+                   class="px-3 py-1.5 rounded-lg {{ request()->routeIs($route) ? 'bg-calm-100 text-calm-800 font-medium' : 'text-slate-600 hover:bg-slatecalm-100' }}">{{ $label }}</a>
+            @endforeach
+        </nav>
     </header>
 
     <main class="p-6 max-w-5xl mx-auto">
         {{ $slot }}
     </main>
-
-    @livewireScripts
-</body>
-</html>
+</x-layouts.app>

@@ -10,6 +10,14 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Hinzugefügt
 
+- Theme-System: `themes`-Registry (`ThemeServiceProvider` scannt
+  `resources/themes/<slug>/theme.json`, Whitelist-Validierung der
+  CSS-Variablen, fehlerhafte Themes werden geloggt und übersprungen),
+  Default-Theme „Musterlayout", gemeinsames Basis-Layout
+  (`<x-layouts.app>`) mit `data-theme` für `/agent`, `/admin` und
+  `/portal`, Admin-UI unter `/admin/settings/theme` (Permission
+  `system.settings.manage`, Audit-Log je Wechsel), Key-Value-Tabelle
+  `settings`.
 - KI-Layer: austauschbare Provider-Architektur (`AiProviderInterface`,
   OpenAI/Anthropic/Ollama/Custom-Endpoint-Adapter), `ai_settings`
   (Provider je Team+Anwendungsfall, `.env`-Fallback, PII-Redaction-
