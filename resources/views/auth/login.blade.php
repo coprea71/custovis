@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="de" class="h-full bg-[#F4F7F6]">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }} — Anmelden</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    @vite(['resources/css/app.css'])
-</head>
-<body class="h-full font-sans text-slate-700 antialiased flex items-center justify-center">
+<x-layouts.app title="Anmelden" body-class="flex items-center justify-center" :scripts="false">
     <div class="w-full max-w-sm bg-white border border-slatecalm-200 rounded-2xl p-8 shadow-sm">
         <div class="w-10 h-10 rounded-xl bg-calm-600 flex items-center justify-center text-white font-bold mb-4">C</div>
         <h1 class="text-lg font-semibold text-slatecalm-900 mb-6">{{ config('app.name') }}</h1>
@@ -40,5 +27,4 @@
             </button>
         </form>
     </div>
-</body>
-</html>
+</x-layouts.app>

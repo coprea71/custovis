@@ -1,0 +1,28 @@
+{
+    "name": "Musterlayout",
+    "preview_image": "preview.png",
+    "font_family": "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif",
+    "css_variables": {
+        "color-canvas": "#F4F7F6",
+        "color-calm-50": "#F4F8F6",
+        "color-calm-100": "#E8EFEB",
+        "color-calm-200": "#D3E1DA",
+        "color-calm-300": "#AEC8BC",
+        "color-calm-400": "#7E9F90",
+        "color-calm-500": "#567D6C",
+        "color-calm-600": "#3D5E50",
+        "color-calm-700": "#2F483E",
+        "color-calm-800": "#22342D",
+        "color-calm-900": "#17231E",
+        "color-slatecalm-50": "#F8FAF9",
+        "color-slatecalm-100": "#F0F4F3",
+        "color-slatecalm-200": "#E1E8E6",
+        "color-slatecalm-600": "#475569",
+        "color-slatecalm-800": "#1E293B",
+        "color-slatecalm-900": "#0F172A",
+        "color-ocean-50": "#F0F7FF",
+        "color-ocean-100": "#E0EFFE",
+        "color-ocean-500": "#3B82F6",
+        "color-ocean-700": "#1D4ED8"
+    }
+}

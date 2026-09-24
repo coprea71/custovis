@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="de" class="h-full bg-[#F4F7F6]">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }} — Agent</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
-</head>
-<body class="h-full font-sans text-slate-700 antialiased selection:bg-calm-200 selection:text-calm-900 flex flex-col md:flex-row overflow-hidden">
-
+<x-layouts.app title="Agent" body-class="selection:bg-calm-200 selection:text-calm-900 flex flex-col md:flex-row overflow-hidden">
     <aside class="w-full md:w-64 bg-slatecalm-50 border-r border-slatecalm-200 flex flex-col justify-between shrink-0 z-20 hidden md:flex">
         <div>
             <div class="h-16 px-6 flex items-center justify-between border-b border-slatecalm-200">
@@ -52,7 +37,4 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden">
         {{ $slot }}
     </main>
-
-    @livewireScripts
-</body>
-</html>
+</x-layouts.app>

@@ -24,6 +24,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'team.whatsapp.manage',
             'service_catalog.manage',
             'team.ai.manage',
+            'system.settings.manage',
         ];
 
         $permissions = collect($slugs)->map(
