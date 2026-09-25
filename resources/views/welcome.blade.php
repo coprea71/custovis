@@ -4,7 +4,7 @@
         <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}/">
         <script type="application/ld+json">
             {!! json_encode([
-                '@context' => 'https://schema.org',
+                '@@context' => 'https://schema.org',
                 '@type' => 'WebApplication',
                 'name' => config('app.name'),
                 'url' => rtrim(config('app.url'), '/').'/',
