@@ -19,6 +19,10 @@ class Ticket extends Model
 
     public const PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
+    public const STATUS_LABELS = ['open' => 'Offen', 'pending' => 'Wartend', 'reopened' => 'Wieder geöffnet', 'closed' => 'Geschlossen'];
+
+    public const PRIORITY_LABELS = ['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend'];
+
     /**
      * Mirrors the column defaults so a freshly created ticket already carries
      * them (SLA matching by priority and audit diffs rely on real values).
@@ -87,6 +91,21 @@ class Ticket extends Model
         $query->where(fn (Builder $inner) => $inner
             ->whereIn('team_id', $user->teams()->select('teams.id'))
             ->orWhere('assigned_to', $user->id));
+    }
+
+    /**
+     * Priority is stored as a string, so its business order has to be spelled
+     * out; the CASE is built only from the PRIORITIES constant, never user input.
+     *
+     * @param  Builder<Ticket>  $query
+     */
+    public function scopeOrderByPriority(Builder $query, string $direction = 'desc'): void
+    {
+        $cases = collect(self::PRIORITIES)
+            ->map(fn (string $priority, int $rank) => "WHEN '{$priority}' THEN {$rank}")
+            ->implode(' ');
+
+        $query->orderByRaw("CASE priority {$cases} ELSE 0 END ".($direction === 'asc' ? 'asc' : 'desc'));
     }
 
     /**

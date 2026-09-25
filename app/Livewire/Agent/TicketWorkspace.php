@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Models\WhatsappTemplate;
 use App\Services\WhatsappMessageSender;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -21,9 +22,15 @@ class TicketWorkspace extends Component
 {
     use WithPagination;
 
+    public const SORT_FIELDS = ['id', 'created_at', 'priority'];
+
     public ?int $ticketId = null;
 
-    public string $statusFilter = 'all';
+    public string $statusFilter = 'open';
+
+    public string $sortField = 'priority';
+
+    public string $sortDirection = 'desc';
 
     public string $search = '';
 
@@ -60,6 +67,20 @@ class TicketWorkspace extends Component
         abort_unless(in_array($status, ['all', 'mine', ...Ticket::STATUSES], true), 422);
 
         $this->statusFilter = $status;
+        $this->resetPage();
+    }
+
+    public function sortTickets(string $field): void
+    {
+        abort_unless(in_array($field, self::SORT_FIELDS, true), 422);
+
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = $field === 'priority' ? 'desc' : 'asc';
+        }
+
         $this->resetPage();
     }
 
@@ -176,6 +197,24 @@ class TicketWorkspace extends Component
         return Ticket::query()->visibleTo(auth()->user())->with('messages.attachments', 'assignee', 'customer')->find($this->ticketId);
     }
 
+    /**
+     * Ticket id is always the final tiebreaker so the oldest tickets come first
+     * within equal values. Public Livewire properties can be tampered with,
+     * hence the whitelist fallback here and not only in sortTickets().
+     *
+     * @param  Builder<Ticket>  $query
+     */
+    private function applySort(Builder $query): void
+    {
+        $direction = $this->sortDirection === 'asc' ? 'asc' : 'desc';
+
+        match (in_array($this->sortField, self::SORT_FIELDS, true) ? $this->sortField : 'priority') {
+            'id' => $query->orderBy('id', $direction),
+            'created_at' => $query->orderBy('created_at', $direction)->orderBy('id'),
+            'priority' => $query->orderByPriority($direction)->orderBy('id'),
+        };
+    }
+
     public function render()
     {
         $tickets = Ticket::query()
@@ -186,7 +225,7 @@ class TicketWorkspace extends Component
                 fn ($q) => $q->where('subject', 'like', "%{$this->search}%")
                     ->orWhere('requester_email', 'like', "%{$this->search}%")
             ))
-            ->latest()
+            ->tap(fn ($query) => $this->applySort($query))
             ->paginate(20);
 
         $ticket = $this->selectedTicket();
