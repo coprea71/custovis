@@ -20,7 +20,7 @@
             </label>
             <label>Priorität
                 <select wire:model="form.priority" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2">
-                    @foreach (['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend'] as $value => $label)
+                    @foreach (\App\Models\Ticket::PRIORITY_LABELS as $value => $label)
                         <option value="{{ $value }}">{{ $label }}</option>
                     @endforeach
                 </select>

@@ -16,7 +16,7 @@
                 <table class="w-full text-sm">
                     <thead><tr class="text-left text-slate-500"><th class="py-1">Priorität</th><th>Erste Reaktion</th><th>Lösung</th></tr></thead>
                     <tbody>
-                        @foreach (['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend'] as $priority => $label)
+                        @foreach (\App\Models\Ticket::PRIORITY_LABELS as $priority => $label)
                             <tr>
                                 <td class="py-1.5">{{ $label }}</td>
                                 <td><input type="number" min="1" wire:model="policies.{{ $priority }}.response" aria-label="Reaktion {{ $label }}" class="w-28 border border-slatecalm-200 rounded-lg px-2 py-1"></td>

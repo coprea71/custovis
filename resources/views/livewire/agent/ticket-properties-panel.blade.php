@@ -2,14 +2,14 @@
     <h3 class="font-semibold text-slate-500 uppercase tracking-wide">Bearbeitung</h3>
     <label class="block text-slate-600">Status
         <select wire:model="status" class="w-full mt-0.5 border border-slatecalm-200 rounded-lg px-2 py-1.5">
-            @foreach (['open' => 'Offen', 'pending' => 'Wartend', 'closed' => 'Geschlossen'] as $value => $label)
+            @foreach (\App\Models\Ticket::STATUS_LABELS as $value => $label)
                 <option value="{{ $value }}">{{ $label }}</option>
             @endforeach
         </select>
     </label>
     <label class="block text-slate-600">Priorität
         <select wire:model="priority" class="w-full mt-0.5 border border-slatecalm-200 rounded-lg px-2 py-1.5">
-            @foreach (['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend'] as $value => $label)
+            @foreach (\App\Models\Ticket::PRIORITY_LABELS as $value => $label)
                 <option value="{{ $value }}">{{ $label }}</option>
             @endforeach
         </select>
