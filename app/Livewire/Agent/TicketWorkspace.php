@@ -68,6 +68,25 @@ class TicketWorkspace extends Component
 
         $this->statusFilter = $status;
         $this->resetPage();
+        $this->deselectTicketHiddenByFilter();
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+        $this->deselectTicketHiddenByFilter();
+    }
+
+    /**
+     * A ticket that is no longer in the filtered list must not stay open on
+     * the right, otherwise agents type into a ticket they can no longer see.
+     */
+    private function deselectTicketHiddenByFilter(): void
+    {
+        if ($this->ticketId && ! $this->filteredTickets()->whereKey($this->ticketId)->exists()) {
+            $this->ticketId = null;
+            $this->replyBody = '';
+        }
     }
 
     public function sortTickets(string $field): void
@@ -215,16 +234,24 @@ class TicketWorkspace extends Component
         };
     }
 
-    public function render()
+    /**
+     * @return Builder<Ticket>
+     */
+    private function filteredTickets(): Builder
     {
-        $tickets = Ticket::query()
+        return Ticket::query()
             ->visibleTo(auth()->user())
             ->when($this->statusFilter === 'mine', fn ($query) => $query->where('assigned_to', auth()->id())->where('status', '!=', 'closed'))
             ->when(in_array($this->statusFilter, Ticket::STATUSES, true), fn ($query) => $query->where('status', $this->statusFilter))
             ->when($this->search !== '', fn ($query) => $query->where(
                 fn ($q) => $q->where('subject', 'like', "%{$this->search}%")
                     ->orWhere('requester_email', 'like', "%{$this->search}%")
-            ))
+            ));
+    }
+
+    public function render()
+    {
+        $tickets = $this->filteredTickets()
             ->tap(fn ($query) => $this->applySort($query))
             ->paginate(20);
 
