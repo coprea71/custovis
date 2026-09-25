@@ -4,9 +4,13 @@ namespace App\Livewire\Admin;
 
 use App\Models\Mailbox;
 use App\Models\Team;
+use App\Services\MailboxImapService;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Throwable;
 
 #[Layout('layouts.admin')]
 class MailboxManager extends Component
@@ -38,6 +42,9 @@ class MailboxManager extends Component
     public string $smtp_username = '';
 
     public string $smtp_password = '';
+
+    /** @var array<int, array{ok: bool, message: string}> */
+    public array $testResults = [];
 
     public function mount(): void
     {
@@ -122,6 +129,21 @@ class MailboxManager extends Component
 
         $mailbox = Mailbox::query()->findOrFail($mailboxId);
         $mailbox->update(['active' => ! $mailbox->active]);
+    }
+
+    public function testConnection(int $mailboxId, MailboxImapService $imap): void
+    {
+        Gate::authorize('mailboxes.manage');
+
+        $mailbox = Mailbox::query()->findOrFail($mailboxId);
+
+        try {
+            $unseen = $imap->countUnseen($mailbox);
+            $this->testResults[$mailboxId] = ['ok' => true, 'message' => "Verbindung erfolgreich – {$unseen} ungelesene Nachricht(en) in der INBOX."];
+        } catch (Throwable $e) {
+            Log::warning("MailboxManager: IMAP test failed for mailbox [{$mailbox->id}]: {$e->getMessage()}");
+            $this->testResults[$mailboxId] = ['ok' => false, 'message' => 'Verbindung fehlgeschlagen: '.Str::limit($e->getMessage(), 200)];
+        }
     }
 
     public function render()

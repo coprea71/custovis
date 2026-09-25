@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Mailbox;
 use App\Services\Dashboard\DashboardSnapshotService;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
@@ -19,6 +20,7 @@ class ManagementDashboard extends Component
     {
         return view('livewire.admin.management-dashboard', [
             'snapshot' => $snapshots->forScope(null),
+            'failingMailboxCount' => Gate::allows('mailboxes.manage') ? Mailbox::query()->withFetchError()->count() : 0,
         ]);
     }
 }
