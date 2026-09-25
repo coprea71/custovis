@@ -18,9 +18,9 @@
         @endcan
     @endmodule
     @module('field-service')
-        @can('appointments.view.own')
+        @if (auth()->user()->can('appointments.view.own') && auth()->user()->technicianProfile?->active)
             <x-nav-link :href="route('field.app')">Techniker-App</x-nav-link>
-        @endcan
+        @endif
     @endmodule
     @module('knowledge-base')
         @can('kb.articles.view')
