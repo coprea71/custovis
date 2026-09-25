@@ -12,6 +12,7 @@ Bitte melde Sicherheitslücken **nicht** über öffentliche GitHub-Issues.
 Nutze stattdessen das vertrauliche Meldeformular von GitHub:
 [Sicherheitslücke melden](https://github.com/coprea71/custovis/security/advisories/new)
 (Reiter *Security* → *Report a vulnerability*).
+Alternativ per E-Mail an **support@fahrklar.net** (Betreff: „Custovis Security“).
 
 Die Meldung ist nur für dich und den Projektbetreuer sichtbar. Bitte beschreibe
 betroffene Version, Schritte zum Nachstellen und mögliche Auswirkungen. Nach
