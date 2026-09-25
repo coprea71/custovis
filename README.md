@@ -120,6 +120,11 @@ Open-Source-Charakter dauerhaft:
 
 Maßgeblich ist allein der Lizenztext in der Datei [LICENSE](LICENSE).
 
+## Kontakt
+
+- Fehler und Wünsche: [GitHub-Issues](https://github.com/coprea71/custovis/issues)
+- Sonstige Anfragen: [support@fahrklar.net](mailto:support@fahrklar.net)
+
 ## Sicherheit
 
 Siehe [SECURITY.md](SECURITY.md).
