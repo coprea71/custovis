@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Services\Installation\EnvironmentWriter;
 use App\Services\Installation\InstallationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 use Illuminate\View\View;
 use InvalidArgumentException;
+use Spatie\Permission\PermissionRegistrar;
 
 /**
  * Single-step web installer for FTP/SFTP-only hosting (12.md). Runs without
@@ -92,7 +94,9 @@ class InstallController extends Controller
 
     /**
      * The new .env only applies from the next request on — the current one
-     * needs the values at runtime to migrate and create the admin.
+     * needs the values at runtime to migrate and create the admin. The cache
+     * store was already resolved at boot against the fallback connection
+     * (sqlite without .env), so it has to be rebuilt on the new connection.
      *
      * @param  array<string, mixed>  $db
      */
@@ -105,6 +109,8 @@ class InstallController extends Controller
             'database.connections.mysql' => array_merge(config('database.connections.mysql'), $db),
         ]);
         DB::purge('mysql');
+        Cache::forgetDriver();
+        app(PermissionRegistrar::class)->initializeCache();
     }
 
     /**
