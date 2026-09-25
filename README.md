@@ -106,8 +106,19 @@ php artisan test
 
 ## Lizenz
 
-[AGPLv3](LICENSE): schließt die SaaS-Lücke und schützt den Open-Source-Charakter
-dauerhaft.
+Copyright (C) 2026 Dirk Eichner
+
+Custovis steht unter der [GNU Affero General Public License v3.0](LICENSE)
+(`AGPL-3.0-only`). Die AGPLv3 schließt die SaaS-Lücke und schützt den
+Open-Source-Charakter dauerhaft:
+
+- Sie dürfen Custovis kostenlos nutzen, verändern und weitergeben – auch kommerziell.
+- Wer eine veränderte Version weitergibt **oder Nutzern über ein Netzwerk
+  bereitstellt** (z. B. als gehosteten Dienst), muss deren vollständigen Quellcode
+  ebenfalls unter der AGPLv3 zugänglich machen.
+- Die Software wird ohne jegliche Gewährleistung bereitgestellt.
+
+Maßgeblich ist allein der Lizenztext in der Datei [LICENSE](LICENSE).
 
 ## Sicherheit
 
