@@ -9,8 +9,13 @@ Sicherheitsupdates versorgt.
 ## Sicherheitslücke melden
 
 Bitte melde Sicherheitslücken **nicht** über öffentliche GitHub-Issues.
-Kontaktiere stattdessen die Projektbetreuer direkt (Kontaktadresse folgt
-mit der Veröffentlichung, siehe [12.md](docs/planhub/12.md)).
+Nutze stattdessen das vertrauliche Meldeformular von GitHub:
+[Sicherheitslücke melden](https://github.com/coprea71/custovis/security/advisories/new)
+(Reiter *Security* → *Report a vulnerability*).
+
+Die Meldung ist nur für dich und den Projektbetreuer sichtbar. Bitte beschreibe
+betroffene Version, Schritte zum Nachstellen und mögliche Auswirkungen. Nach
+Behebung wird die Lücke als GitHub Security Advisory veröffentlicht.
 
 ## Grundsätze
 
