@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Mail\CustomerPasswordLinkMail;
 use App\Models\AuditLog;
 use App\Models\Customer;
+use App\Services\CustomerAccountService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -118,12 +119,7 @@ class CustomerManager extends Component
      */
     private function createCustomer(array $data): void
     {
-        // Admins never set or know a customer password; access is granted
-        // only via the invitation link.
-        $customer = Customer::query()->create([...$data, 'password' => Str::password(64)]);
-        $linked = $customer->linkUnassignedTickets();
-
-        AuditLog::record('customer.created', Auth::user(), null, $customer, ['tickets_linked' => $linked]);
+        $linked = app(CustomerAccountService::class)->create($data, Auth::user());
         $this->status = "Kunde angelegt, {$linked} bestehende Ticket(s) zugeordnet.";
     }
 
