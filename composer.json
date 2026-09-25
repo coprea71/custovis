@@ -5,6 +5,13 @@
     "description": "Open-Source ITSM- und Kundenservice-Suite (ITIL, Shared Mailbox, Self-Service, KI, Field Service) ohne Paywall.",
     "keywords": ["itsm", "ticket-system", "helpdesk", "itil", "laravel", "livewire"],
     "license": "AGPL-3.0-only",
+    "homepage": "https://github.com/coprea71/custovis",
+    "support": {
+        "email": "support@fahrklar.net",
+        "issues": "https://github.com/coprea71/custovis/issues",
+        "source": "https://github.com/coprea71/custovis",
+        "security": "https://github.com/coprea71/custovis/security/policy"
+    },
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
