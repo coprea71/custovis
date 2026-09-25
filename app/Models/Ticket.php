@@ -15,11 +15,11 @@ class Ticket extends Model
 {
     use Auditable, HasFactory;
 
-    public const STATUSES = ['open', 'pending', 'closed', 'reopened'];
+    public const STATUSES = ['open', 'pending', 'closed'];
 
     public const PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
-    public const STATUS_LABELS = ['open' => 'Offen', 'pending' => 'Wartend', 'reopened' => 'Wieder geöffnet', 'closed' => 'Geschlossen'];
+    public const STATUS_LABELS = ['open' => 'Offen', 'pending' => 'Wartend', 'closed' => 'Geschlossen'];
 
     public const PRIORITY_LABELS = ['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend'];
 
@@ -91,6 +91,27 @@ class Ticket extends Model
         $query->where(fn (Builder $inner) => $inner
             ->whereIn('team_id', $user->teams()->select('teams.id'))
             ->orWhere('assigned_to', $user->id));
+    }
+
+    /**
+     * A reopened ticket is a plain open ticket again so it shows up in the
+     * default agent filter; who reopened it is kept in the history instead.
+     */
+    public function reopen(string $actorName, ?int $authorUserId = null): void
+    {
+        $this->update(['status' => 'open', 'closed_at' => null]);
+        $this->recordReopening($actorName, $authorUserId);
+    }
+
+    public function recordReopening(string $actorName, ?int $authorUserId = null): void
+    {
+        $this->messages()->create([
+            'visibility' => TicketMessage::VISIBILITY_INTERNAL_NOTE,
+            'direction' => 'outgoing',
+            'author_user_id' => $authorUserId,
+            'external_author_name' => $authorUserId ? null : 'System',
+            'body_text' => 'Ticket am '.now()->format('d.m.Y H:i').' durch '.$actorName.' wiedereröffnet.',
+        ]);
     }
 
     /**

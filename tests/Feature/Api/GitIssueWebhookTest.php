@@ -6,6 +6,7 @@ use App\Models\GitIssueConnection;
 use App\Models\Team;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Services\GitIssueImportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -103,6 +104,23 @@ class GitIssueWebhookTest extends TestCase
         }
 
         $this->assertSame(1, Ticket::query()->where('external_ref', 'github:acme/widgets#7')->count());
+    }
+
+    public function test_reopened_issue_reopens_closed_ticket_with_internal_note(): void
+    {
+        $this->freezeTime();
+        $connection = $this->makeConnection('github');
+        $import = app(GitIssueImportService::class);
+
+        $ticket = $import->importIssue($connection, '9', 'Absturz', 'Details', 'octocat', 'closed');
+        $import->importIssue($connection, '9', 'Absturz', 'Details', 'octocat', 'open');
+
+        $this->assertSame('open', $ticket->fresh()->status);
+        $this->assertDatabaseHas('ticket_messages', [
+            'ticket_id' => $ticket->id,
+            'visibility' => 'internal_note',
+            'body_text' => 'Ticket am '.now()->format('d.m.Y H:i').' durch GitHub-Issue #9 wiedereröffnet.',
+        ]);
     }
 
     public function test_gitlab_webhook_with_valid_token_creates_ticket(): void

@@ -46,7 +46,12 @@ class TicketPropertiesPanel extends Component
             'assigned_to' => ['nullable', 'integer', Rule::in($this->assignableUserIds((int) $this->team_id))],
         ], ['assigned_to.in' => 'Bearbeiter muss Mitglied des gewählten Teams sein.']);
 
+        $wasClosed = $ticket->status === 'closed';
         $ticket->update([...$data, 'closed_at' => $data['status'] === 'closed' ? ($ticket->closed_at ?? now()) : null]);
+
+        if ($wasClosed && $data['status'] !== 'closed') {
+            $ticket->recordReopening(auth()->user()->name, auth()->id());
+        }
 
         $this->dispatch('ticket-updated');
     }

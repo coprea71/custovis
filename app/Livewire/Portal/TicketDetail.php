@@ -45,7 +45,7 @@ class TicketDetail extends Component
         ]);
 
         if ($ticket->status === 'closed') {
-            $ticket->update(['status' => 'reopened', 'closed_at' => null]);
+            $ticket->reopen($customer->name.' (Kunde)');
         }
 
         $this->reset('reply');

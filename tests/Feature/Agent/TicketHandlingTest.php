@@ -55,6 +55,25 @@ class TicketHandlingTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['action' => 'ticket.updated', 'user_id' => $this->agent->id]);
     }
 
+    public function test_agent_reopening_closed_ticket_records_internal_note(): void
+    {
+        $this->freezeTime();
+
+        $ticket = $this->ticket();
+        $ticket->update(['status' => 'closed', 'closed_at' => now()]);
+
+        Livewire::actingAs($this->agent)->test(TicketPropertiesPanel::class, ['ticketId' => $ticket->id])
+            ->set('status', 'open')->call('save')->assertHasNoErrors();
+
+        $this->assertNull($ticket->fresh()->closed_at);
+        $this->assertDatabaseHas('ticket_messages', [
+            'ticket_id' => $ticket->id,
+            'visibility' => 'internal_note',
+            'author_user_id' => $this->agent->id,
+            'body_text' => 'Ticket am '.now()->format('d.m.Y H:i').' durch '.$this->agent->name.' wiedereröffnet.',
+        ]);
+    }
+
     public function test_foreign_team_and_non_member_assignee_are_rejected(): void
     {
         $ticket = $this->ticket();
