@@ -27,6 +27,10 @@ class GitIssueImportService
         $ticket = Ticket::query()->where('source', 'git_issue')->where('external_ref', $externalRef)->first();
 
         if ($ticket) {
+            if ($ticket->status === 'closed' && $status !== 'closed') {
+                $ticket->reopen(($connection->provider === GitIssueConnection::PROVIDER_GITLAB ? 'GitLab' : 'GitHub').'-Issue #'.$externalIssueId);
+            }
+
             $ticket->update(['status' => $status, 'tags' => $labels]);
 
             return $ticket;

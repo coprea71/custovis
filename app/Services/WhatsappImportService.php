@@ -56,7 +56,7 @@ class WhatsappImportService
         $openTicket = Ticket::query()
             ->where('whatsapp_account_id', $account->id)
             ->where('requester_phone', $fromPhone)
-            ->whereIn('status', ['open', 'pending', 'reopened'])
+            ->whereIn('status', ['open', 'pending'])
             ->latest()
             ->first();
 
@@ -72,7 +72,7 @@ class WhatsappImportService
             ->first();
 
         if ($lastClosedTicket) {
-            $lastClosedTicket->update(['status' => 'reopened', 'closed_at' => null]);
+            $lastClosedTicket->reopen($fromName.' (WhatsApp)');
 
             return $lastClosedTicket;
         }

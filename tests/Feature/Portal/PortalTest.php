@@ -70,6 +70,8 @@ class PortalTest extends TestCase
 
     public function test_timeline_hides_internal_notes_and_reply_reopens_closed_ticket(): void
     {
+        $this->freezeTime();
+
         $ticket = $this->ticket(['customer_id' => $this->alice->id, 'status' => 'closed', 'closed_at' => now()]);
         $ticket->messages()->create(['visibility' => TicketMessage::VISIBILITY_PUBLIC, 'direction' => 'outgoing', 'body_text' => 'Öffentliche Antwort']);
         $ticket->messages()->create(['visibility' => TicketMessage::VISIBILITY_INTERNAL_NOTE, 'direction' => 'outgoing', 'body_text' => 'Interner Vermerk']);
@@ -82,7 +84,8 @@ class PortalTest extends TestCase
             ->call('sendReply')
             ->assertHasNoErrors();
 
-        $this->assertSame('reopened', $ticket->fresh()->status);
+        $this->assertSame('open', $ticket->fresh()->status);
+        $this->assertDatabaseHas('ticket_messages', ['ticket_id' => $ticket->id, 'visibility' => TicketMessage::VISIBILITY_INTERNAL_NOTE, 'body_text' => 'Ticket am '.now()->format('d.m.Y H:i').' durch '.$this->alice->name.' (Kunde) wiedereröffnet.']);
         $this->assertDatabaseHas('ticket_messages', ['ticket_id' => $ticket->id, 'author_customer_id' => $this->alice->id, 'direction' => 'incoming']);
     }
 

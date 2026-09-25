@@ -113,6 +113,8 @@ class WhatsappWebhookTest extends TestCase
 
     public function test_message_after_ticket_closed_reopens_instead_of_creating_new_ticket(): void
     {
+        $this->freezeTime();
+
         $account = $this->makeAccount();
 
         $this->postWhatsapp($account, $this->messagePayload('wamid.1', '491701234567', 'Erste Nachricht'));
@@ -123,7 +125,8 @@ class WhatsappWebhookTest extends TestCase
 
         $this->assertSame(1, Ticket::query()->where('requester_phone', '491701234567')->count());
         $ticket->refresh();
-        $this->assertSame('reopened', $ticket->status);
+        $this->assertSame('open', $ticket->status);
+        $this->assertDatabaseHas('ticket_messages', ['ticket_id' => $ticket->id, 'visibility' => 'internal_note', 'body_text' => 'Ticket am '.now()->format('d.m.Y H:i').' durch Max Mustermann (WhatsApp) wiedereröffnet.']);
     }
 
     public function test_duplicate_webhook_delivery_does_not_duplicate_message(): void
