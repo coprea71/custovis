@@ -5,12 +5,13 @@ namespace App\Jobs;
 use App\DataTransferObjects\IncomingMailAttachmentData;
 use App\DataTransferObjects\IncomingMailMessageData;
 use App\Models\Mailbox;
+use App\Services\MailboxImapService;
 use App\Services\MailToTicketService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Throwable;
-use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Message;
 
 class FetchMailboxJob implements ShouldQueue
@@ -22,25 +23,22 @@ class FetchMailboxJob implements ShouldQueue
         $this->onQueue('mail-fetch');
     }
 
-    public function handle(MailToTicketService $mailToTicket): void
+    public function handle(MailToTicketService $mailToTicket, MailboxImapService $imap): void
     {
         if (! $this->mailbox->active) {
             return;
         }
 
-        $client = (new ClientManager)->make([
-            'host' => $this->mailbox->imap_host,
-            'port' => $this->mailbox->imap_port,
-            'encryption' => $this->mailbox->imap_encryption === 'none' ? false : $this->mailbox->imap_encryption,
-            'validate_cert' => true,
-            'username' => $this->mailbox->imap_username,
-            'password' => $this->mailbox->imap_password,
-            'protocol' => 'imap',
-        ]);
+        try {
+            $messages = $imap->connect($this->mailbox)->getFolder('INBOX')->query()->unseen()->get();
+        } catch (Throwable $e) {
+            $this->mailbox->update([
+                'last_fetch_error' => Str::limit($e->getMessage(), 500),
+                'last_fetch_error_at' => now(),
+            ]);
 
-        $client->connect();
-
-        $messages = $client->getFolder('INBOX')->query()->unseen()->get();
+            throw $e;
+        }
 
         foreach ($messages as $message) {
             try {
@@ -51,7 +49,11 @@ class FetchMailboxJob implements ShouldQueue
             }
         }
 
-        $this->mailbox->update(['last_fetched_at' => now()]);
+        $this->mailbox->update([
+            'last_fetched_at' => now(),
+            'last_fetch_error' => null,
+            'last_fetch_error_at' => null,
+        ]);
     }
 
     private function toIncomingMailData(Message $message): IncomingMailMessageData

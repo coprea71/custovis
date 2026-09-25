@@ -5,6 +5,7 @@ namespace Tests\Feature\Dashboard;
 use App\Livewire\Admin\ManagementDashboard;
 use App\Livewire\Agent\Team\TeamDashboard;
 use App\Models\DashboardSnapshot;
+use App\Models\Mailbox;
 use App\Models\Team;
 use App\Models\Ticket;
 use App\Models\User;
@@ -84,6 +85,23 @@ class DashboardTest extends TestCase
             ->test(ManagementDashboard::class)
             ->assertOk()
             ->assertSee('Offene Tickets je Team');
+    }
+
+    public function test_management_dashboard_warns_about_failing_mailboxes(): void
+    {
+        Mailbox::factory()->withFetchError()->create();
+        Mailbox::factory()->withFetchError()->create(['active' => false]);
+
+        $manager = User::factory()->create();
+        $manager->givePermissionTo(
+            Permission::findOrCreate('dashboard.management.view', 'web'),
+            Permission::findOrCreate('mailboxes.manage', 'web'),
+        );
+
+        Livewire::actingAs($manager)
+            ->test(ManagementDashboard::class)
+            ->assertSee('Bei 1 Mailbox schlägt der Mailabruf fehl')
+            ->assertSee(route('admin.mailboxes.index'));
     }
 
     public function test_refresh_command_is_scheduled_hourly_and_writes_all_scopes(): void

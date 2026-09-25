@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,6 +55,8 @@ class Mailbox extends Model
         'smtp_password',
         'active',
         'last_fetched_at',
+        'last_fetch_error',
+        'last_fetch_error_at',
     ];
 
     protected function casts(): array
@@ -63,6 +66,7 @@ class Mailbox extends Model
             'smtp_password' => 'encrypted',
             'active' => 'boolean',
             'last_fetched_at' => 'datetime',
+            'last_fetch_error_at' => 'datetime',
         ];
     }
 
@@ -80,5 +84,13 @@ class Mailbox extends Model
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     */
+    public function scopeWithFetchError(Builder $query): void
+    {
+        $query->where('active', true)->whereNotNull('last_fetch_error');
     }
 }

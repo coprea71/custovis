@@ -10,8 +10,20 @@
                     @if ($mailbox->last_fetched_at)
                         <p class="text-xs text-slate-400">Zuletzt abgerufen: {{ $mailbox->last_fetched_at->diffForHumans() }}</p>
                     @endif
+                    @if ($mailbox->active && $mailbox->last_fetch_error)
+                        <p class="text-xs mt-1 px-2 py-1 rounded-lg bg-red-50 text-red-700">
+                            ⚠ Abruffehler seit {{ $mailbox->last_fetch_error_at?->diffForHumans() }}: {{ $mailbox->last_fetch_error }}
+                        </p>
+                    @endif
+                    @isset ($testResults[$mailbox->id])
+                        <p class="text-xs mt-1 {{ $testResults[$mailbox->id]['ok'] ? 'text-calm-700' : 'text-red-600' }}">{{ $testResults[$mailbox->id]['message'] }}</p>
+                    @endisset
                 </div>
                 <div class="flex items-center gap-2">
+                    <button wire:click="testConnection({{ $mailbox->id }})" wire:loading.attr="disabled" wire:target="testConnection({{ $mailbox->id }})" class="text-xs px-3 py-1.5 rounded-lg font-medium bg-slatecalm-100 text-slate-700 hover:bg-slatecalm-200 disabled:opacity-50">
+                        <span wire:loading.remove wire:target="testConnection({{ $mailbox->id }})">Abruf testen</span>
+                        <span wire:loading wire:target="testConnection({{ $mailbox->id }})">Teste …</span>
+                    </button>
                     <button wire:click="toggleActive({{ $mailbox->id }})" class="text-xs px-3 py-1.5 rounded-lg font-medium {{ $mailbox->active ? 'bg-calm-100 text-calm-800' : 'bg-slatecalm-100 text-slate-500' }}">
                         {{ $mailbox->active ? 'Aktiv' : 'Inaktiv' }}
                     </button>
