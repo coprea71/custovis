@@ -13,7 +13,7 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [x] #9 [Interner Team-Chat](archiv/9.md)
 - [x] #10 [Self-Service-Portal](archiv/10.md)
 - [x] #11 [Compliance-Härtung](archiv/11.md)
-- [ ] #12 [Veröffentlichung](12.md)
+- [x] #12 [Veröffentlichung](archiv/12.md)
 - [x] #13 [Globale MCP-API für KI-Telefonassistenten](archiv/13.md)
 - [x] #14 [Techniker-Einsatzplanung & Technikerverwaltung](archiv/14.md)
 - [x] #15 [ERP-Kundendaten-Anbindung (Odoo/Shopware, read-only)](archiv/15.md)
