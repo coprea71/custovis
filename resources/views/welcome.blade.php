@@ -1,13 +1,13 @@
 <x-layouts.app title="Service-Portal" body-class="bg-canvas" :scripts="false">
     <x-slot:head>
         <meta name="description" content="{{ config('app.name') }}: Support-Anfragen stellen und verfolgen, Hilfe-Artikel lesen und – für Mitarbeitende – Tickets, Einsätze und Wissensdatenbank bearbeiten.">
-        <link rel="canonical" href="{{ url('/') }}">
+        <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}/">
         <script type="application/ld+json">
             {!! json_encode([
                 '@context' => 'https://schema.org',
                 '@type' => 'WebApplication',
                 'name' => config('app.name'),
-                'url' => url('/'),
+                'url' => rtrim(config('app.url'), '/').'/',
                 'applicationCategory' => 'BusinessApplication',
                 'description' => 'Service-Portal mit Ticketsystem, Kundenportal und Wissensdatenbank.',
                 'inLanguage' => 'de',
