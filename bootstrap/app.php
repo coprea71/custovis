@@ -70,10 +70,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias(['module' => EnsureModuleIsAvailable::class]);
 
         // The installation runs under several domains (APP_URL + APP_HOSTS).
-        $middleware->trustHosts(at: fn () => array_map(
+        // Without APP_HOSTS nothing is restricted, so the web installer still
+        // opens on a fresh server where APP_URL is not configured yet.
+        $middleware->trustHosts(at: fn () => config('app.hosts') === [] ? [] : array_map(
             fn (string $host) => '^'.preg_quote($host).'$',
-            config('app.hosts'),
-        ));
+            [parse_url(config('app.url'), PHP_URL_HOST), ...config('app.hosts')],
+        ), subdomains: false);
         $middleware->appendToGroup('web', ScopePasskeysToRequestHost::class);
 
         // Customers and agents have separate logins (guards customer/web).

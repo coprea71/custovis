@@ -47,4 +47,12 @@ class MultiDomainTest extends TestCase
         $this->get('https://support.eichner-net.de/')->assertOk();
         $this->get('https://evil.example/')->assertStatus(400);
     }
+
+    public function test_hosts_are_not_restricted_before_app_hosts_is_configured(): void
+    {
+        $this->app['env'] = 'production';
+        config(['app.hosts' => []]);
+
+        $this->get('https://support.eichner-net.de/')->assertOk();
+    }
 }
