@@ -172,6 +172,24 @@ class FieldServiceTest extends TestCase
         $this->actingAs($technician->user)->get('/agent/dispatch')->assertForbidden();
     }
 
+    public function test_field_app_explains_a_missing_or_inactive_technician_profile(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('system_admin');
+
+        $this->actingAs($admin)->get('/field')->assertForbidden()->assertSee('kein aktives Technikerprofil');
+        $this->actingAs($admin)->getJson('/field/today')->assertForbidden()
+            ->assertJsonPath('message', fn (string $message) => str_contains($message, 'kein aktives Technikerprofil'));
+        $this->actingAs($admin)->get('/agent')->assertOk()->assertDontSee('Techniker-App');
+
+        $technician = $this->technician('Tina');
+        $this->actingAs($technician->user)->get('/agent')->assertSee('Techniker-App');
+
+        $technician->update(['active' => false]);
+        $this->actingAs($technician->user)->get('/field')->assertForbidden();
+        $this->actingAs($technician->user->fresh())->get('/agent')->assertDontSee('Techniker-App');
+    }
+
     public function test_routing_service_uses_osrm_and_validates_answers(): void
     {
         config(['custovis.field_service.osrm_url' => 'https://osrm.example.test', 'custovis.field_service.nominatim_url' => 'https://nominatim.example.test']);

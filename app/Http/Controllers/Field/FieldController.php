@@ -58,9 +58,12 @@ class FieldController extends Controller
 
     private function technician(Request $request): TechnicianProfile
     {
-        abort_unless($request->user()->can('appointments.view.own'), 403);
+        abort_unless($request->user()->can('appointments.view.own'), 403, 'Ihnen fehlt die Berechtigung für die Techniker-App.');
 
-        return TechnicianProfile::query()->where('user_id', $request->user()->id)->where('active', true)->firstOrFail();
+        // An explicit 403 instead of a bare 404: the route exists, only the
+        // profile is missing — admins otherwise read "Not Found" as a broken deploy.
+        return TechnicianProfile::query()->where('user_id', $request->user()->id)->where('active', true)->first()
+            ?? abort(403, 'Für Ihr Konto ist kein aktives Technikerprofil hinterlegt. Eine Administratorin oder ein Administrator kann es unter Administration → Techniker anlegen bzw. aktivieren.');
     }
 
     /**
