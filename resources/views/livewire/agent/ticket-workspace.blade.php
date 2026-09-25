@@ -186,13 +186,17 @@
                     <p class="text-sm font-medium text-slatecalm-900">{{ $ticket->requester_name ?: '—' }}</p>
                     <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: $ticket->requester_phone ?: '—' }}</p>
 
-                    @module('erp-integration')
-                        @can('erp.customer.view')
+                    @if (\App\Livewire\Agent\TicketErpPanel::availableFor($ticket, auth()->user()))
+                        <div class="mb-4">
+                            <livewire:agent.ticket-erp-panel :ticket-id="$ticket->id" :key="'erp-panel-'.$ticket->id" />
+                        </div>
+                    @elseif ($ticket->customer_id === null)
+                        @can('customers.manage')
                             <div class="mb-4">
-                                <livewire:agent.ticket-erp-panel :ticket-id="$ticket->id" :key="'erp-panel-'.$ticket->id" />
+                                <livewire:agent.ticket-customer-create :ticket-id="$ticket->id" :key="'customer-create-'.$ticket->id" />
                             </div>
                         @endcan
-                    @endmodule
+                    @endif
 
                     <livewire:agent.ticket-properties-panel :ticket-id="$ticket->id" :key="'props-'.$ticket->id" />
                     <livewire:agent.ticket-itil-panel :ticket-id="$ticket->id" :key="'itil-'.$ticket->id" />

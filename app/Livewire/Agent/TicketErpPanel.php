@@ -4,8 +4,10 @@ namespace App\Livewire\Agent;
 
 use App\Models\ErpConnection;
 use App\Models\Ticket;
+use App\Models\User;
 use App\Services\Erp\ErpCustomerLookupService;
 use App\Services\Erp\ErpLookupException;
+use App\Services\ModuleAccess;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
@@ -25,6 +27,18 @@ class TicketErpPanel extends Component
      */
     #[Locked]
     public ?array $results = null;
+
+    /**
+     * The panel is only offered when the user may use it and the ticket's
+     * team actually has an active ERP connection to query.
+     */
+    public static function availableFor(Ticket $ticket, ?User $user): bool
+    {
+        return $user !== null
+            && app(ModuleAccess::class)->allows($user, 'erp-integration')
+            && $user->can('erp.customer.view')
+            && ErpConnection::query()->where('team_id', $ticket->team_id)->where('is_active', true)->exists();
+    }
 
     public function mount(): void
     {
