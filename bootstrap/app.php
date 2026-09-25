@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\McpHealthController;
+use App\Http\Controllers\WebCronController;
 use App\Http\Controllers\Webhooks\WhatsappWebhookController;
 use App\Http\Middleware\EnsureModuleIsAvailable;
 use App\Http\Middleware\EnsureTwoFactorIsConfirmed;
@@ -59,6 +60,9 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->middleware(['auth:sanctum', CheckAbilities::class.':mcp.tools.use', 'throttle:mcp']);
                 Route::get('/mcp/health', McpHealthController::class)->middleware('throttle:mcp-health');
             });
+
+            // Web cron for hosts without shell/cronjob (token secured, no session).
+            Route::middleware(['api', 'throttle:10,1'])->get('/cron/{token}', WebCronController::class)->name('web-cron');
 
             Route::middleware('api')->group(function () {
                 Route::get('/webhooks/whatsapp/{account}', [WhatsappWebhookController::class, 'verify'])->middleware('module:whatsapp');

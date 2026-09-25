@@ -20,4 +20,34 @@
             <button type="button" wire:click="migrate" wire:confirm="Ausstehende Migrationen jetzt ausführen?" class="px-4 py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium">{{ count($pending) }} Migration(en) ausführen</button>
         @endif
     </section>
+
+    <section class="bg-white border border-slatecalm-200 rounded-2xl p-6 space-y-4">
+        <div>
+            <h2 class="font-semibold text-slatecalm-900">Web-Cron</h2>
+            <p class="text-sm text-slate-500">Ohne Cronjob auf dem Server werden keine Mails abgerufen und keine Hintergrundaufgaben erledigt. Lass diese URL beim Hoster oder einem Web-Cron-Dienst jede Minute aufrufen.</p>
+        </div>
+
+        @if ($cronUrl)
+            <div class="rounded-xl bg-amber-50 px-4 py-3 space-y-2">
+                <p class="text-xs text-amber-800">Die URL wird nur jetzt angezeigt. Bitte sofort kopieren und geheim halten.</p>
+                <input type="text" readonly value="{{ $cronUrl }}" onclick="this.select()" class="w-full font-mono text-xs border border-amber-200 rounded-lg px-3 py-2 bg-white">
+            </div>
+        @endif
+
+        <p class="text-sm {{ $cronLastRun ? 'text-calm-700' : 'text-slate-500' }}">
+            @if ($cronLastRun)
+                Letzter Aufruf: {{ $cronLastRun->diffForHumans() }}
+            @elseif ($cronConfigured)
+                Die URL wurde erzeugt, aber noch nie aufgerufen.
+            @else
+                Noch keine Web-Cron-URL erzeugt.
+            @endif
+        </p>
+
+        <button type="button" wire:click="regenerateCronUrl"
+                @if ($cronConfigured) wire:confirm="Neue URL erzeugen? Die bisherige URL funktioniert danach nicht mehr." @endif
+                class="px-4 py-2 bg-slatecalm-100 hover:bg-slatecalm-200 text-slate-700 rounded-xl text-sm font-medium">
+            {{ $cronConfigured ? 'Neue URL erzeugen' : 'URL erzeugen' }}
+        </button>
+    </section>
 </div>
