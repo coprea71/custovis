@@ -33,7 +33,7 @@ class TicketWorkspaceTest extends TestCase
 
     public function test_guest_is_redirected_to_login(): void
     {
-        $this->get('/agent')->assertRedirect('/login');
+        $this->get('/agent')->assertRedirect('/agent/login');
     }
 
     public function test_agent_can_see_ticket_list(): void

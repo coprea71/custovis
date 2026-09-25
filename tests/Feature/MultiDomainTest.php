@@ -25,7 +25,7 @@ class MultiDomainTest extends TestCase
     public function test_links_and_passkeys_follow_the_additional_domain(): void
     {
         $this->get('https://support.eichner-net.de/')->assertOk()
-            ->assertSee('https://support.eichner-net.de/login', false)
+            ->assertSee('https://support.eichner-net.de/agent/login', false)
             ->assertSee('<link rel="canonical" href="https://support.fahrklar.net/">', false);
 
         $this->assertSame('support.eichner-net.de', config('passkeys.relying_party_id'));

@@ -26,6 +26,7 @@ class NavigationTest extends TestCase
         $this->get('/')->assertOk()
             ->assertSee('<meta name="description"', false)
             ->assertSee('application/ld+json', false)
+            ->assertSee('"@context":"https://schema.org"', false)
             ->assertSee(route('portal.login'))
             ->assertSee(route('login'));
     }
@@ -47,7 +48,7 @@ class NavigationTest extends TestCase
         $this->actingAs($admin)->get('/agent')->assertSee('>Administration<', false);
         $this->actingAs($admin)->get('/admin/dashboard')->assertOk()->assertSee('Agenten-Bereich')->assertSee('Mailboxen');
 
-        $this->actingAs($agent)->post('/logout')->assertRedirect();
+        $this->actingAs($agent)->post('/agent/logout')->assertRedirect('/agent/login');
         $this->assertGuest('web');
     }
 

@@ -75,6 +75,12 @@ return [
 
     'home' => '/agent',
 
+    // Straight back to the staff login, so staff don't land on the portal
+    // tile of the start page and try their credentials there.
+    'redirects' => [
+        'logout' => '/agent/login',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Fortify Routes Prefix / Subdomain
@@ -86,7 +92,9 @@ return [
     |
     */
 
-    'prefix' => '',
+    // Staff auth lives under /agent so it can't be mixed up with the
+    // customer portal (/portal/login).
+    'prefix' => 'agent',
 
     'domain' => null,
 

@@ -60,9 +60,9 @@ class UserAdministrationTest extends TestCase
         Livewire::actingAs($this->admin)->test(UserManager::class)->call('toggleActive', $agent->id)->assertHasNoErrors();
         $this->assertFalse($agent->fresh()->active);
 
-        $this->actingAs($agent->fresh())->get('/agent')->assertRedirect('/login');
+        $this->actingAs($agent->fresh())->get('/agent')->assertRedirect('/agent/login');
         $this->assertGuest('web');
-        $this->post('/login', ['email' => 'agent@example.com', 'password' => 'richtiges-passwort']);
+        $this->post('/agent/login', ['email' => 'agent@example.com', 'password' => 'richtiges-passwort']);
         $this->assertGuest('web');
     }
 

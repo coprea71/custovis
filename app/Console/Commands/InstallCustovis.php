@@ -47,7 +47,7 @@ class InstallCustovis extends Command
         }
 
         $installation->install($admin, (bool) $this->option('demo'));
-        $this->info('Installation abgeschlossen. Anmeldung unter '.url('/login'));
+        $this->info('Installation abgeschlossen. Anmeldung unter '.route('login'));
 
         return self::SUCCESS;
     }
