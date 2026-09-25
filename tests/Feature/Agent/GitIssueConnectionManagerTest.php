@@ -3,6 +3,7 @@
 namespace Tests\Feature\Agent;
 
 use App\Livewire\Agent\Team\GitIssueConnectionManager;
+use App\Models\GitIssueConnection;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,6 +33,28 @@ class GitIssueConnectionManagerTest extends TestCase
             'team_id' => $team->id,
             'repository' => 'acme/widgets',
         ]);
+    }
+
+    public function test_webhook_url_is_shown_for_active_webhook_connections(): void
+    {
+        $team = Team::query()->create(['name' => 'Support', 'slug' => 'support']);
+        $user = User::factory()->create();
+        $team->users()->attach($user, ['role_in_team' => 'team_admin']);
+
+        $connection = GitIssueConnection::query()->create([
+            'team_id' => $team->id,
+            'provider' => 'github',
+            'repository' => 'acme/widgets',
+            'access_token' => 'ghp_secret',
+            'webhook_secret' => 'wh_secret_123',
+            'sync_mode' => 'webhook',
+            'created_by' => $user->id,
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(GitIssueConnectionManager::class, ['team' => $team])
+            ->assertSee(url("/api/v1/git-issues/github/{$connection->id}"))
+            ->assertDontSee('wh_secret_123');
     }
 
     public function test_plain_member_cannot_manage_git_connections(): void

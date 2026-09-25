@@ -55,6 +55,14 @@
                         {{ $connection->isRevoked() ? 'Widerrufen' : 'Aktiv' }} ·
                         Letzter Sync: {{ $connection->last_synced_at?->diffForHumans() ?? 'nie' }}
                     </p>
+                    @if ($connection->sync_mode === 'webhook' && ! $connection->isRevoked())
+                        <p class="text-xs text-slate-500 mt-1">
+                            Webhook-URL: <code class="select-all text-slatecalm-900">{{ url('/api/v1/git-issues/'.$connection->provider.'/'.$connection->id) }}</code>
+                            @if ($connection->provider === 'github')
+                                · Content type <code>application/json</code>, Ereignisse „Issues“ und „Issue comments“
+                            @endif
+                        </p>
+                    @endif
                 </div>
                 @if (! $readOnly && ! $connection->isRevoked())
                     <button wire:click="revokeConnection({{ $connection->id }})" wire:confirm="Verbindung wirklich widerrufen?"
