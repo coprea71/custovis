@@ -20,6 +20,17 @@
                     >{{ $label }}</button>
                 @endforeach
             </div>
+
+            <div class="flex items-center space-x-2 text-xs">
+                <span class="text-slate-500">Sortieren:</span>
+                @foreach (['priority' => 'Prio', 'created_at' => 'Datum', 'id' => 'ID'] as $value => $label)
+                    <button
+                        type="button"
+                        wire:click="sortTickets('{{ $value }}')"
+                        class="px-3 py-1 rounded-lg font-medium shrink-0 transition {{ $sortField === $value ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200' }}"
+                    >{{ $label }}@if ($sortField === $value) {{ $sortDirection === 'asc' ? '↑' : '↓' }}@endif</button>
+                @endforeach
+            </div>
         </div>
 
         <div class="flex-1 overflow-y-auto divide-y divide-slatecalm-200">
@@ -56,8 +67,13 @@
             >
                 <div class="flex flex-col h-full flex-1 min-w-0">
                     <div class="bg-white border-b border-slatecalm-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shrink-0">
-                        <div>
-                            <span class="text-xs font-mono font-bold text-calm-700 bg-calm-100 px-2.5 py-1 rounded-md">#{{ $ticket->id }}</span>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-xs font-mono font-bold text-calm-700 bg-calm-100 px-2.5 py-1 rounded-md">#{{ $ticket->id }}</span>
+                                <span class="text-xs font-medium text-slate-600">
+                                    {{ \App\Models\Ticket::PRIORITY_LABELS[$ticket->priority] ?? $ticket->priority }} | {{ \App\Models\Ticket::STATUS_LABELS[$ticket->status] ?? $ticket->status }}
+                                </span>
+                            </div>
                             <h2 class="text-lg font-semibold text-slatecalm-900 mt-1">{{ $ticket->subject }}</h2>
                         </div>
 
