@@ -40,7 +40,7 @@ class ThemeManagerTest extends TestCase
         app(ThemeRegistry::class)->sync();
 
         $this->assertSame('musterlayout', app(ThemeRegistry::class)->activeTheme()?->slug);
-        $this->withoutVite()->get('/login')
+        $this->withoutVite()->get('/agent/login')
             ->assertSee('data-theme="musterlayout"', false)
             ->assertSee('--color-calm-600:#3D5E50;', false);
     }

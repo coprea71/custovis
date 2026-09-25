@@ -35,7 +35,7 @@ class ComplianceTest extends TestCase
 
     public function test_public_self_registration_is_disabled(): void
     {
-        $this->post('/register', ['name' => 'X', 'email' => 'x@example.com', 'password' => 'secret123!', 'password_confirmation' => 'secret123!'])
+        $this->post('/agent/register', ['name' => 'X', 'email' => 'x@example.com', 'password' => 'secret123!', 'password_confirmation' => 'secret123!'])
             ->assertNotFound();
         $this->assertDatabaseMissing('users', ['email' => 'x@example.com']);
     }
@@ -71,7 +71,7 @@ class ComplianceTest extends TestCase
         $this->actingAs($agent)->get('/agent')->assertOk();
         $this->actingAs($agent)->withSession(['auth.password_confirmed_at' => time()])
             ->withoutMiddleware(ValidateCsrfToken::class)
-            ->delete('/user/two-factor-authentication')->assertForbidden();
+            ->delete('/agent/user/two-factor-authentication')->assertForbidden();
         $this->assertNotNull($agent->fresh()->two_factor_confirmed_at);
     }
 

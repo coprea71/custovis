@@ -53,7 +53,7 @@ class InstallController extends Controller
             (bool) ($data['demo_data'] ?? false)
         );
 
-        return view('install.done', ['loginUrl' => rtrim($data['app_url'], '/').'/login']);
+        return view('install.done', ['loginUrl' => rtrim($data['app_url'], '/').'/agent/login']);
     }
 
     /**
