@@ -2,7 +2,7 @@
 {{-- Tiles shared by the management and the team dashboard (7.md, DRY). --}}
 @php
     $typeLabels = ['support_ticket' => 'Support-Ticket', 'incident' => 'Incident', 'problem' => 'Problem', 'change' => 'Change', 'service_request' => 'Service-Request'];
-    $priorityLabels = ['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend'];
+    $priorityLabels = \App\Models\Ticket::PRIORITY_LABELS;
     $percent = fn (?float $rate) => $rate === null ? '–' : number_format($rate, 1, ',', '.').' %';
 @endphp
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
