@@ -3,6 +3,9 @@
 namespace App\Livewire\Admin;
 
 use App\Models\AuditLog;
+use App\Models\Setting;
+use App\Services\WebCronService;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +20,8 @@ use Livewire\Component;
 class SystemMaintenance extends Component
 {
     public ?string $output = null;
+
+    public ?string $cronUrl = null;
 
     public function mount(): void
     {
@@ -35,11 +40,21 @@ class SystemMaintenance extends Component
         AuditLog::record('system.migrated', Auth::user(), null, null, ['migrations' => $pending]);
     }
 
-    public function render()
+    public function regenerateCronUrl(WebCronService $cron): void
+    {
+        Gate::authorize('system.maintain');
+
+        $this->cronUrl = route('web-cron', $cron->regenerateToken());
+        AuditLog::record('system.web_cron_token_regenerated', Auth::user(), null);
+    }
+
+    public function render(WebCronService $cron)
     {
         return view('livewire.admin.system-maintenance', [
             'pending' => $this->pendingMigrations(),
             'version' => config('custovis.version'),
+            'cronConfigured' => $cron->isConfigured(),
+            'cronLastRun' => $this->cronLastRun(),
         ]);
     }
 
@@ -57,5 +72,12 @@ class SystemMaintenance extends Component
         $files = $migrator->getMigrationFiles([database_path('migrations')]);
 
         return array_values(array_diff(array_keys($files), $migrator->getRepository()->getRan()));
+    }
+
+    private function cronLastRun(): ?Carbon
+    {
+        $lastRun = Setting::read(WebCronService::LAST_RUN_KEY);
+
+        return $lastRun === null ? null : Carbon::parse($lastRun);
     }
 }

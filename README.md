@@ -183,6 +183,8 @@ php artisan custovis:install  # optional: --demo
   Dashboards, Aufbewahrungsfristen).
 - **Queue-Worker:** `php artisan queue:work --queue=default,mail-fetch,mail-send,git-sync,ai-processing,whatsapp,notifications,field-sync`.
   Ohne dauerhaften Prozess geht auch ein Cronjob mit `queue:work --stop-when-empty`.
+- **Nur Web-Cron möglich (kein Shell-Cronjob):** Unter **Administration → System → Web-Cron**
+  eine geheime URL erzeugen und minütlich aufrufen lassen. Sie ersetzt Cronjob und Queue-Worker.
 - **Zwei-Faktor-Authentifizierung** ist für Agenten und Admins in Produktion Pflicht.
   Sie wird beim ersten Login eingerichtet.
 - **Updates:** neue Version per FTP hochladen, dann unter **Administration → System**
