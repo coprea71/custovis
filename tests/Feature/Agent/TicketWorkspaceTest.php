@@ -134,4 +134,23 @@ class TicketWorkspaceTest extends TestCase
         Livewire::actingAs($user)->test(TicketWorkspace::class, ['ticket' => $ticket])
             ->assertSee('Hoch | Wartend');
     }
+
+    public function test_selected_ticket_is_cleared_when_filter_hides_it(): void
+    {
+        $user = User::factory()->create();
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class, ['ticket' => $ticket])
+            ->set('replyBody', 'Entwurf')
+            ->call('setStatusFilter', 'open')
+            ->assertSet('ticketId', $ticket->id)
+            ->call('setStatusFilter', 'closed')
+            ->assertSet('ticketId', null)
+            ->assertSet('replyBody', '')
+            ->assertSee('Ticket auswählen')
+            ->call('selectTicket', $ticket->id)
+            ->set('search', 'gibt es nicht')
+            ->assertSet('ticketId', null);
+    }
 }
