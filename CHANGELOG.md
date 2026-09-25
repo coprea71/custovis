@@ -8,8 +8,19 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-09-25
+
+Erste öffentliche Version.
+
 ### Hinzugefügt
 
+- Betrieb einer Installation unter mehreren Domains: zusätzliche Hosts in
+  `APP_HOSTS`, Host-Prüfung gegen Host-Header-Injection, Passkeys werden je
+  Domain gebunden, Canonical-Links zeigen auf `APP_URL`; `.htaccess` im
+  Projektordner für Hoster, die das Document-Root nicht auf `public/`
+  setzen lassen.
+- Issue-Vorlage für Fehlermeldungen und vertraulicher Meldeweg für
+  Sicherheitslücken (`SECURITY.md`).
 - Modulverwaltung unter `/admin/modules` (Permission `modules.manage`):
   Module global an-/abschalten und optional auf Rollen oder einzelne
   Nutzer beschränken; abgeschaltete Module verschwinden aus Navigation,
@@ -50,11 +61,6 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
   Admin-Navigation (`AdminNavigation`), mobile Navigation im
   Agenten-Bereich, Team-Einstellungsübersicht
   `/agent/team/{team}/settings` für Team-Admins.
-
-## [0.1.0] - 2026-09-24
-
-### Hinzugefügt
-
 - Veröffentlichung: Web-Installer unter `/install` für FTP/SFTP-Hosting
   (läuft ohne `APP_KEY`/Session, prüft Systemvoraussetzungen und
   Datenbank, schreibt `.env` mit Schutz gegen Zeilen-Injection, legt den
