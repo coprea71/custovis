@@ -1,0 +1,69 @@
+name: Fehler melden
+description: Etwas funktioniert nicht wie erwartet.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für deine Meldung! Bitte **keine Sicherheitslücken** hier melden,
+        sondern vertraulich (siehe [SECURITY.md](https://github.com/coprea71/custovis/blob/main/SECURITY.md)).
+        Entferne vor dem Absenden Passwörter, Tokens und personenbezogene Daten
+        aus Logs und Screenshots.
+  - type: textarea
+    id: beschreibung
+    attributes:
+      label: Was ist passiert?
+      description: Kurze Beschreibung des Fehlers.
+    validations:
+      required: true
+  - type: textarea
+    id: schritte
+    attributes:
+      label: Schritte zum Nachstellen
+      placeholder: |
+        1. Als Agent anmelden
+        2. Ticket öffnen
+        3. Auf „Antworten“ klicken
+        4. Fehler erscheint
+    validations:
+      required: true
+  - type: textarea
+    id: erwartet
+    attributes:
+      label: Was hast du stattdessen erwartet?
+    validations:
+      required: true
+  - type: dropdown
+    id: bereich
+    attributes:
+      label: Betroffener Bereich
+      options:
+        - Tickets / Mailboxen
+        - Kundenportal
+        - ITIL (Incident, Problem, Change, Requests)
+        - KI-Funktionen
+        - Wissensdatenbank
+        - Team-Chat
+        - Außendienst / Offline-App
+        - ERP-Anbindung
+        - Installation / Update
+        - Sonstiges
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Custovis-Version oder Commit
+      placeholder: z. B. v0.3.0 oder 098658e
+  - type: textarea
+    id: umgebung
+    attributes:
+      label: Umgebung
+      description: PHP-Version, Datenbank, Webserver, Hosting (Shared Hosting, VPS …), Browser.
+      placeholder: PHP 8.3, MariaDB 10.11, Apache, Shared Hosting, Firefox 130
+  - type: textarea
+    id: logs
+    attributes:
+      label: Fehlermeldung / Log-Auszug
+      description: Auszug aus `storage/logs/laravel.log` oder der Browser-Konsole – ohne sensible Daten.
+      render: text
