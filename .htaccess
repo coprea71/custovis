@@ -1,0 +1,11 @@
+# Only used when the web server's document root is the project folder instead
+# of public/ (shared hosting). Everything is routed into public/, so .env,
+# storage/, vendor/ etc. are never reachable directly.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>

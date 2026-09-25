@@ -55,6 +55,14 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     /*
+    | Additional host names the same installation answers to (comma separated,
+    | e.g. "support.example.com,support.example.org"). Requests for any other
+    | host are rejected outside the local environment (Host-Header-Injection).
+    */
+
+    'hosts' => array_values(array_filter(array_map('trim', explode(',', (string) env('APP_HOSTS', ''))))),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------

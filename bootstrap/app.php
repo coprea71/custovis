@@ -5,6 +5,7 @@ use App\Http\Controllers\Webhooks\WhatsappWebhookController;
 use App\Http\Middleware\EnsureModuleIsAvailable;
 use App\Http\Middleware\EnsureTwoFactorIsConfirmed;
 use App\Http\Middleware\EnsureUserIsActive;
+use App\Http\Middleware\ScopePasskeysToRequestHost;
 use App\Http\Middleware\ScopeTicketsToCustomer;
 use App\Mcp\Servers\CustovisServer;
 use Illuminate\Foundation\Application;
@@ -67,6 +68,13 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['module' => EnsureModuleIsAvailable::class]);
+
+        // The installation runs under several domains (APP_URL + APP_HOSTS).
+        $middleware->trustHosts(at: fn () => array_map(
+            fn (string $host) => '^'.preg_quote($host).'$',
+            config('app.hosts'),
+        ));
+        $middleware->appendToGroup('web', ScopePasskeysToRequestHost::class);
 
         // Customers and agents have separate logins (guards customer/web).
         $middleware->redirectGuestsTo(fn (Request $request) => $request->is('portal', 'portal/*') ? route('portal.login') : route('login'));

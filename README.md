@@ -52,11 +52,18 @@ Auf den Zielservern besteht in der Regel kein SSH-Zugriff. Deshalb gibt es zwei 
    [Releases-Seite](../../releases) laden. Es enthält `vendor/` und die gebauten
    Frontend-Assets.
 2. Das Archiv per FTP/SFTP hochladen und den Webserver auf das Verzeichnis `public/`
-   zeigen lassen.
+   zeigen lassen. Lässt der Hoster das nicht zu, darf die Domain auch auf den
+   Projektordner zeigen – die `.htaccess` im Projektordner leitet dann alles nach
+   `public/` weiter.
 3. `https://ihre-domain/install` aufrufen, Datenbank-Zugang und ersten Administrator
    eintragen, optional Demo-Daten anlegen.
 4. Danach ist der Installer dauerhaft gesperrt (`storage/installed.lock`). Er öffnet
    sich auch nie auf einem System, das bereits Benutzer hat.
+5. Soll dieselbe Installation unter weiteren Domains erreichbar sein, diese in der
+   `.env` als `APP_HOSTS=support.example.org,support.example.net` eintragen (`APP_URL`
+   bleibt die Hauptdomain für Canonical-Links, E-Mails und Konsole). Andere Hosts
+   werden abgewiesen. Passkeys gelten technisch nur für die Domain, auf der sie
+   angelegt wurden.
 
 ### 2. Kommandozeile
 
