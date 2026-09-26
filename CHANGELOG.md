@@ -16,6 +16,11 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 - Anleitungen zur Bedienung des Kundenportals unter `/portal/help` (auch ohne
   Anmeldung erreichbar, verlinkt in der Portal-Navigation und auf der
   Anmeldeseite).
+- E-Mail-Benachrichtigung bei neuen Tickets, von jedem Nutzer selbst unter
+  „Kontosicherheit → Benachrichtigungen“ ein- und ausschaltbar (standardmäßig
+  aus). Benachrichtigt werden aktive Mitglieder des Ticket-Teams; die Mail
+  enthält nur Betreff, Priorität und Link, keine Kundendaten. Versand über den
+  Standard-Mailer (`MAIL_*` in der `.env`) und die Queue `notifications`.
 
 ## [0.1.0] - 2026-09-25
 

@@ -53,5 +53,22 @@
                 </form>
             @endif
         </section>
+
+        <h2 class="text-xl font-semibold text-slatecalm-900">Benachrichtigungen</h2>
+        @if (session('status') === 'notifications-updated')
+            <p class="text-sm rounded-xl px-4 py-3 bg-calm-50 text-calm-700">Einstellungen gespeichert.</p>
+        @endif
+        <section class="bg-white border border-slatecalm-200 rounded-2xl p-6">
+            <form method="POST" action="{{ route('account.notifications') }}" class="space-y-4">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="notify_new_tickets" value="0">
+                <label class="flex items-start gap-3 text-sm text-slate-700">
+                    <input type="checkbox" name="notify_new_tickets" value="1" @checked($user->notify_new_tickets) class="mt-0.5 rounded border-slatecalm-300">
+                    <span>E-Mail an {{ $user->email }} senden, wenn in einem meiner Teams ein neues Ticket eingeht.</span>
+                </label>
+                <button class="px-4 py-2 bg-calm-600 text-white rounded-xl text-sm font-medium">Speichern</button>
+            </form>
+        </section>
     </main>
 </x-layouts.app>

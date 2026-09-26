@@ -56,6 +56,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'active' => 'boolean',
+            'notify_new_tickets' => 'boolean',
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
