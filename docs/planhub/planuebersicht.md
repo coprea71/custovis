@@ -26,3 +26,5 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [x] #22 [Kundenverwaltung & Portal-Passwort-Reset](archiv/22.md)
 - [x] #23 [Modulverwaltung & Modul-Zuschaltung](archiv/23.md)
 - [x] #24 [Hilfebereich mit Schritt-für-Schritt-Anleitungen](archiv/24.md)
+- [ ] #25 [KI-Jobs werden nie ausgelöst (Zusammenfassung, Antwortvorschlag, Triage, ähnliche Tickets)](25.md)
+- [ ] #26 [WhatsApp-Webhook-URL in den Team-Einstellungen anzeigen](26.md)
