@@ -30,6 +30,13 @@ Bei jeder weiteren Anmeldung fragt Custovis nach Passwort und dem aktuellen Code
 2. Unten im Menü finden Sie **Kontosicherheit**, diese **Hilfe**, ggf. **Administration** und **Abmelden**.
 3. Unter der Überschrift eines Teams stehen dessen **Dashboard** und, wenn Sie Team-Admin sind, die **Einstellungen**.
 
+## E-Mail bei neuen Tickets
+
+1. Klicken Sie unten im Menü auf **Kontosicherheit**.
+2. Setzen Sie unter **Benachrichtigungen** den Haken bei **E-Mail … senden, wenn in einem meiner Teams ein neues Ticket eingeht** und klicken Sie auf **Speichern**.
+3. Ab jetzt erhalten Sie für jedes neue Ticket Ihrer Teams eine kurze E-Mail mit Betreff, Priorität und Link zum Ticket. Tickets, die Sie selbst anlegen, lösen keine E-Mail aus.
+4. Zum Abschalten entfernen Sie den Haken wieder und speichern.
+
 ## Gut zu wissen
 
 - Haben Sie Ihr Smartphone verloren, melden Sie sich mit einem Wiederherstellungscode an und richten die 2FA neu ein. Ohne Codes kann ein Administrator Ihre 2FA unter **Administration → Nutzer** zurücksetzen.

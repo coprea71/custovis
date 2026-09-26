@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountNotificationController;
 use App\Http\Controllers\AccountSecurityController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\Themes\ThemePreviewController;
@@ -24,6 +25,10 @@ Route::withoutMiddleware('web')->middleware(EnsureNotInstalled::class)->group(fu
 Route::get('/account/security', AccountSecurityController::class)
     ->middleware('auth:web')
     ->name('account.security');
+
+Route::put('/account/notifications', AccountNotificationController::class)
+    ->middleware('auth:web')
+    ->name('account.notifications');
 
 Route::get('/themes/{theme:slug}/preview', ThemePreviewController::class)
     ->middleware('auth:web')
