@@ -1,0 +1,28 @@
+{
+    "name": "Hellblau Pastell",
+    "preview_image": "preview.png",
+    "font_family": "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif",
+    "css_variables": {
+        "color-canvas": "#F3F8FC",
+        "color-calm-50": "#F2F8FD",
+        "color-calm-100": "#E3F0FA",
+        "color-calm-200": "#C9E2F5",
+        "color-calm-300": "#A5CEEE",
+        "color-calm-400": "#74B0E0",
+        "color-calm-500": "#4A8FC7",
+        "color-calm-600": "#3572A6",
+        "color-calm-700": "#2A5A85",
+        "color-calm-800": "#1F4263",
+        "color-calm-900": "#152D44",
+        "color-slatecalm-50": "#F8FBFD",
+        "color-slatecalm-100": "#EEF4F9",
+        "color-slatecalm-200": "#DDE7F0",
+        "color-slatecalm-600": "#4A5B6E",
+        "color-slatecalm-800": "#1F2D3D",
+        "color-slatecalm-900": "#111C2A",
+        "color-ocean-50": "#F3F3FE",
+        "color-ocean-100": "#E6E7FC",
+        "color-ocean-500": "#6C75E0",
+        "color-ocean-700": "#4A51C2"
+    }
+}
