@@ -1,5 +1,6 @@
 <div class="flex-1 flex overflow-hidden" wire:poll.30s>
-    <section class="w-full md:w-72 shrink-0 border-r border-slatecalm-200 bg-white flex flex-col overflow-y-auto">
+    {{-- Below md only one pane fits: the list hides while a conversation is open. --}}
+    <section class="w-full md:w-72 shrink-0 border-r border-slatecalm-200 bg-white {{ $conversation ? 'hidden md:flex' : 'flex' }} flex-col overflow-y-auto">
         <div class="p-4 border-b border-slatecalm-200">
             <h1 class="text-base font-semibold text-slatecalm-900">Team-Chat</h1>
         </div>
@@ -39,10 +40,11 @@
         @endif
     </section>
 
-    <section class="flex-1 flex flex-col overflow-hidden">
+    <section class="flex-1 {{ $conversation ? 'flex' : 'hidden md:flex' }} flex-col overflow-hidden">
         @if ($conversation)
-            <div class="h-14 px-6 flex items-center border-b border-slatecalm-200 bg-white">
-                <p class="font-semibold text-slatecalm-900">
+            <div class="h-14 px-4 md:px-6 flex items-center gap-2 border-b border-slatecalm-200 bg-white">
+                <a href="{{ route('agent.chat.index') }}" class="md:hidden px-2 py-2 -ml-2 text-sm text-calm-700 font-medium" aria-label="Zurück zur Übersicht">&larr;</a>
+                <p class="font-semibold text-slatecalm-900 truncate">
                     @if ($conversation instanceof \App\Models\ChatChannel)
                         # {{ $conversation->name }}
                         @if ($conversation->type === 'ticket')
@@ -54,7 +56,7 @@
                 </p>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-6 space-y-3">
+            <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-3">
                 @forelse ($messages as $message)
                     <div wire:key="msg-{{ $message->id }}">
                         <p class="text-xs text-slate-400">
@@ -62,7 +64,7 @@
                             · {{ $message->created_at->format('d.m. H:i') }}
                         </p>
                         @if ($message->body)
-                            <p class="text-sm text-slate-700 whitespace-pre-line">{{ $message->body }}</p>
+                            <p class="text-sm text-slate-700 whitespace-pre-line [overflow-wrap:anywhere]">{{ $message->body }}</p>
                         @endif
                         @if ($message->attachment_path)
                             <a href="{{ route('agent.chat.attachment', $message) }}" class="text-xs text-ocean-700 hover:underline">📎 {{ $message->attachment_name }}</a>
@@ -79,7 +81,7 @@
                     @error('body') <p class="text-xs text-red-600">{{ $message }}</p> @enderror
                     @error('file') <p class="text-xs text-red-600">{{ $message }}</p> @enderror
                     <div class="flex items-center justify-between gap-2">
-                        <input type="file" wire:model="file" class="text-xs text-slate-500">
+                        <input type="file" wire:model="file" class="min-w-0 flex-1 text-xs text-slate-500">
                         <button type="submit" class="py-2 px-5 bg-calm-600 hover:bg-calm-700 text-white font-medium rounded-xl text-sm">Senden</button>
                     </div>
                 </form>

@@ -2,7 +2,8 @@
 <div class="flex flex-1 h-full overflow-hidden" wire:poll.30s>
 
     {{-- Ticket list (master) --}}
-    <div class="w-full md:w-5/12 lg:w-4/12 border-r border-slatecalm-200 bg-white flex flex-col h-full overflow-hidden">
+    {{-- Below md only one pane fits: the list hides while a ticket is open. --}}
+    <div class="w-full md:w-5/12 lg:w-4/12 border-r border-slatecalm-200 bg-white {{ $ticket ? 'hidden md:flex' : 'flex' }} flex-col h-full overflow-hidden">
         <div class="p-4 border-b border-slatecalm-200 bg-slatecalm-50/50 space-y-3">
             <a href="{{ route('agent.tickets.create') }}" class="block w-full text-center py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium">+ Neues Ticket</a>
             <input
@@ -58,16 +59,21 @@
     </div>
 
     {{-- Ticket detail --}}
-    <div class="flex-1 flex flex-col h-full overflow-hidden bg-slatecalm-50/30">
+    <div class="flex-1 {{ $ticket ? 'flex' : 'hidden md:flex' }} flex-col h-full overflow-hidden bg-slatecalm-50/30">
         @if ($ticket)
             <div
                 wire:key="ticket-detail-{{ $ticket->id }}"
                 x-data="ticketCollision({{ $ticket->id }}, @js(['id' => auth()->id(), 'name' => auth()->user()->name]))"
                 x-init="join()"
-                class="flex h-full overflow-hidden"
+                class="h-full"
             >
+              <div x-data="{ details: false }" class="flex h-full overflow-hidden">
                 <div class="flex flex-col h-full flex-1 min-w-0">
-                    <div class="bg-white border-b border-slatecalm-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shrink-0">
+                    <div class="bg-white border-b border-slatecalm-200 px-4 md:px-6 py-3 md:py-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 shrink-0">
+                        <div class="w-full flex items-center justify-between gap-2 md:hidden">
+                            <button type="button" wire:click="$set('ticketId', null)" class="px-3 py-2 -ml-3 text-sm text-calm-700 font-medium">&larr; Tickets</button>
+                            <button type="button" @click="details = true" class="lg:hidden px-3 py-2 rounded-lg bg-slatecalm-100 text-slate-700 text-sm font-medium">Details</button>
+                        </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between gap-2">
                                 <span class="text-xs font-mono font-bold text-calm-700 bg-calm-100 px-2.5 py-1 rounded-md">#{{ $ticket->id }}</span>
@@ -79,6 +85,7 @@
                         </div>
 
                         <div class="flex items-center gap-3">
+                            <button type="button" @click="details = true" class="hidden md:inline-flex lg:hidden px-3 py-1.5 rounded-lg bg-slatecalm-100 text-slate-700 text-xs font-medium">Details</button>
                             @if ($ticket->source === 'whatsapp')
                                 <span class="text-xs px-2.5 py-1 rounded-full font-medium {{ $whatsappSessionOpen ? 'bg-calm-100 text-calm-800' : 'bg-amber-100 text-amber-800' }}">
                                     {{ $whatsappSessionOpen ? '24-Std.-Fenster offen' : '24-Std.-Fenster abgelaufen — nur Vorlagen' }}
@@ -92,7 +99,7 @@
                         </div>
                     </div>
 
-                    <div class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
                         @foreach ($ticket->messages as $message)
                             <div class="rounded-2xl p-4 border {{ $message->isInternalNote() ? 'bg-ocean-50 border-ocean-100' : 'bg-white border-slatecalm-200' }}">
                                 <div class="flex items-center justify-between mb-2 text-xs text-slate-500">
@@ -106,7 +113,7 @@
                                         {{ $message->created_at->format('d.m.Y H:i') }}
                                     </span>
                                 </div>
-                                <div class="text-sm text-slate-700 whitespace-pre-line">{!! $message->body_html ?? nl2br(e($message->body_text)) !!}</div>
+                                <div class="text-sm text-slate-700 whitespace-pre-line break-words [overflow-wrap:anywhere]">{!! $message->body_html ?? nl2br(e($message->body_text)) !!}</div>
 
                                 @if ($message->attachments->isNotEmpty())
                                     <div class="mt-3 flex flex-wrap gap-2">
@@ -120,7 +127,7 @@
                     </div>
 
                     <div class="border-t border-slatecalm-200 bg-white p-4 shrink-0">
-                        <div class="flex items-center justify-between gap-2 mb-2 text-xs">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2 text-xs">
                             <div class="flex items-center gap-2">
                                 <button
                                     type="button"
@@ -182,7 +189,15 @@
                 </div>
 
                 {{-- Kunden-/Metadaten-Sidebar --}}
-                <aside class="w-72 shrink-0 border-l border-slatecalm-200 bg-white p-5 overflow-y-auto hidden lg:block">
+                {{-- Below lg the sidebar opens as a full-screen panel via the "Details" button. --}}
+                <aside
+                    class="hidden lg:block lg:w-72 shrink-0 border-l border-slatecalm-200 bg-white p-5 overflow-y-auto"
+                    :class="details && 'block! fixed inset-0 z-40 w-full'"
+                >
+                    <div class="flex items-center justify-between mb-4 lg:hidden">
+                        <span class="font-semibold text-slatecalm-900">Ticket-Details</span>
+                        <button type="button" @click="details = false" class="px-3 py-2 rounded-lg bg-slatecalm-100 text-slate-700 text-sm font-medium">Schließen</button>
+                    </div>
                     <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Kunde</h3>
                     <p class="text-sm font-medium text-slatecalm-900">{{ $ticket->requester_name ?: '—' }}</p>
                     <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: $ticket->requester_phone ?: '—' }}</p>
@@ -254,6 +269,7 @@
                         @endcan
                     @endmodule
                 </aside>
+              </div>
             </div>
         @else
             <div class="flex-1 flex items-center justify-center text-slate-400 text-sm">
