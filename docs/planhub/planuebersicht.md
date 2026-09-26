@@ -29,3 +29,4 @@ Gemeinsame Architektur/Kontext für alle Punkte: [0.md](0.md).
 - [ ] #25 [KI-Jobs werden nie ausgelöst (Zusammenfassung, Antwortvorschlag, Triage, ähnliche Tickets)](25.md)
 - [ ] #26 [WhatsApp-Webhook-URL in den Team-Einstellungen anzeigen](26.md)
 - [x] #27 [E-Mail-Benachrichtigung bei neuen Tickets (je Nutzer schaltbar)](archiv/27.md)
+- [x] #28 [Update-Prüfung und Ein-Klick-Update aus GitHub-Releases](archiv/28.md)

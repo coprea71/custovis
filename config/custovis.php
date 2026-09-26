@@ -4,6 +4,14 @@ return [
 
     'version' => '0.1.0',
 
+    /*
+    | Update check (28.md): GitHub repository whose releases carry the
+    | upload-ready archive built by .github/workflows/release.yml.
+    */
+    'update' => [
+        'repository' => env('CUSTOVIS_UPDATE_REPOSITORY', 'coprea71/custovis'),
+    ],
+
     // Presence of this file permanently disables the web installer (12.md).
     'install_lock_path' => storage_path('installed.lock'),
 
