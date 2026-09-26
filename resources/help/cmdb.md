@@ -9,6 +9,12 @@ Die CMDB (Configuration Management Database) enthält die IT-Komponenten, die Si
 5. Wählen Sie den **Status**: **in Betrieb** oder **außer Betrieb**.
 6. Klicken Sie auf **Speichern**.
 
+## CI bearbeiten
+
+1. Klicken Sie das CI in der Liste links an. Das Formular **CI bearbeiten** öffnet sich.
+2. Ändern Sie Name, Team, Typ oder Status.
+3. Klicken Sie auf **Speichern**.
+
 ## Beziehungen erfassen
 
 1. Wählen Sie das CI in der Liste links.

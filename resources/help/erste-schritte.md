@@ -6,6 +6,13 @@ Custovis ist in drei Bereiche gegliedert: den **Agenten-Bereich** (Tickets, Chat
 2. Melden Sie sich anschließend mit E-Mail-Adresse und Passwort an.
 3. Ist die Zwei-Faktor-Authentifizierung (2FA) Pflicht, werden Sie direkt zur Seite **Kontosicherheit** geleitet. Richten Sie sie wie unten beschrieben ein.
 
+## Passwort vergessen
+
+1. Klicken Sie auf der Anmeldeseite auf **Passwort vergessen?**.
+2. Tragen Sie Ihre **E-Mail**-Adresse ein und klicken Sie auf **Link senden**.
+3. Öffnen Sie die E-Mail und klicken Sie innerhalb von 60 Minuten auf den Link.
+4. Tragen Sie unter **Neues Passwort** und **Passwort wiederholen** Ihr neues Passwort ein und klicken Sie auf **Passwort speichern**.
+
 ## Zwei-Faktor-Authentifizierung einrichten
 
 1. Installieren Sie eine Authenticator-App auf Ihrem Smartphone, z. B. FreeOTP, Aegis oder Microsoft Authenticator.
@@ -27,3 +34,4 @@ Bei jeder weiteren Anmeldung fragt Custovis nach Passwort und dem aktuellen Code
 
 - Haben Sie Ihr Smartphone verloren, melden Sie sich mit einem Wiederherstellungscode an und richten die 2FA neu ein. Ohne Codes kann ein Administrator Ihre 2FA unter **Administration → Nutzer** zurücksetzen.
 - **Neue Codes erzeugen** macht alle bisherigen Wiederherstellungscodes ungültig.
+- Ist die 2FA nicht Pflicht, können Sie sie unter **Kontosicherheit** mit **Deaktivieren** wieder abschalten. Ist sie Pflicht, fehlt diese Schaltfläche.

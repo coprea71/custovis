@@ -20,6 +20,6 @@ Teams bündeln Mitarbeitende, Tickets, Mailboxen und Einstellungen, z. B. „Sup
 
 ## Gut zu wissen
 
-- **Team-Admins** verwalten die Einstellungen ihres Teams selbst: Textbausteine, API-Keys, WhatsApp, Git-Issues, KI und ERP. Der Link **Team-Einstellungen** führt direkt dorthin.
+- **Team-Admins** verwalten die Einstellungen ihres Teams selbst: Textbausteine, API-Keys, WhatsApp, Git-Issues, KI und ERP. Sie finden sie in der Navigation unter dem Teamnamen bei **Einstellungen**.
 - Die Team-Rolle ist unabhängig von den systemweiten Rollen unter **Rollen**.
 - Nach dem Anlegen eines Teams richten Sie typischerweise noch eine **Mailbox** und die **SLA-Ziele** ein.

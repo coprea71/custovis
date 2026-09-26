@@ -6,6 +6,7 @@ Artikel der Wissensdatenbank werden in Markdown geschrieben und versioniert. Jed
 2. Tragen Sie unter **Neue Kategorie** den **Namen** ein.
 3. Wählen Sie optional eine **übergeordnete Kategorie**, um Unterkategorien zu bilden.
 4. Klicken Sie auf **Anlegen**.
+5. Mit **Löschen** neben einer Kategorie entfernen Sie sie nach einer Bestätigung.
 
 ## Artikel schreiben
 
