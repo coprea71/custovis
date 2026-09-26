@@ -28,6 +28,7 @@ Bevor Sie Einsätze planen können, legen Sie Technikerprofile an und pflegen Sk
 2. Tragen Sie einen Namen ein, z. B. „Heizungswartung“.
 3. Tragen Sie die Prüfpunkte ein, einen pro Zeile.
 4. Klicken Sie auf **Anlegen**. Die Vorlage steht beim Anlegen eines Einsatzes zur Auswahl.
+5. Mit **Löschen** entfernen Sie eine Vorlage nach einer Bestätigung.
 
 ## Gut zu wissen
 
