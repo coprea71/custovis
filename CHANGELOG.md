@@ -8,6 +8,8 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-26
+
 ### Hinzugefügt
 
 - Hilfebereich unter `/agent/help` (Link „Hilfe“ im Konto-Menü) mit einer
