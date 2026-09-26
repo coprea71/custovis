@@ -1,4 +1,5 @@
-<div class="flex flex-1 h-full overflow-hidden">
+{{-- Polling instead of Reverb: web-cron-only hosts cannot run a websocket server. --}}
+<div class="flex flex-1 h-full overflow-hidden" wire:poll.30s>
 
     {{-- Ticket list (master) --}}
     <div class="w-full md:w-5/12 lg:w-4/12 border-r border-slatecalm-200 bg-white flex flex-col h-full overflow-hidden">
