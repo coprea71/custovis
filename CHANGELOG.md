@@ -8,6 +8,15 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+### Hinzugefügt
+
+- Hilfebereich unter `/agent/help` (Link „Hilfe“ im Konto-Menü) mit einer
+  Schritt-für-Schritt-Anleitung je Funktionsbereich. Angezeigt werden nur
+  Themen, deren Modul und Berechtigung der Nutzer hat.
+- Anleitungen zur Bedienung des Kundenportals unter `/portal/help` (auch ohne
+  Anmeldung erreichbar, verlinkt in der Portal-Navigation und auf der
+  Anmeldeseite).
+
 ## [0.1.0] - 2026-09-25
 
 Erste öffentliche Version.

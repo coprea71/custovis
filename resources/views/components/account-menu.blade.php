@@ -3,6 +3,7 @@
 @php($adminRoute = \App\Support\AdminNavigation::firstRoute($user))
 <div {{ $attributes->merge(['class' => 'flex flex-wrap items-center gap-x-3 gap-y-1 text-xs']) }}>
     <a href="{{ route('account.security') }}" class="py-1.5 md:py-0 text-slate-500 hover:text-calm-700">Kontosicherheit</a>
+    <a href="{{ route('agent.help.index') }}" class="py-1.5 md:py-0 text-slate-500 hover:text-calm-700">Hilfe</a>
     @if ($area === 'agent' && $adminRoute)
         <a href="{{ route($adminRoute) }}" class="py-1.5 md:py-0 text-slate-500 hover:text-calm-700">Administration</a>
     @elseif ($area === 'admin')

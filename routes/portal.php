@@ -4,6 +4,7 @@ use App\Http\Controllers\Portal\PortalAuthController;
 use App\Http\Controllers\Portal\PortalPasswordResetController;
 use App\Http\Middleware\EnsureCustomerIsActive;
 use App\Http\Middleware\ScopeTicketsToCustomer;
+use App\Livewire\Portal\Help;
 use App\Livewire\Portal\KnowledgeBase;
 use App\Livewire\Portal\NewRequest;
 use App\Livewire\Portal\TicketDetail;
@@ -18,6 +19,10 @@ Route::middleware('guest:customer')->group(function () {
     Route::get('/reset-password/{token}', [PortalPasswordResetController::class, 'edit'])->name('password.reset');
     Route::post('/reset-password', [PortalPasswordResetController::class, 'update'])->name('password.update');
 });
+
+// Screen guides are public on purpose: they explain how to get access in the first place.
+Route::get('/help', Help::class)->name('help.index');
+Route::get('/help/{topic}', Help::class)->where('topic', '[a-z0-9-]+')->name('help.show');
 
 // ScopeTicketsToCustomer runs before route model binding (priority list in
 // bootstrap/app.php), so {ticket} is resolved through CustomerOwnedScope.

@@ -16,4 +16,5 @@
         </div>
         <button type="submit" class="w-full py-2.5 bg-calm-600 hover:bg-calm-700 text-white font-medium rounded-xl shadow-sm text-sm">Anmelden</button>
     </form>
+    <a href="{{ route('portal.help.show', 'anmelden') }}" class="block mt-4 text-center text-xs text-calm-700 hover:underline">Hilfe zur Anmeldung</a>
 </x-portal.auth-card>
