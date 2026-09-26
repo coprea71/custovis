@@ -48,6 +48,29 @@ class TicketWorkspaceTest extends TestCase
             ->assertSee($ticket->subject);
     }
 
+    public function test_ticket_list_polls_and_shows_newly_arrived_tickets(): void
+    {
+        $user = User::factory()->create();
+        $this->makeTicket();
+        $this->team->users()->attach($user);
+
+        $component = Livewire::actingAs($user)
+            ->test(TicketWorkspace::class)
+            ->assertSeeHtml('wire:poll.30s')
+            ->assertDontSee('Neu eingegangen');
+
+        Ticket::query()->create([
+            'team_id' => $this->team->id,
+            'type' => 'support_ticket',
+            'source' => 'email',
+            'subject' => 'Neu eingegangen',
+            'requester_email' => 'neu@example.com',
+            'requester_name' => 'Neukunde',
+        ]);
+
+        $component->call('$refresh')->assertSee('Neu eingegangen');
+    }
+
     public function test_public_reply_and_internal_note_are_stored_with_correct_visibility(): void
     {
         $user = User::factory()->create();
