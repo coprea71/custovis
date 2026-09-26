@@ -4,6 +4,7 @@ use App\Jobs\FetchMailboxJob;
 use App\Jobs\SyncGitIssuesJob;
 use App\Models\GitIssueConnection;
 use App\Models\Mailbox;
+use App\Services\Update\UpdateChecker;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -34,3 +35,5 @@ Schedule::command('field:prune-locations')->daily()->name('field:prune-locations
 Schedule::command('retention:apply')->daily()->name('retention:apply');
 
 Schedule::command('dashboards:refresh-snapshots')->hourly()->name('dashboards:refresh-snapshots');
+
+Schedule::call(fn () => app(UpdateChecker::class)->check())->daily()->name('custovis:check-update');

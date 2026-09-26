@@ -1,10 +1,21 @@
 Custovis läuft auch auf einfachem Webhosting ohne SSH. Updates spielen Sie per FTP/SFTP ein und führen die Datenbank-Anpassungen im Browser aus. Wo kein Cronjob möglich ist, übernimmt der Web-Cron die Hintergrundaufgaben.
 
-## Update einspielen
+## Update mit einem Klick
+
+Custovis prüft einmal täglich, ob auf GitHub eine neue Version veröffentlicht wurde. Ist das der Fall, erscheint im Adminbereich oben der Hinweis **Neue Version … verfügbar**.
+
+1. Legen Sie ein **Backup** der Datenbank und der Dateien an.
+2. Klicken Sie im Hinweis auf **Jetzt aktualisieren** oder öffnen Sie **Administration → System**.
+3. Klicken Sie unter **Programm-Updates** auf **Jetzt auf … aktualisieren** und bestätigen Sie.
+4. Warten Sie, bis die Seite neu lädt. Custovis lädt die Version herunter, prüft die Prüfsumme, ersetzt die Programmdateien und führt die Datenbank-Updates automatisch aus.
+
+Mit **Jetzt auf Updates prüfen** fragen Sie sofort nach einer neuen Version. `.env` und der Ordner `storage` bleiben beim Update unverändert.
+
+## Update per FTP einspielen
 
 1. Legen Sie ein **Backup** der Datenbank und der Dateien an, z. B. über das Kundenmenü Ihres Hosters.
 2. Laden Sie die neue Version per FTP/SFTP hoch. Überschreiben Sie dabei **nicht** die Datei `.env` und den Ordner `storage`.
-3. Öffnen Sie **Administration → System**. Unter **Datenbank-Updates** sehen Sie die installierte Version und die ausstehenden Migrationen.
+3. Öffnen Sie **Administration → System**. Unter **Datenbank-Updates** sehen Sie die ausstehenden Migrationen.
 4. Klicken Sie auf **… Migration(en) ausführen** und bestätigen Sie.
 5. Prüfen Sie die Ausgabe. Danach steht dort „Die Datenbank ist auf dem aktuellen Stand.“
 

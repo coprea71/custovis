@@ -21,6 +21,12 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
   aus). Benachrichtigt werden aktive Mitglieder des Ticket-Teams; die Mail
   enthält nur Betreff, Priorität und Link, keine Kundendaten. Versand über den
   Standard-Mailer (`MAIL_*` in der `.env`) und die Queue `notifications`.
+- Update-Prüfung: Custovis fragt täglich (Web-Cron) bzw. per Button unter
+  „Administration → System“ das neueste GitHub-Release ab und zeigt Admins mit
+  `system.maintain` im Adminbereich einen Hinweis. Das Update lässt sich mit
+  einem Klick installieren: Release-Archiv laden, SHA-256-Prüfsumme prüfen,
+  Programmdateien ersetzen (ohne `.env` und `storage/`), Migrationen ausführen.
+  Repository über `CUSTOVIS_UPDATE_REPOSITORY` änderbar.
 
 ## [0.1.0] - 2026-09-25
 
