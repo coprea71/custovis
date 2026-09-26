@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\MailboxImapService;
 use App\Services\WebCronService;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Mockery\MockInterface;
@@ -43,6 +44,17 @@ class WebCronTest extends TestCase
         $this->assertSame('AUTHENTICATIONFAILED', $mailbox->fresh()->last_fetch_error);
         $this->assertDatabaseCount('jobs', 0);
         $this->assertNotNull(Setting::read(WebCronService::LAST_RUN_KEY));
+    }
+
+    public function test_run_boots_the_console_kernel_so_a_web_request_sees_the_schedule(): void
+    {
+        // PHPUnit already boots the console kernel, which hid the empty schedule
+        // of real web requests; only the explicit bootstrap call is assertable.
+        $kernel = $this->spy(ConsoleKernel::class);
+
+        app(WebCronService::class)->run();
+
+        $kernel->shouldHaveReceived('bootstrap')->once();
     }
 
     public function test_admin_generates_url_once_and_only_its_hash_is_stored(): void

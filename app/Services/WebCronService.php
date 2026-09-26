@@ -6,6 +6,7 @@ use App\Models\Setting;
 use Illuminate\Console\Scheduling\CallbackEvent;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
@@ -52,6 +53,10 @@ class WebCronService
 
     public function run(): void
     {
+        // routes/console.php holds every Schedule:: entry but is only loaded by
+        // the console kernel, which a web request never boots on its own.
+        $this->app->make(ConsoleKernel::class)->bootstrap();
+
         foreach ($this->schedule->dueEvents($this->app) as $event) {
             if ($event->filtersPass($this->app)) {
                 $this->runInProcess($event);
