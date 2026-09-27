@@ -227,6 +227,10 @@
                         @endcan
                     @endif
 
+                    @if (\App\Livewire\Agent\TicketTimeTracking::availableFor(auth()->user()))
+                        <livewire:agent.ticket-time-tracking :ticket-id="$ticket->id" :key="'time-'.$ticket->id" />
+                    @endif
+
                     <livewire:agent.ticket-properties-panel :ticket-id="$ticket->id" :key="'props-'.$ticket->id" />
                     <livewire:agent.ticket-itil-panel :ticket-id="$ticket->id" :key="'itil-'.$ticket->id" />
 

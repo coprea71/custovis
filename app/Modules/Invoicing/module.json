@@ -1,0 +1,6 @@
+{
+    "slug": "invoicing",
+    "name": "Invoicing",
+    "provider": "App\\Modules\\Invoicing\\Providers\\InvoicingServiceProvider",
+    "dependencies": []
+}

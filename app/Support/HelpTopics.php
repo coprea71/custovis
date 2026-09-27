@@ -34,6 +34,7 @@ class HelpTopics
         'wissensdatenbank-nutzen' => ['Wissensdatenbank nutzen', 'Artikel suchen, in Antworten einfügen und als Lösung markieren', 'work', 'kb.articles.view', 'knowledge-base'],
         'einsatzplanung' => ['Einsatzplanung (Dispatcher)', 'Vor-Ort-Einsätze anlegen, Techniker zuweisen und umplanen', 'work', 'dispatch.manage', 'field-service'],
         'techniker-app' => ['Techniker-App', 'Tagesliste, Status, Checklisten, Material, Unterschrift und Auslieferung', 'work', 'appointments.view.own', 'field-service'],
+        'zeiterfassung' => ['Zeiterfassung', 'Aufwand am Ticket buchen, Timer nutzen und abrechenbare Zeiten markieren', 'work', 'time.track', 'time-tracking'],
         'team-dashboard' => ['Team-Dashboard', 'Kennzahlen, Auslastung und letzte Aktivitäten Ihres Teams', 'work', null, 'reporting'],
         'textbausteine' => ['Textbausteine', 'Antwortvorlagen für das ganze Team pflegen', 'team', 'team.manage'],
         'e-mail-layout' => ['E-Mail-Layout', 'Design, Logo und Signatur der Antwortmails gestalten', 'team', 'team.manage'],

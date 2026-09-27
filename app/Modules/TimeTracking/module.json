@@ -1,0 +1,6 @@
+{
+    "slug": "time-tracking",
+    "name": "TimeTracking",
+    "provider": "App\\Modules\\TimeTracking\\Providers\\TimeTrackingServiceProvider",
+    "dependencies": []
+}

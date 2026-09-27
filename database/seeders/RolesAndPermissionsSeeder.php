@@ -20,6 +20,7 @@ class RolesAndPermissionsSeeder extends Seeder
         'chat.global.post',
         'chat.direct.create',
         'appointments.view.team',
+        'time.track',
     ];
 
     private const TECHNICIAN_DEFAULTS = [
@@ -64,6 +65,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'sla.manage',
             'cmdb.manage',
             'modules.manage',
+            'time.track',
+            'invoices.manage',
         ];
 
         $existing = Permission::query()->where('guard_name', 'web')->pluck('name')->all();

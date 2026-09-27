@@ -178,6 +178,14 @@ class Ticket extends Model
     }
 
     /**
+     * @return HasMany<TimeEntry, $this>
+     */
+    public function timeEntries(): HasMany
+    {
+        return $this->hasMany(TimeEntry::class);
+    }
+
+    /**
      * @return HasOne<TicketIncident, $this>
      */
     public function incident(): HasOne

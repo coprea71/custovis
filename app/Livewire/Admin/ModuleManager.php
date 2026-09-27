@@ -27,6 +27,8 @@ class ModuleManager extends Component
         'service-catalog' => 'Service-Katalog und Anfragen im Portal',
         'whatsapp' => 'WhatsApp-Business-Anbindung',
         'erp-integration' => 'Kundendaten aus Odoo/Shopware',
+        'time-tracking' => 'Zeiterfassung an Tickets',
+        'invoicing' => 'Rechnungen mit E-Rechnung (XRechnung/ZUGFeRD)',
         'incident-management' => 'Incident-Management (Teil des Ticket-Kerns)',
         'problem-management' => 'Problem-Management (Teil des Ticket-Kerns)',
     ];
