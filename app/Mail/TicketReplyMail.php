@@ -5,14 +5,13 @@ namespace App\Mail;
 use App\Models\TicketAttachment;
 use App\Models\TicketMessage;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class TicketReplyMail extends Mailable implements ShouldQueue
+class TicketReplyMail extends Mailable
 {
     use Queueable, SerializesModels;
 

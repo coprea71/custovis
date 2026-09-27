@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Mail;
  */
 class MailSenderService
 {
+    // Sends synchronously: callers already run inside a queued job, and the
+    // runtime-registered mailer config would not survive a second queue hop
+    // into a later worker process.
     public function sendTicketReply(TicketMessage $message): void
     {
         $mailbox = $message->ticket->mailbox;
@@ -21,7 +24,7 @@ class MailSenderService
 
         Mail::mailer($this->dynamicMailerFor($mailbox))
             ->to($ticket->requester_email, $ticket->requester_name)
-            ->queue((new TicketReplyMail($message))->onQueue('mail-send'));
+            ->send(new TicketReplyMail($message));
     }
 
     private function dynamicMailerFor(Mailbox $mailbox): string
@@ -35,12 +38,15 @@ class MailSenderService
             'encryption' => $mailbox->smtp_encryption === 'none' ? null : $mailbox->smtp_encryption,
             'username' => $mailbox->smtp_username,
             'password' => $mailbox->smtp_password,
+            // Per-mailer sender, so the global mail.from of system mails stays untouched.
+            'from' => [
+                'address' => $mailbox->email_address,
+                'name' => $mailbox->name,
+            ],
         ]]);
 
-        config(['mail.from' => [
-            'address' => $mailbox->email_address,
-            'name' => $mailbox->name,
-        ]]);
+        // A long-running worker caches resolved mailers; drop it so edited SMTP settings apply.
+        Mail::purge($name);
 
         return $name;
     }
