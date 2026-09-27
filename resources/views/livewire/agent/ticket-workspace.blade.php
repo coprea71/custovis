@@ -39,10 +39,12 @@
             @forelse ($tickets as $item)
                 <div
                     wire:click="selectTicket({{ $item->id }})"
-                    class="p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 {{ $ticketId === $item->id ? 'bg-calm-50/90 border-calm-600' : 'border-transparent' }}"
+                    title="Priorität: {{ \App\Models\Ticket::PRIORITY_LABELS[$item->priority] ?? $item->priority }}"
+                    class="p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 {{ \App\Models\Ticket::PRIORITY_STRIPES[$item->priority] ?? 'border-l-slate-300' }} {{ $ticketId === $item->id ? 'bg-calm-50/90' : '' }}"
                 >
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-xs font-mono font-semibold text-calm-700 bg-calm-100 px-2 py-0.5 rounded">#{{ $item->id }}</span>
+                        <span class="sr-only">Priorität: {{ \App\Models\Ticket::PRIORITY_LABELS[$item->priority] ?? $item->priority }}</span>
                         <span class="text-[11px] text-slate-400">{{ $item->created_at->diffForHumans() }}</span>
                     </div>
                     <p class="text-sm font-medium text-slatecalm-900 truncate">{{ $item->subject }}</p>

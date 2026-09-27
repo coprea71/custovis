@@ -24,6 +24,17 @@ class Ticket extends Model
     public const PRIORITY_LABELS = ['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend'];
 
     /**
+     * Left stripe in the ticket list, green (low) to red (urgent). Full class
+     * names so Tailwind's source scan picks them up.
+     */
+    public const PRIORITY_STRIPES = [
+        'low' => 'border-l-green-500',
+        'normal' => 'border-l-yellow-400',
+        'high' => 'border-l-orange-500',
+        'urgent' => 'border-l-red-600',
+    ];
+
+    /**
      * Mirrors the column defaults so a freshly created ticket already carries
      * them (SLA matching by priority and audit diffs rely on real values).
      */
