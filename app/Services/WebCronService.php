@@ -68,9 +68,30 @@ class WebCronService
             '--stop-when-empty' => true,
             '--max-time' => self::QUEUE_MAX_SECONDS,
             '--tries' => 3,
+            '--memory' => self::workerMemoryLimitMb(),
         ]);
 
         Setting::write(self::LAST_RUN_KEY, now()->toIso8601String());
+    }
+
+    /**
+     * The worker runs inside this request, which may already use more than
+     * queue:work's 128 MB default (e.g. after PDF generation) — then it would
+     * stop before the first job. Stay just below PHP's own limit instead.
+     */
+    private static function workerMemoryLimitMb(): int
+    {
+        $limit = trim((string) ini_get('memory_limit'));
+
+        if ($limit === '' || $limit === '-1') {
+            return 1024;
+        }
+
+        $bytes = (int) $limit * match (strtolower(substr($limit, -1))) {
+            'g' => 1024 ** 3, 'm' => 1024 ** 2, 'k' => 1024, default => 1,
+        };
+
+        return max(128, intdiv($bytes, 1024 ** 2) - 32);
     }
 
     // schedule:run would spawn "php artisan …" subprocesses, which fails when
