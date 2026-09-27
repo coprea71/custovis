@@ -63,8 +63,11 @@ nebeneinander:
 - öffentliche Antwort oder interne Notiz, Textbausteine je Team, Tags
 - E-Mail-Layout je Team: Team-Admins legen Farbe, Schrift, Logo, Signatur mit
   Platzhaltern und Fußzeile fest, mit Live-Vorschau; Versand mit Nur-Text-Fassung
-- Kontaktdaten und interne Notizen des Kunden per Info-Knopf in der Seitenleiste
+- Kontaktdaten und interne Notizen des Kunden per Info-Knopf in der Seitenleiste;
+  fehlende Angaben lassen sich dort direkt hinterlegen
 - Status, Priorität, Team und Bearbeiter direkt in der Seitenleiste ändern
+- als wichtig oder dringend markierte E-Mails (X-Priority, Importance) setzen die
+  Ticket-Priorität automatisch; ein Farbstreifen von grün bis rot zeigt sie in der Liste
 - Tickets für telefonische oder persönliche Anfragen manuell anlegen
 - Filter wie „Mir zugewiesen“; Agenten sehen nur Tickets ihrer Teams
 - Collision Detection: In Echtzeit ist sichtbar, wer ein Ticket gerade bearbeitet
