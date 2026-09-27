@@ -10,7 +10,7 @@
         <div class="text-sm text-calm-800 bg-calm-50 rounded-xl px-4 py-2" role="status">{{ $status }}</div>
     @endif
 
-    <input type="search" wire:model.live.debounce.300ms="search" placeholder="Name oder E-Mail suchen..." maxlength="255" class="w-full border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+    <input type="search" wire:model.live.debounce.300ms="search" placeholder="Name, E-Mail oder Telefon suchen..." maxlength="255" class="w-full border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
 
     <div class="bg-white border border-slatecalm-200 rounded-2xl divide-y divide-slatecalm-200">
         @forelse ($customers as $customer)
@@ -18,6 +18,9 @@
                 <div>
                     <p class="font-medium text-slatecalm-900">{{ $customer->name }}</p>
                     <p class="text-xs text-slate-400">{{ $customer->email }} · {{ $customer->tickets_count }} Ticket(s)</p>
+                    @if ($customer->phone || $customer->mobile || $customer->city)
+                        <p class="text-xs text-slate-400">{{ collect([$customer->phone, $customer->mobile, trim($customer->postal_code.' '.$customer->city)])->filter()->implode(' · ') }}</p>
+                    @endif
                 </div>
                 <div class="flex flex-wrap gap-2">
                     <button wire:click="edit({{ $customer->id }})" class="text-xs px-3 py-1.5 rounded-lg font-medium bg-slatecalm-100 text-slate-700">Bearbeiten</button>
@@ -52,6 +55,36 @@
                 <label for="customer-email" class="text-xs font-medium text-slate-600">E-Mail</label>
                 <input id="customer-email" type="email" wire:model="email" maxlength="255" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
                 @error('email') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label for="customer-phone" class="text-xs font-medium text-slate-600">Telefon</label>
+                <input id="customer-phone" type="tel" wire:model="phone" maxlength="30" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                @error('phone') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label for="customer-mobile" class="text-xs font-medium text-slate-600">Mobil</label>
+                <input id="customer-mobile" type="tel" wire:model="mobile" maxlength="30" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                @error('mobile') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label for="customer-street" class="text-xs font-medium text-slate-600">Straße und Hausnummer</label>
+                <input id="customer-street" type="text" wire:model="street" maxlength="255" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                @error('street') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label for="customer-postal-code" class="text-xs font-medium text-slate-600">PLZ</label>
+                <input id="customer-postal-code" type="text" wire:model="postal_code" maxlength="10" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                @error('postal_code') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label for="customer-city" class="text-xs font-medium text-slate-600">Ort</label>
+                <input id="customer-city" type="text" wire:model="city" maxlength="100" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                @error('city') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div class="md:col-span-2">
+                <label for="customer-notes" class="text-xs font-medium text-slate-600">Notizen <span class="font-normal text-slate-400">(nur intern, für Kunden nicht sichtbar)</span></label>
+                <textarea id="customer-notes" wire:model="notes" rows="4" maxlength="5000" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm"></textarea>
+                @error('notes') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
         </div>
         <div class="flex justify-end gap-2 mt-4">

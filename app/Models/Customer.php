@@ -19,6 +19,12 @@ class Customer extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'mobile',
+        'street',
+        'postal_code',
+        'city',
+        'notes',
         'password',
         'active',
     ];
@@ -38,6 +44,8 @@ class Customer extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        // Internal agent notes must never reach the customer via serialization.
+        'notes',
     ];
 
     /**

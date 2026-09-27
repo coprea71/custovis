@@ -86,7 +86,8 @@ class ComplianceTest extends TestCase
     public function test_gdpr_export_and_anonymisation_via_admin_ui(): void
     {
         Storage::fake('local');
-        $customer = Customer::factory()->create(['name' => 'Erika Muster', 'email' => 'erika@example.com']);
+        $customer = Customer::factory()->create(['name' => 'Erika Muster', 'email' => 'erika@example.com',
+            'phone' => '030 123', 'mobile' => '0170 456', 'street' => 'Hauptstr. 1', 'postal_code' => '10115', 'city' => 'Berlin', 'notes' => 'VIP']);
         $ticket = $this->ticket(['customer_id' => $customer->id, 'requester_email' => 'erika@example.com', 'requester_name' => 'Erika Muster']);
         $ticket->messages()->create(['visibility' => 'public', 'direction' => 'incoming', 'body_text' => 'Meine IBAN lautet DE00']);
         $admin = User::factory()->create();
@@ -103,6 +104,7 @@ class ComplianceTest extends TestCase
         $this->assertNull($ticket->fresh()->requester_email);
         $this->assertSame('[anonymisiert]', $ticket->messages()->first()->body_text);
         $this->assertStringEndsWith('@invalid.invalid', $customer->fresh()->email);
+        $this->assertSame([null, null, null, null, null, null], array_values($customer->fresh()->only(['phone', 'mobile', 'street', 'postal_code', 'city', 'notes'])));
         $log = AuditLog::query()->where('action', 'gdpr.anonymized')->firstOrFail();
         $this->assertStringNotContainsString('erika', json_encode($log->meta));
     }

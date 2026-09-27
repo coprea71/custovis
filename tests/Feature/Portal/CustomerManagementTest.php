@@ -69,6 +69,36 @@ class CustomerManagementTest extends TestCase
         $this->assertSame(['fields_changed' => ['name']], AuditLog::query()->where('action', 'customer.updated')->firstOrFail()->meta);
     }
 
+    public function test_admin_maintains_contact_data_and_internal_notes(): void
+    {
+        $customer = Customer::factory()->create(['email' => 'kunde@example.com']);
+
+        Livewire::actingAs($this->admin)->test(CustomerManager::class)
+            ->call('edit', $customer->id)
+            ->set('phone', '+49 30 1234-5')->set('mobile', '0170 1234567')
+            ->set('street', 'Hauptstr. 1')->set('postal_code', '10115')->set('city', 'Berlin')
+            ->set('notes', 'Rückruf nur vormittags')
+            ->call('save')->assertHasNoErrors()
+            ->call('edit', $customer->id)->assertSet('city', 'Berlin')
+            ->set('city', '  ')->call('save')->assertHasNoErrors();
+
+        $customer->refresh();
+        $this->assertSame('+49 30 1234-5', $customer->phone);
+        $this->assertSame('Rückruf nur vormittags', $customer->notes);
+        $this->assertNull($customer->city);
+        $this->assertArrayNotHasKey('notes', $customer->toArray());
+    }
+
+    public function test_contact_data_is_whitelist_validated(): void
+    {
+        Livewire::actingAs($this->admin)->test(CustomerManager::class)
+            ->set('name', 'Erika')->set('email', 'erika@example.com')
+            ->set('phone', '030<script>')->set('postal_code', '10115;DROP')
+            ->call('save')->assertHasErrors(['phone' => 'regex', 'postal_code' => 'regex']);
+
+        $this->assertDatabaseMissing('customers', ['email' => 'erika@example.com']);
+    }
+
     public function test_invited_customer_sets_password_and_can_log_in(): void
     {
         Mail::fake();

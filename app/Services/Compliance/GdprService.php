@@ -60,7 +60,7 @@ class GdprService
     {
         return [
             'exported_at' => now()->toIso8601String(),
-            'customer' => $subject['customer']?->only(['id', 'name', 'email', 'created_at']),
+            'customer' => $subject['customer']?->only(['id', 'name', 'email', 'phone', 'mobile', 'street', 'postal_code', 'city', 'notes', 'created_at']),
             'tickets' => $this->tickets($subject)->with(['messages' => fn ($q) => $q->where('visibility', TicketMessage::VISIBILITY_PUBLIC)])
                 ->get()->map(fn (Ticket $ticket) => [
                     ...$ticket->only(['id', 'subject', 'status', 'type', 'source', 'requester_name', 'requester_email', 'requester_phone', 'created_at', 'closed_at']),
@@ -81,6 +81,7 @@ class GdprService
             $subject['customer']?->forceFill([
                 'name' => self::PLACEHOLDER,
                 'email' => 'anonymized-'.$subject['customer']->id.'@invalid.invalid',
+                'phone' => null, 'mobile' => null, 'street' => null, 'postal_code' => null, 'city' => null, 'notes' => null,
                 'password' => Str::random(64),
             ])->save();
         });

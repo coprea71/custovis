@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 class CustomerAccountService
 {
     /**
-     * @param  array{name: string, email: string}  $data
+     * @param  array<string, string|null>  $data
      * @return int number of existing tickets linked to the new customer
      */
     public function create(array $data, User $actor): int

@@ -31,7 +31,23 @@ class CustomerManager extends Component
 
     public string $email = '';
 
+    public string $phone = '';
+
+    public string $mobile = '';
+
+    public string $street = '';
+
+    public string $postal_code = '';
+
+    public string $city = '';
+
+    public string $notes = '';
+
     public ?string $status = null;
+
+    private const PHONE_PATTERN = 'regex:/^\+?[0-9 ()\/.-]+$/';
+
+    private const CONTACT_FIELDS = ['phone', 'mobile', 'street', 'postal_code', 'city', 'notes'];
 
     public function mount(): void
     {
@@ -51,12 +67,15 @@ class CustomerManager extends Component
         $this->editingId = $customer->id;
         $this->name = $customer->name;
         $this->email = $customer->email;
+        foreach (self::CONTACT_FIELDS as $field) {
+            $this->{$field} = (string) $customer->{$field};
+        }
         $this->resetValidation();
     }
 
     public function cancelEdit(): void
     {
-        $this->reset('editingId', 'name', 'email');
+        $this->reset('editingId', 'name', 'email', ...self::CONTACT_FIELDS);
         $this->resetValidation();
     }
 
@@ -67,7 +86,14 @@ class CustomerManager extends Component
         $data = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('customers', 'email')->ignore($this->editingId)],
+            'phone' => ['nullable', 'string', 'max:30', self::PHONE_PATTERN],
+            'mobile' => ['nullable', 'string', 'max:30', self::PHONE_PATTERN],
+            'street' => ['nullable', 'string', 'max:255'],
+            'postal_code' => ['nullable', 'string', 'max:10', 'regex:/^[A-Za-z0-9 -]+$/'],
+            'city' => ['nullable', 'string', 'max:100'],
+            'notes' => ['nullable', 'string', 'max:5000'],
         ]);
+        $data = array_map(fn (string $value) => trim($value) === '' ? null : trim($value), $data);
 
         $this->editingId ? $this->updateCustomer($data) : $this->createCustomer($data);
         $this->cancelEdit();
@@ -107,7 +133,9 @@ class CustomerManager extends Component
             'customers' => Customer::query()
                 ->when($this->search !== '', fn ($query) => $query->where(fn ($inner) => $inner
                     ->where('name', 'like', '%'.$this->search.'%')
-                    ->orWhere('email', 'like', '%'.$this->search.'%')))
+                    ->orWhere('email', 'like', '%'.$this->search.'%')
+                    ->orWhere('phone', 'like', '%'.$this->search.'%')
+                    ->orWhere('mobile', 'like', '%'.$this->search.'%')))
                 ->withCount('tickets')
                 ->orderBy('name')
                 ->paginate(25),
@@ -115,7 +143,7 @@ class CustomerManager extends Component
     }
 
     /**
-     * @param  array{name: string, email: string}  $data
+     * @param  array<string, string|null>  $data
      */
     private function createCustomer(array $data): void
     {
@@ -124,7 +152,7 @@ class CustomerManager extends Component
     }
 
     /**
-     * @param  array{name: string, email: string}  $data
+     * @param  array<string, string|null>  $data
      */
     private function updateCustomer(array $data): void
     {

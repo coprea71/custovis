@@ -3,7 +3,7 @@ Kunden sind die Personen, die Anfragen an Ihr Team stellen. Mit einem Konto kön
 ## Kunden anlegen
 
 1. Öffnen Sie **Administration → Kunden**.
-2. Tragen Sie im Formular **Neuer Kunde** **Name** und **E-Mail** ein.
+2. Tragen Sie im Formular **Neuer Kunde** **Name** und **E-Mail** ein. Optional ergänzen Sie **Telefon**, **Mobil**, Adresse (**Straße und Hausnummer**, **PLZ**, **Ort**) und **Notizen**.
 3. Klicken Sie auf **Anlegen**. Bestehende Tickets mit derselben E-Mail-Adresse werden automatisch zugeordnet.
 
 Kunden lassen sich auch direkt aus einem Ticket anlegen, über **Kunde anlegen** in der Seitenleiste.
@@ -18,7 +18,7 @@ Kunden lassen sich auch direkt aus einem Ticket anlegen, über **Kunde anlegen**
 ## Kundendaten ändern
 
 1. Klicken Sie beim Kunden auf **Bearbeiten**.
-2. Ändern Sie Name oder E-Mail und klicken Sie auf **Speichern**.
+2. Ändern Sie die gewünschten Angaben und klicken Sie auf **Speichern**. Leere Felder werden entfernt.
 
 ## Portal-Zugang sperren
 
@@ -28,5 +28,7 @@ Kunden lassen sich auch direkt aus einem Ticket anlegen, über **Kunde anlegen**
 ## Gut zu wissen
 
 - Gesperrte Kunden erhalten keine Einladungslinks.
+- **Notizen** sind nur intern für Ihr Team sichtbar, Kunden sehen sie im Portal nicht.
+- Die Kundensuche findet auch Telefon- und Mobilnummern.
 - Im Portal finden Kunden unter **Anleitungen** eine eigene Schritt-für-Schritt-Hilfe zur Bedienung. Verweisen Sie bei Fragen gern auf `/portal/help`.
 - Anträge auf Auskunft oder Löschung nach DSGVO bearbeiten Sie über **DSGVO-Werkzeuge** (siehe Hilfethema „Datenschutz (DSGVO)“).
