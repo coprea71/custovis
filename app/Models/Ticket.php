@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
@@ -97,11 +99,6 @@ class Ticket extends Model
     }
 
     /**
-     * Query-side counterpart of TicketPolicy::view for agent lists.
-     *
-     * @param  Builder<Ticket>  $query
-     */
-    /**
      * Links new tickets of every channel to a known customer by e-mail, so
      * customer SLAs apply from the start and the ticket shows in the portal
      * (same matching as Customer::linkUnassignedTickets()).
@@ -110,11 +107,28 @@ class Ticket extends Model
     {
         static::creating(function (Ticket $ticket) {
             if ($ticket->customer_id === null && $ticket->requester_email) {
-                $ticket->customer_id = Customer::query()->where('email', strtolower(trim($ticket->requester_email)))->value('id');
+                $ticket->customer_id = Customer::query()->where('email', $ticket->requester_email)->value('id');
             }
         });
     }
 
+    /**
+     * Customer e-mails are stored lower-cased; normalising here keeps the
+     * exact-match lookups (linking, portal policy) independent of how a mail
+     * client or API caller spelled the address.
+     *
+     * @return Attribute<string|null, string|null>
+     */
+    protected function requesterEmail(): Attribute
+    {
+        return Attribute::make(set: fn (?string $value) => filled($value) ? Str::lower(trim($value)) : null);
+    }
+
+    /**
+     * Query-side counterpart of TicketPolicy::view for agent lists.
+     *
+     * @param  Builder<Ticket>  $query
+     */
     public function scopeVisibleTo(Builder $query, User $user): void
     {
         if ($user->can('tickets.view.all')) {

@@ -166,8 +166,10 @@ class CustomerManager extends Component
         $customer->fill($data);
         $changed = array_keys($customer->getDirty());
         $customer->save();
+        // Tickets of the old address stay with the customer; the new address brings its own.
+        $linked = in_array('email', $changed, true) ? $customer->linkUnassignedTickets() : 0;
 
-        AuditLog::record('customer.updated', Auth::user(), null, $customer, ['fields_changed' => $changed]);
+        AuditLog::record('customer.updated', Auth::user(), null, $customer, ['fields_changed' => $changed, 'tickets_linked' => $linked]);
         $this->status = 'Kunde gespeichert.';
     }
 }

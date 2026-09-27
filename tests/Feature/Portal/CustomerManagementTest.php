@@ -66,7 +66,33 @@ class CustomerManagementTest extends TestCase
             ->call('save')->assertHasNoErrors();
 
         $this->assertSame('Neu', $customer->fresh()->name);
-        $this->assertSame(['fields_changed' => ['name']], AuditLog::query()->where('action', 'customer.updated')->firstOrFail()->meta);
+        $this->assertSame(['fields_changed' => ['name'], 'tickets_linked' => 0], AuditLog::query()->where('action', 'customer.updated')->firstOrFail()->meta);
+    }
+
+    public function test_changed_customer_email_links_tickets_of_the_new_address(): void
+    {
+        $customer = Customer::factory()->create(['email' => 'alt@example.com']);
+        $old = $this->ticket(['requester_email' => 'alt@example.com']);
+        $new = $this->ticket(['requester_email' => 'neu@example.com']);
+        $this->assertSame($customer->id, $old->customer_id);
+        $this->assertNull($new->customer_id);
+
+        Livewire::actingAs($this->admin)->test(CustomerManager::class)
+            ->call('edit', $customer->id)->set('email', 'Neu@Example.com')
+            ->call('save')->assertHasNoErrors();
+
+        $this->assertSame($customer->id, $old->fresh()->customer_id);
+        $this->assertSame($customer->id, $new->fresh()->customer_id);
+    }
+
+    public function test_tickets_of_the_same_address_share_one_customer_regardless_of_spelling(): void
+    {
+        $customer = Customer::factory()->create(['email' => 'erika@example.com']);
+
+        $ticket = $this->ticket(['requester_email' => ' Erika@EXAMPLE.com ']);
+
+        $this->assertSame('erika@example.com', $ticket->requester_email);
+        $this->assertSame($customer->id, $ticket->customer_id);
     }
 
     public function test_admin_maintains_contact_data_and_internal_notes(): void

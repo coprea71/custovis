@@ -65,6 +65,9 @@ nebeneinander:
   Platzhaltern und Fußzeile fest, mit Live-Vorschau; Versand mit Nur-Text-Fassung
 - Kontaktdaten und interne Notizen des Kunden per Info-Knopf in der Seitenleiste;
   fehlende Angaben lassen sich dort direkt hinterlegen
+- Tickets derselben E-Mail-Adresse landen automatisch beim selben Kunden – über alle
+  Kanäle, unabhängig von Groß-/Kleinschreibung, auch rückwirkend beim Anlegen des Kunden
+  oder Ändern seiner Adresse
 - Status, Priorität, Team und Bearbeiter direkt in der Seitenleiste ändern
 - als wichtig oder dringend markierte E-Mails (X-Priority, Importance) setzen die
   Ticket-Priorität automatisch; ein Farbstreifen zeigt sie in der Liste, Notfälle sind
