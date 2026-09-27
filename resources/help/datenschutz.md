@@ -4,7 +4,7 @@ Unter **Administration → Datenschutz** bearbeiten Sie Anfragen betroffener Per
 
 1. Öffnen Sie **Administration → Datenschutz**.
 2. Tragen Sie unter **Kennung** die Kunden-ID, E-Mail-Adresse oder Telefonnummer der Person ein, genau so, wie sie im Ticket gespeichert ist.
-3. Klicken Sie auf **Auskunft exportieren (JSON)**. Die Datei enthält alle zu dieser Person gespeicherten Daten.
+3. Klicken Sie auf **Auskunft exportieren (JSON)**. Die Datei enthält alle zu dieser Person gespeicherten Daten: Kundenkonto mit Kontakt- und Rechnungsdaten, Tickets mit öffentlichen Nachrichten und ausgestellte Rechnungen.
 4. Senden Sie die Datei auf sicherem Weg an die Person.
 
 ## Personenbezogene Daten löschen (Art. 17 DSGVO)
@@ -13,7 +13,8 @@ Unter **Administration → Datenschutz** bearbeiten Sie Anfragen betroffener Per
 2. Tragen Sie unter **Kennung** die Kennung der Person ein.
 3. Wiederholen Sie die Kennung im Feld **Kennung zur Bestätigung wiederholen**.
 4. Klicken Sie auf **Anonymisieren** und bestätigen Sie.
-5. Name, E-Mail, Telefonnummer und die eingehenden Nachrichten der Person werden ersetzt, ihre Anhänge gelöscht. **Das lässt sich nicht rückgängig machen.**
+5. Name, E-Mail, Telefonnummer, Adresse, Rechnungsdaten, interne Notizen und die eingehenden Nachrichten der Person werden ersetzt bzw. geleert, ihre Anhänge gelöscht. **Das lässt sich nicht rückgängig machen.**
+6. Ausgestellte Rechnungen bleiben unverändert erhalten. Für sie gilt die gesetzliche Aufbewahrungspflicht von 8 Jahren (§ 14b UStG), die Löschung ist daher nach Art. 17 Abs. 3 lit. b DSGVO ausgeschlossen.
 
 ## Aufbewahrungsfristen festlegen
 

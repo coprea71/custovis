@@ -46,6 +46,9 @@ Ist der Absender noch kein Kunde und Sie dürfen Kunden verwalten, erscheint in 
 
 ## Gut zu wissen
 
+- Als wichtig markierte E-Mails setzen die Priorität automatisch auf **Hoch**, als dringend markierte auf **Dringend**. Einen **Notfall** legt immer ein Mensch fest, auch die KI-Einstufung vergibt ihn nicht.
+- Neben **Kunde** in der Seitenleiste öffnet der **i**-Knopf Telefon, Mobil, Adresse und interne Notizen des Kunden. Fehlen Angaben, können Sie sie dort hinterlegen (siehe Hilfethema „Kunden & Kundenportal“).
+- Ist das Modul Zeiterfassung aktiv, buchen Sie in der Seitenleiste unter **Zeiterfassung** Ihren Aufwand (siehe Hilfethema „Zeiterfassung“).
 - Der farbige Streifen links in der Ticketliste zeigt die Priorität: grau für **Niedrig**, orange für **Hoch** und rot für **Dringend**; **Normal** hat keinen Streifen. Ein **Notfall** ist zusätzlich rot umrahmt und trägt oben rechts ein Warnsymbol.
 - **Ticket-Chat mit Kollegen** in der Seitenleiste öffnet einen internen Chat-Kanal nur zu diesem Ticket.
 - Ist eine ERP-Anbindung eingerichtet, zeigt **Kundendaten laden** Stammdaten aus Odoo oder Shopware an.

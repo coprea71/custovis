@@ -1,4 +1,4 @@
-Jede Mailbox ist ein E-Mail-Postfach, das Custovis per IMAP abruft. Neue E-Mails werden zu Tickets des zugeordneten Teams, Antworten gehen per SMTP über dasselbe Postfach hinaus.
+Jede Mailbox ist ein E-Mail-Postfach, das Custovis per IMAP abruft. Neue E-Mails werden zu Tickets des zugeordneten Teams, Antworten gehen per SMTP über dasselbe Postfach hinaus, gestaltet im E-Mail-Layout des Teams (siehe Hilfethema „E-Mail-Layout“).
 
 ## Mailbox anlegen
 

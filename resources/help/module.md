@@ -1,4 +1,4 @@
-Custovis ist in Module gegliedert, z. B. Wissensdatenbank, Team-Chat, Außendienst, KI, WhatsApp oder ERP. Sie schalten Module ab, die Sie nicht brauchen, oder geben sie nur bestimmten Rollen oder Personen frei.
+Custovis ist in Module gegliedert, z. B. Wissensdatenbank, Team-Chat, Außendienst, KI, WhatsApp, ERP, Zeiterfassung oder Rechnungen. Sie schalten Module ab, die Sie nicht brauchen, oder geben sie nur bestimmten Rollen oder Personen frei.
 
 ## Modul ein- oder ausschalten
 
@@ -16,6 +16,7 @@ Custovis ist in Module gegliedert, z. B. Wissensdatenbank, Team-Chat, Außendien
 
 ## Gut zu wissen
 
+- Neu hinzugekommene Module, zuletzt **Zeiterfassung** und **Rechnungen**, sind nach einem Update zunächst ausgeschaltet. Sie schalten sie hier bewusst ein.
 - Ohne Zuordnung steht ein Modul allen offen. Die Zeile **Zugang** zeigt, für wen es gilt.
 - Modulzugang allein reicht nicht: Für die einzelnen Aktionen braucht eine Person weiterhin die passenden Berechtigungen (siehe Hilfethema „Rollen & Berechtigungen“).
 - Diese Hilfe zeigt nur Themen zu Modulen, auf die die jeweilige Person Zugriff hat.

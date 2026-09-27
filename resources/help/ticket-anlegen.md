@@ -5,9 +5,9 @@ Anfragen per Telefon, am Schalter oder aus einem Gespräch erfassen Sie manuell 
 1. Klicken Sie über der Ticketliste auf **+ Neues Ticket**.
 2. Wählen Sie das zuständige **Team**.
 3. Wählen Sie den **Typ**: **Support-Ticket** für normale Anfragen, **Incident** für Störungen, **Problem** für die Ursachenanalyse wiederkehrender Störungen oder **Change** für geplante Änderungen.
-4. Legen Sie die **Priorität** fest: Niedrig, Normal, Hoch oder Dringend. Die Priorität bestimmt die SLA-Fristen.
+4. Legen Sie die **Priorität** fest: Niedrig, Normal, Hoch, Dringend oder **Notfall** für akute Ausfälle. Die Priorität bestimmt die SLA-Fristen.
 5. Geben Sie einen aussagekräftigen **Betreff** ein.
-6. Tragen Sie unter **Anfragende/r**, **E-Mail** und **Telefon** die Kontaktdaten ein. Mit einer E-Mail-Adresse können Sie dem Kunden später direkt aus dem Ticket antworten.
+6. Tragen Sie unter **Anfragende/r**, **E-Mail** und **Telefon** die Kontaktdaten ein. Mit einer E-Mail-Adresse können Sie dem Kunden später direkt aus dem Ticket antworten. Gehört die E-Mail-Adresse einem angelegten Kunden, wird das Ticket ihm automatisch zugeordnet, und seine Kunden-SLA gilt.
 7. Beschreiben Sie das Anliegen unter **Beschreibung**.
 8. Klicken Sie auf **Ticket anlegen**. Das Ticket öffnet sich im Arbeitsplatz.
 
