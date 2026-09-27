@@ -37,7 +37,7 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 
 | Bereich | Funktionen |
 |---|---|
-| **Ticket-Kern** | IMAP-Import je Mailbox, Antworten per SMTP, interne Notizen, Textbausteine, Tags, Collision Detection in Echtzeit |
+| **Ticket-Kern** | IMAP-Import je Mailbox, Antworten per SMTP über die Mailbox des Teams, E-Mail-Layout und Signatur je Team, interne Notizen, Textbausteine, Tags, Collision Detection in Echtzeit |
 | **Kanäle** | E-Mail, WhatsApp Business (Meta Cloud API), REST-API mit teamverwalteten API-Keys, GitHub-/GitLab-Issues, Telefon über MCP |
 | **ITIL** | Incident, Problem, Change mit CAB-Freigabe, Service Requests aus dem Service-Katalog, SLA-Engine mit Geschäftszeiten, CMDB |
 | **KI-Layer** | Austauschbare Provider (OpenAI, Anthropic, Ollama, eigener Endpunkt), Zusammenfassung, Antwortvorschlag, Triage, ähnliche Tickets, Budgets je Team, optionale PII-Schwärzung |
@@ -55,11 +55,14 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 ### Ticketsystem und Agenten-Arbeitsplatz
 
 Custovis ruft beliebig viele Postfächer per IMAP ab und macht aus jeder neuen
-E-Mail ein Ticket. Antworten werden per SMTP aus dem Ticket verschickt und landen
-im selben Verlauf. Der Arbeitsplatz unter `/agent` zeigt Ticketliste und Ticket
+E-Mail ein Ticket. Antworten werden per SMTP über die Mailbox des Tickets verschickt
+und landen im selben Verlauf. Der Arbeitsplatz unter `/agent` zeigt Ticketliste und Ticket
 nebeneinander:
 
 - öffentliche Antwort oder interne Notiz, Textbausteine je Team, Tags
+- E-Mail-Layout je Team: Team-Admins legen Farbe, Schrift, Logo, Signatur mit
+  Platzhaltern und Fußzeile fest, mit Live-Vorschau; Versand mit Nur-Text-Fassung
+- Kontaktdaten und interne Notizen des Kunden per Info-Knopf in der Seitenleiste
 - Status, Priorität, Team und Bearbeiter direkt in der Seitenleiste ändern
 - Tickets für telefonische oder persönliche Anfragen manuell anlegen
 - Filter wie „Mir zugewiesen“; Agenten sehen nur Tickets ihrer Teams
@@ -120,7 +123,8 @@ da ist, wird automatisch synchronisiert.
 
 - Nutzer, Teams und Rollen mit fein steuerbaren Berechtigungen; neue Nutzer setzen
   ihr Passwort selbst über einen Einladungslink.
-- Kundenverwaltung mit Portal-Zugang und Einladungslink.
+- Kundenverwaltung mit Telefon, Mobil, Adresse, internen Notizen, Portal-Zugang und
+  Einladungslink.
 - Modulverwaltung: Funktionsbereiche global abschalten oder nur für bestimmte Rollen
   oder Nutzer freigeben.
 - Wählbare und erweiterbare Farb-Themes.
