@@ -149,6 +149,9 @@ da ist, wird automatisch synchronisiert.
 - Wählbare und erweiterbare Farb-Themes.
 - Eine Installation kann unter mehreren Domains laufen (`APP_HOSTS`).
 - Datenbank-Updates per Klick unter **Administration → System**, ohne Shell-Zugriff.
+- Eingebaute Hilfe unter `/agent/help` mit Schritt-für-Schritt-Anleitungen zu allen
+  Funktionen, gefiltert nach Rechten und freigeschalteten Modulen; Kunden finden eine
+  eigene Hilfe unter `/portal/help`.
 
 ### Sicherheit und Datenschutz
 
