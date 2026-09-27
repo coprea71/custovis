@@ -2,12 +2,15 @@
 
 namespace Tests\Feature\Agent;
 
+use App\Livewire\Agent\TicketCustomerContact;
 use App\Livewire\Agent\TicketWorkspace;
+use App\Models\AuditLog;
 use App\Models\Customer;
 use App\Models\Team;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Models\User;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -85,6 +88,38 @@ class TicketWorkspaceTest extends TestCase
             ->assertSeeHtml('aria-label="Kontaktdaten anzeigen"')
             ->assertSeeHtml('x-show="customerInfo"')
             ->assertSee(['030 123456', '0170 9876', 'Hauptstr. 1, 10115 Berlin', 'Rückruf nur vormittags']);
+    }
+
+    public function test_missing_contact_details_can_be_added_from_the_ticket(): void
+    {
+        $this->seed(RolesAndPermissionsSeeder::class);
+        $user = User::factory()->create();
+        $user->givePermissionTo('customers.manage');
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+        $customer = Customer::factory()->create();
+        $ticket->update(['customer_id' => $customer->id]);
+
+        Livewire::actingAs($user)->test(TicketCustomerContact::class, ['ticketId' => $ticket->id])
+            ->assertSee(['Keine Kontaktdaten hinterlegt.', 'Kontaktdaten hinterlegen'])
+            ->call('edit')->set('phone', '030<script>')->call('save')->assertHasErrors(['phone' => 'regex'])
+            ->set('phone', '030 123456')->set('city', 'Berlin')->set('notes', '  ')->call('save')->assertHasNoErrors()
+            ->assertSee(['030 123456', 'Berlin', 'Kontaktdaten bearbeiten']);
+
+        $this->assertSame(['030 123456', 'Berlin', null], array_values($customer->fresh()->only(['phone', 'city', 'notes'])));
+        $this->assertSame(['fields_changed' => ['phone', 'city']], AuditLog::query()->where('action', 'customer.updated')->sole()->meta);
+    }
+
+    public function test_agents_without_customer_permission_cannot_add_contact_details(): void
+    {
+        $user = User::factory()->create();
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+        $ticket->update(['customer_id' => Customer::factory()->create()->id]);
+
+        Livewire::actingAs($user)->test(TicketCustomerContact::class, ['ticketId' => $ticket->id])
+            ->assertDontSee('Kontaktdaten hinterlegen')
+            ->call('edit')->assertForbidden();
     }
 
     public function test_sidebar_has_no_info_button_without_linked_customer(): void

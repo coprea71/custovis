@@ -53,8 +53,6 @@ class CustomerManager extends Component
 
     public ?string $status = null;
 
-    private const PHONE_PATTERN = 'regex:/^\+?[0-9 ()\/.-]+$/';
-
     private const CONTACT_FIELDS = ['company', 'phone', 'mobile', 'street', 'postal_code', 'city', 'country', 'vat_id', 'buyer_reference', 'notes'];
 
     public function mount(): void
@@ -95,16 +93,11 @@ class CustomerManager extends Component
         $data = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('customers', 'email')->ignore($this->editingId)],
-            'phone' => ['nullable', 'string', 'max:30', self::PHONE_PATTERN],
-            'mobile' => ['nullable', 'string', 'max:30', self::PHONE_PATTERN],
-            'street' => ['nullable', 'string', 'max:255'],
-            'postal_code' => ['nullable', 'string', 'max:10', 'regex:/^[A-Za-z0-9 -]+$/'],
-            'city' => ['nullable', 'string', 'max:100'],
+            ...Customer::contactRules(),
             'company' => ['nullable', 'string', 'max:255'],
             'country' => ['required', 'regex:/^[A-Z]{2}$/'],
             'vat_id' => ['nullable', 'regex:/^[A-Z]{2}[A-Za-z0-9]{2,13}$/'],
             'buyer_reference' => ['nullable', 'string', 'max:100'],
-            'notes' => ['nullable', 'string', 'max:5000'],
         ]);
         $data = array_map(fn (string $value) => trim($value) === '' ? null : trim($value), $data);
 

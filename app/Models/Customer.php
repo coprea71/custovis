@@ -54,6 +54,31 @@ class Customer extends Authenticatable
     ];
 
     /**
+     * Whitelist validation of the contact fields, shared by the customer
+     * administration and the ticket sidebar.
+     *
+     * @return array<string, array<int, string>>
+     */
+    public static function contactRules(): array
+    {
+        $phone = ['nullable', 'string', 'max:30', 'regex:/^\+?[0-9 ()\/.-]+$/'];
+
+        return [
+            'phone' => $phone,
+            'mobile' => $phone,
+            'street' => ['nullable', 'string', 'max:255'],
+            'postal_code' => ['nullable', 'string', 'max:10', 'regex:/^[A-Za-z0-9 -]+$/'],
+            'city' => ['nullable', 'string', 'max:100'],
+            'notes' => ['nullable', 'string', 'max:5000'],
+        ];
+    }
+
+    public function hasContactDetails(): bool
+    {
+        return (bool) ($this->phone || $this->mobile || $this->street || $this->city);
+    }
+
+    /**
      * @return HasMany<Ticket, $this>
      */
     public function tickets(): HasMany

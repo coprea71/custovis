@@ -211,7 +211,10 @@
                         <p class="text-sm font-medium text-slatecalm-900">{{ $ticket->requester_name ?: '—' }}</p>
                         <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: $ticket->requester_phone ?: '—' }}</p>
                         @if ($ticket->customer)
-                            @include('livewire.agent.partials.ticket-customer-info', ['customer' => $ticket->customer])
+                            {{-- Contact details stay collapsed so the sidebar keeps its compact default view. --}}
+                            <div x-show="customerInfo" x-cloak>
+                                <livewire:agent.ticket-customer-contact :ticket-id="$ticket->id" :key="'customer-contact-'.$ticket->id" />
+                            </div>
                         @endif
                     </div>
 

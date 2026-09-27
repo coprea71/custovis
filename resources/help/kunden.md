@@ -30,6 +30,6 @@ Kunden lassen sich auch direkt aus einem Ticket anlegen, über **Kunde anlegen**
 - Gesperrte Kunden erhalten keine Einladungslinks.
 - **Notizen** sind nur intern für Ihr Team sichtbar, Kunden sehen sie im Portal nicht.
 - Die Kundensuche findet auch Telefon- und Mobilnummern.
-- Ist ein Ticket einem Kunden zugeordnet, zeigt der **i**-Knopf neben **Kunde** in der Ticket-Seitenleiste Telefon, Mobil, Adresse und Notizen an.
+- Ist ein Ticket einem Kunden zugeordnet, zeigt der **i**-Knopf neben **Kunde** in der Ticket-Seitenleiste Telefon, Mobil, Adresse und Notizen an. Fehlen die Angaben, tragen Sie sie dort über **Kontaktdaten hinterlegen** direkt ein (Recht zur Kundenverwaltung nötig).
 - Im Portal finden Kunden unter **Anleitungen** eine eigene Schritt-für-Schritt-Hilfe zur Bedienung. Verweisen Sie bei Fragen gern auf `/portal/help`.
 - Anträge auf Auskunft oder Löschung nach DSGVO bearbeiten Sie über **DSGVO-Werkzeuge** (siehe Hilfethema „Datenschutz (DSGVO)“).
