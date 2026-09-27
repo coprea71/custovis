@@ -25,3 +25,4 @@ Jede Mailbox ist ein E-Mail-Postfach, das Custovis per IMAP abruft. Neue E-Mails
 - Die Liste zeigt, wann zuletzt abgerufen wurde. Ein Warnhinweis mit **Abruffehler** bedeutet, dass derzeit keine E-Mails ankommen.
 - Der Abruf läuft über den Cronjob oder den Web-Cron. Ohne einen der beiden werden keine E-Mails abgeholt (siehe Hilfethema „System-Updates & Web-Cron“).
 - Zugangsdaten werden verschlüsselt gespeichert. Verwenden Sie bei Anbietern mit Zwei-Faktor-Anmeldung ein App-Passwort.
+- Ist eine E-Mail als wichtig markiert (z. B. „Hohe Wichtigkeit“ in Outlook oder „Höchste Priorität“ in Thunderbird), erhält das Ticket die Priorität **Hoch**, bei „dringend“ die Priorität **Dringend**. Eine weniger wichtige Folge-Mail senkt die Priorität nie.

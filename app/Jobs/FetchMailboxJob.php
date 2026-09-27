@@ -7,6 +7,7 @@ use App\DataTransferObjects\IncomingMailMessageData;
 use App\Models\Mailbox;
 use App\Services\MailboxImapService;
 use App\Services\MailToTicketService;
+use App\Support\MailPriority;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -72,6 +73,7 @@ class FetchMailboxJob implements ShouldQueue
             fromName: $from?->personal ?: ($from?->mail ?? ''),
             bodyHtml: $message->getHTMLBody() ?: null,
             bodyText: $message->getTextBody() ?: null,
+            priority: MailPriority::fromMessage($message),
             attachments: $message->getAttachments()->map(
                 fn ($attachment) => new IncomingMailAttachmentData(
                     name: $attachment->getName() ?? 'attachment',
