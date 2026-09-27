@@ -90,7 +90,7 @@ class TicketWorkspaceTest extends TestCase
             ->assertSee(['030 123456', '0170 9876', 'Hauptstr. 1, 10115 Berlin', 'Rückruf nur vormittags']);
     }
 
-    public function test_ticket_list_shows_priority_stripe_from_green_to_red(): void
+    public function test_ticket_list_shows_priority_colors_and_emergency_alert(): void
     {
         $user = User::factory()->create();
         $ticket = $this->makeTicket();
@@ -100,8 +100,16 @@ class TicketWorkspaceTest extends TestCase
 
         Livewire::actingAs($user)->test(TicketWorkspace::class)
             ->assertSeeHtml('border-l-red-600')
-            ->assertSeeHtml('border-l-green-500')
+            ->assertSeeHtml('border-l-slate-400')
+            ->assertDontSeeHtml('data-emergency-alert')
             ->assertSee(['Priorität: Dringend', 'Priorität: Niedrig']);
+
+        Ticket::query()->create(['team_id' => $this->team->id, 'source' => 'api', 'subject' => 'Rechenzentrum brennt', 'priority' => 'emergency']);
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class)
+            ->assertSeeHtml('ring-red-600')
+            ->assertSeeHtml('data-emergency-alert')
+            ->assertSee('Priorität: Notfall');
     }
 
     public function test_missing_contact_details_can_be_added_from_the_ticket(): void

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Models\Ticket;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreExternalTicketRequest extends FormRequest
 {
@@ -24,7 +26,7 @@ class StoreExternalTicketRequest extends FormRequest
             'body' => ['required', 'string'],
             'requester_email' => ['required', 'email', 'max:255'],
             'requester_name' => ['nullable', 'string', 'max:255'],
-            'priority' => ['nullable', 'in:low,normal,high,urgent'],
+            'priority' => ['nullable', Rule::in(Ticket::PRIORITIES)],
         ];
     }
 }

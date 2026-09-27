@@ -67,7 +67,8 @@ nebeneinander:
   fehlende Angaben lassen sich dort direkt hinterlegen
 - Status, Priorität, Team und Bearbeiter direkt in der Seitenleiste ändern
 - als wichtig oder dringend markierte E-Mails (X-Priority, Importance) setzen die
-  Ticket-Priorität automatisch; ein Farbstreifen von grün bis rot zeigt sie in der Liste
+  Ticket-Priorität automatisch; ein Farbstreifen zeigt sie in der Liste, Notfälle sind
+  rot umrahmt und mit Warnsymbol markiert
 - Tickets für telefonische oder persönliche Anfragen manuell anlegen
 - Filter wie „Mir zugewiesen“; Agenten sehen nur Tickets ihrer Teams
 - Collision Detection: In Echtzeit ist sichtbar, wer ein Ticket gerade bearbeitet

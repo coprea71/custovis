@@ -45,7 +45,14 @@
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-xs font-mono font-semibold text-calm-700 bg-calm-100 px-2 py-0.5 rounded">#{{ $item->id }}</span>
                         <span class="sr-only">Priorität: {{ \App\Models\Ticket::PRIORITY_LABELS[$item->priority] ?? $item->priority }}</span>
-                        <span class="text-[11px] text-slate-400">{{ $item->created_at->diffForHumans() }}</span>
+                        <span class="flex items-center gap-1.5 text-[11px] text-slate-400">
+                            {{ $item->created_at->diffForHumans() }}
+                            @if ($item->priority === 'emergency')
+                                <svg class="w-4 h-4 text-red-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-emergency-alert>
+                                    <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 6a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 6zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                                </svg>
+                            @endif
+                        </span>
                     </div>
                     <p class="text-sm font-medium text-slatecalm-900 truncate">{{ $item->subject }}</p>
                     <p class="text-xs text-slate-500 truncate">{{ $item->requester_name ?: $item->requester_email }}</p>

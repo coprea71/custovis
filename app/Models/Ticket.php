@@ -17,21 +17,29 @@ class Ticket extends Model
 
     public const STATUSES = ['open', 'pending', 'closed'];
 
-    public const PRIORITIES = ['low', 'normal', 'high', 'urgent'];
+    public const PRIORITIES = ['low', 'normal', 'high', 'urgent', 'emergency'];
+
+    /**
+     * Priorities automated classification may choose; an emergency is only
+     * declared by a person or an explicit channel value.
+     */
+    public const AUTOMATIC_PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
     public const STATUS_LABELS = ['open' => 'Offen', 'pending' => 'Wartend', 'closed' => 'Geschlossen'];
 
-    public const PRIORITY_LABELS = ['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend'];
+    public const PRIORITY_LABELS = ['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend', 'emergency' => 'Notfall'];
 
     /**
-     * Left stripe in the ticket list, green (low) to red (urgent). Full class
-     * names so Tailwind's source scan picks them up.
+     * Left stripe in the ticket list (normal has none); an emergency is
+     * additionally framed in red. Full class names so Tailwind's source scan
+     * picks them up.
      */
     public const PRIORITY_STRIPES = [
-        'low' => 'border-l-green-500',
-        'normal' => 'border-l-yellow-400',
+        'low' => 'border-l-slate-400',
+        'normal' => 'border-l-transparent',
         'high' => 'border-l-orange-500',
         'urgent' => 'border-l-red-600',
+        'emergency' => 'border-l-red-600 ring-2 ring-inset ring-red-600',
     ];
 
     /**

@@ -46,7 +46,7 @@ Ist der Absender noch kein Kunde und Sie dürfen Kunden verwalten, erscheint in 
 
 ## Gut zu wissen
 
-- Der farbige Streifen links in der Ticketliste zeigt die Priorität: grün für **Niedrig**, gelb für **Normal**, orange für **Hoch** und rot für **Dringend**.
+- Der farbige Streifen links in der Ticketliste zeigt die Priorität: grau für **Niedrig**, orange für **Hoch** und rot für **Dringend**; **Normal** hat keinen Streifen. Ein **Notfall** ist zusätzlich rot umrahmt und trägt oben rechts ein Warnsymbol.
 - **Ticket-Chat mit Kollegen** in der Seitenleiste öffnet einen internen Chat-Kanal nur zu diesem Ticket.
 - Ist eine ERP-Anbindung eingerichtet, zeigt **Kundendaten laden** Stammdaten aus Odoo oder Shopware an.
 - Bei WhatsApp-Tickets zeigt der Kopfbereich, ob das 24-Stunden-Fenster offen ist (siehe Hilfethema „WhatsApp Business“).

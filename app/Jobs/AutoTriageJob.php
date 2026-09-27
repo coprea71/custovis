@@ -26,9 +26,9 @@ class AutoTriageJob implements ShouldQueue
         $provider = $factory->make($this->ticket->team, 'classify');
         $text = $this->prepareText($this->ticket, 'classify', $this->conversationText($this->ticket));
 
-        $priority = trim($provider->classify($text, Ticket::PRIORITIES));
+        $priority = trim($provider->classify($text, Ticket::AUTOMATIC_PRIORITIES));
 
-        if (in_array($priority, Ticket::PRIORITIES, true)) {
+        if (in_array($priority, Ticket::AUTOMATIC_PRIORITIES, true)) {
             $this->ticket->update(['priority' => $priority]);
         }
 
