@@ -12,6 +12,7 @@ use App\Livewire\Agent\Team\ApiKeyManager;
 use App\Livewire\Agent\Team\CannedResponseManager;
 use App\Livewire\Agent\Team\ErpConnectionManager;
 use App\Livewire\Agent\Team\GitIssueConnectionManager;
+use App\Livewire\Agent\Team\MailLayoutManager;
 use App\Livewire\Agent\Team\TeamDashboard;
 use App\Livewire\Agent\Team\TeamSettings;
 use App\Livewire\Agent\Team\WhatsappAccountManager;
@@ -39,6 +40,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/team/{team}/dashboard', TeamDashboard::class)->middleware('module:reporting')->name('team.dashboard');
     Route::get('/team/{team}/settings', TeamSettings::class)->name('team.settings');
     Route::get('/team/{team}/settings/canned-responses', CannedResponseManager::class)->name('team.canned-responses');
+    Route::get('/team/{team}/settings/mail-layout', MailLayoutManager::class)->name('team.mail-layout');
     Route::get('/team/{team}/settings/api-keys', ApiKeyManager::class)->name('team.api-keys');
     Route::get('/team/{team}/settings/git-issues', GitIssueConnectionManager::class)->name('team.git-issues');
     Route::get('/team/{team}/settings/whatsapp', WhatsappAccountManager::class)->middleware('module:whatsapp')->name('team.whatsapp');

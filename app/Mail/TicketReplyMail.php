@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\TeamMailLayout;
 use App\Models\TicketAttachment;
 use App\Models\TicketMessage;
 use Illuminate\Bus\Queueable;
@@ -26,9 +27,23 @@ class TicketReplyMail extends Mailable
 
     public function content(): Content
     {
+        $ticket = $this->message->ticket;
+        $layout = TeamMailLayout::forTeam($ticket->team);
+
         return new Content(
             view: 'mail.ticket-reply',
-            with: ['body' => $this->message->body_html ?? nl2br(e($this->message->body_text))],
+            text: 'mail.ticket-reply-text',
+            with: [
+                'body' => $this->message->body_html ?? nl2br(e($this->message->body_text)),
+                'bodyText' => $this->message->body_text ?? strip_tags((string) $this->message->body_html),
+                'layout' => $layout,
+                'signature' => $layout->renderSignature([
+                    '{agent_name}' => (string) $this->message->authorUser?->name,
+                    '{team_name}' => $ticket->team->name,
+                    '{mailbox_email}' => (string) $ticket->mailbox?->email_address,
+                    '{ticket_id}' => (string) $ticket->id,
+                ]),
+            ],
         );
     }
 

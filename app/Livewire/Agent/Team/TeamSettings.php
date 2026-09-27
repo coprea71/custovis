@@ -21,6 +21,7 @@ class TeamSettings extends Component
      */
     public const PAGES = [
         'agent.team.canned-responses' => ['Textbausteine', 'Vorlagen für Antworten im Ticket', 'team.manage'],
+        'agent.team.mail-layout' => ['E-Mail-Layout', 'Design, Logo und Signatur ausgehender Mails', 'team.manage'],
         'agent.team.api-keys' => ['API-Keys', 'Ticket-API und MCP-Zugänge für Telefonassistenten', 'team.api_keys.manage'],
         'agent.team.whatsapp' => ['WhatsApp', 'WhatsApp-Business-Konten und Vorlagen', 'team.whatsapp.manage', 'whatsapp'],
         'agent.team.git-issues' => ['Git-Issues', 'GitHub-/GitLab-Issue-Import', 'team.git_issues.manage'],

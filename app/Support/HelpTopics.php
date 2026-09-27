@@ -36,6 +36,7 @@ class HelpTopics
         'techniker-app' => ['Techniker-App', 'Tagesliste, Status, Checklisten, Material, Unterschrift und Auslieferung', 'work', 'appointments.view.own', 'field-service'],
         'team-dashboard' => ['Team-Dashboard', 'Kennzahlen, Auslastung und letzte Aktivitäten Ihres Teams', 'work', null, 'reporting'],
         'textbausteine' => ['Textbausteine', 'Antwortvorlagen für das ganze Team pflegen', 'team', 'team.manage'],
+        'e-mail-layout' => ['E-Mail-Layout', 'Design, Logo und Signatur der Antwortmails gestalten', 'team', 'team.manage'],
         'api-keys' => ['API-Keys & MCP', 'Zugänge für die Ticket-API und KI-Telefonassistenten', 'team', 'team.api_keys.manage'],
         'whatsapp' => ['WhatsApp Business', 'WhatsApp-Konto verbinden und Chats als Tickets bearbeiten', 'team', 'team.whatsapp.manage', 'whatsapp'],
         'git-issues' => ['GitHub-/GitLab-Issues', 'Issues eines Repositorys automatisch als Tickets importieren', 'team', 'team.git_issues.manage'],
