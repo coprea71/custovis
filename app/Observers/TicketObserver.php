@@ -10,8 +10,8 @@ use App\Services\Itil\BusinessHoursCalendar;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Calculates SLA deadlines at ticket creation (5.md). Deadlines run in the
- * team's business hours when those are maintained (21.md), otherwise in
+ * Calculates SLA deadlines at ticket creation (5.md); a customer SLA takes
+ * precedence over the team's. Deadlines run in the team's business hours when those are maintained (21.md), otherwise in
  * calendar time.
  */
 class TicketObserver
@@ -26,10 +26,7 @@ class TicketObserver
 
     private function applySlaPolicy(Ticket $ticket): void
     {
-        $policy = SlaPolicy::query()
-            ->where('team_id', $ticket->team_id)
-            ->where('priority', $ticket->priority)
-            ->first();
+        $policy = SlaPolicy::applicableTo($ticket);
 
         if (! $policy) {
             return;

@@ -50,4 +50,6 @@
     @else
         <p class="text-sm text-slate-400">Bitte zuerst ein Team anlegen.</p>
     @endif
+
+    <livewire:admin.customer-sla-manager />
 </div>

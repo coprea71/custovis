@@ -93,6 +93,20 @@ class Ticket extends Model
      *
      * @param  Builder<Ticket>  $query
      */
+    /**
+     * Links new tickets of every channel to a known customer by e-mail, so
+     * customer SLAs apply from the start and the ticket shows in the portal
+     * (same matching as Customer::linkUnassignedTickets()).
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Ticket $ticket) {
+            if ($ticket->customer_id === null && $ticket->requester_email) {
+                $ticket->customer_id = Customer::query()->where('email', strtolower(trim($ticket->requester_email)))->value('id');
+            }
+        });
+    }
+
     public function scopeVisibleTo(Builder $query, User $user): void
     {
         if ($user->can('tickets.view.all')) {

@@ -79,6 +79,14 @@ class Customer extends Authenticatable
     }
 
     /**
+     * @return HasMany<SlaPolicy, $this>
+     */
+    public function slaPolicies(): HasMany
+    {
+        return $this->hasMany(SlaPolicy::class);
+    }
+
+    /**
      * @return HasMany<Ticket, $this>
      */
     public function tickets(): HasMany

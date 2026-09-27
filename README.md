@@ -39,7 +39,7 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 |---|---|
 | **Ticket-Kern** | IMAP-Import je Mailbox, Antworten per SMTP über die Mailbox des Teams, E-Mail-Layout und Signatur je Team, interne Notizen, Textbausteine, Tags, Collision Detection in Echtzeit |
 | **Kanäle** | E-Mail, WhatsApp Business (Meta Cloud API), REST-API mit teamverwalteten API-Keys, GitHub-/GitLab-Issues, Telefon über MCP |
-| **ITIL** | Incident, Problem, Change mit CAB-Freigabe, Service Requests aus dem Service-Katalog, SLA-Engine mit Geschäftszeiten, CMDB |
+| **ITIL** | Incident, Problem, Change mit CAB-Freigabe, Service Requests aus dem Service-Katalog, SLA-Engine mit Geschäftszeiten und Kunden-SLAs, CMDB |
 | **KI-Layer** | Austauschbare Provider (OpenAI, Anthropic, Ollama, eigener Endpunkt), Zusammenfassung, Antwortvorschlag, Triage, ähnliche Tickets, Budgets je Team, optionale PII-Schwärzung |
 | **Dashboards** | Management-Dashboard über alle Teams, Team-Dashboards mit Auslastung und SLA-Verletzungen, stündliche Snapshots |
 | **Wissensdatenbank** | Kategorien-Baum, versionierte Markdown-Artikel mit Diff und Rollback, Volltextsuche, Feedback, Verknüpfung mit Tickets |
@@ -89,7 +89,8 @@ Neben einfachen Tickets kennt Custovis die ITIL-Typen Incident (Auswirkung und
 Dringlichkeit), Problem (Ursache), Change (Typ, Risiko, Zeitfenster) und Service
 Request. Jeder Typ hat einen festen Lebenszyklus. Changes durchlaufen eine
 CAB-Freigabe mit eigenem Freigabe-Eingang. Die SLA-Engine berechnet Fristen in den
-Geschäftszeiten des Teams und meldet Verletzungen. Service Requests entstehen aus
+Geschäftszeiten des Teams und meldet Verletzungen; vertragliche SLAs einzelner Kunden
+haben Vorrang vor der Team-SLA. Service Requests entstehen aus
 einem Service-Katalog, Configuration Items aus der CMDB lassen sich Tickets zuordnen.
 
 ### KI-Assistenz

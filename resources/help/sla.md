@@ -13,7 +13,20 @@ SLAs (Service Level Agreements) legen fest, wie schnell ein Team reagieren und e
 2. Lassen Sie Tage ohne Service leer, z. B. Samstag und Sonntag.
 3. Klicken Sie auf **Speichern**.
 
+## SLA je Kunde
+
+Für Kunden mit eigenem Servicevertrag legen Sie abweichende Fristen fest.
+
+1. Scrollen Sie auf der SLA-Seite zu **SLA je Kunde** und wählen Sie den Kunden, bei Bedarf über **Kunde suchen...**.
+2. Tragen Sie für die gewünschten Prioritäten **Erste Reaktion** und **Lösung** in Minuten ein. Leere Zeilen übernehmen die SLA des Teams.
+3. Klicken Sie auf **Kunden-SLA speichern**.
+
+Die Kunden-SLA hat Vorrang vor der Team-SLA derselben Priorität und gilt in allen Teams. Die Fristen laufen in den Geschäftszeiten des Teams, das das Ticket bearbeitet. Kunden mit eigener SLA stehen oben als Schnellauswahl.
+
 ## Gut zu wissen
+
+- Ein Ticket wird beim Eingang automatisch dem Kunden zugeordnet, dessen E-Mail-Adresse der Absender hat. Nur dann greift die Kunden-SLA.
+- Geänderte Fristen gelten für neu eingehende Tickets, bestehende Tickets behalten ihre Fristen.
 
 - Ohne Geschäftszeiten zählt die Kalenderzeit rund um die Uhr (24/7).
 - Überfällige Tickets und die SLA-Compliance sehen Sie im Team- und im Management-Dashboard. Die Einsatzplanung warnt, wenn ein Termin nach der Lösungsfrist liegt.
