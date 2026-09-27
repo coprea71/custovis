@@ -26,6 +26,8 @@
 <body class="h-full font-sans text-slate-700 antialiased {{ $bodyClass }}">
     {{ $slot }}
 
+    <div class="fixed bottom-1 left-2 z-30 text-[10px] text-slate-400 pointer-events-none select-none" aria-label="Version">v{{ config('custovis.version') }}</div>
+
     @if ($scripts)
         @livewireScripts
     @endif
