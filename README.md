@@ -47,6 +47,7 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 | **Kundenportal** | Eigene Tickets mit Status-Timeline, Anfragen aus dem Service-Katalog, öffentliche Hilfe-Artikel, Passwort-Reset |
 | **Außendienst** | Technikerverwaltung (Skills, Schichten, Abwesenheiten), Dispatcher-Board mit Drag & Drop und Zuweisungsvorschlag, Routing über selbst gehostetes OSRM/Nominatim, Offline-PWA mit Checklisten, Unterschrift und Lieferschein-PDF |
 | **ERP-Anbindung** | Kundendaten aus Odoo oder Shopware 6 live in der Ticket-Sidebar, ohne Datenimport |
+| **Zeiterfassung & Rechnungen** | Zeit am Ticket buchen (Timer), Einzel- und Sammelrechnungen, E-Rechnung als ZUGFeRD-PDF und XRechnung-XML, GoBD-konforme Nummern und Storno |
 | **Administration** | Nutzer, Teams, Rollen und Berechtigungen, Kundenverwaltung, Modulverwaltung je Rolle/Nutzer, Themes, Schema-Updates ohne Shell |
 | **Compliance** | 2FA-Pflicht, Passkeys, Audit-Log, verschlüsselte Zugangsdaten, DSGVO-Auskunft und -Anonymisierung, Aufbewahrungsfristen ([Details](docs/compliance/README.md)) |
 
@@ -104,6 +105,19 @@ ein. Kunden melden sich im Portal unter `/portal` an, sehen nur ihre eigenen Tic
 mit Status-Verlauf, stellen neue Anfragen aus dem Service-Katalog und durchsuchen die
 öffentlichen Hilfe-Artikel.
 
+### Zeiterfassung und Rechnungen
+
+Agenten buchen ihren Aufwand direkt im Ticket, manuell oder per Start/Stopp-Timer, und
+markieren ihn als abrechenbar oder intern. Team-Admins rechnen die offenen Zeiten ab:
+als Einzelrechnung je Kunde oder als Sammelrechnung für einen Zeitraum, mit einer Position
+je Ticket. Jede Rechnung ist eine E-Rechnung nach EN 16931 und geht per E-Mail als
+ZUGFeRD-PDF (PDF/A-3, Profil EN 16931) und als XRechnung-3.0-XML an den Kunden.
+
+- fortlaufende Rechnungsnummern je Jahr, ausgestellte Rechnungen sind unveränderbar,
+  Korrekturen laufen über eine Stornorechnung (GoBD)
+- Kleinunternehmerregelung (§ 19 UStG), Leitweg-ID für öffentliche Auftraggeber
+- offene Posten, Zahlungseingang und überfällige Rechnungen im Blick
+
 ### Team-Chat und Dashboards
 
 Der interne Chat bietet Team-, Firmen- und Ticket-Kanäle sowie Direktnachrichten in
@@ -147,6 +161,7 @@ Anonymisierung je Kunde sowie konfigurierbare Aufbewahrungsfristen
 - Frontend: Livewire, Blade und Alpine.js, Tailwind über Vite (kein CDN, kein Filament)
 - Echtzeit: Laravel Reverb; Queues: Datenbank-Treiber (cron-tauglich), Redis optional
 - MCP: offizielles `laravel/mcp` (Streamable HTTP)
+- E-Rechnung: `horstoeko/zugferd` (XRechnung/ZUGFeRD), PDF über `barryvdh/laravel-dompdf`
 
 ## Installation
 

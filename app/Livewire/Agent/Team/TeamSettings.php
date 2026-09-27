@@ -21,6 +21,7 @@ class TeamSettings extends Component
      */
     public const PAGES = [
         'agent.team.canned-responses' => ['Textbausteine', 'Vorlagen für Antworten im Ticket', 'team.manage'],
+        'agent.team.invoices' => ['Rechnungen', 'Leistungen abrechnen, Sammelrechnungen und E-Rechnungen', 'invoices.manage', 'invoicing'],
         'agent.team.mail-layout' => ['E-Mail-Layout', 'Design, Logo und Signatur ausgehender Mails', 'team.manage'],
         'agent.team.api-keys' => ['API-Keys', 'Ticket-API und MCP-Zugänge für Telefonassistenten', 'team.api_keys.manage'],
         'agent.team.whatsapp' => ['WhatsApp', 'WhatsApp-Business-Konten und Vorlagen', 'team.whatsapp.manage', 'whatsapp'],

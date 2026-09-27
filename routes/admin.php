@@ -4,6 +4,7 @@ use App\Livewire\Admin\ChecklistTemplateManager;
 use App\Livewire\Admin\CmdbManager;
 use App\Livewire\Admin\ComplianceCenter;
 use App\Livewire\Admin\CustomerManager;
+use App\Livewire\Admin\Invoicing\InvoiceSettingsManager;
 use App\Livewire\Admin\KnowledgeBase\ArticleEditor;
 use App\Livewire\Admin\KnowledgeBase\ArticleIndex;
 use App\Livewire\Admin\KnowledgeBase\CategoryManager;
@@ -36,6 +37,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/technicians', TechnicianManager::class)->middleware('module:field-service')->name('technicians');
     Route::get('/checklists', ChecklistTemplateManager::class)->middleware('module:field-service')->name('checklists');
     Route::get('/customers', CustomerManager::class)->name('customers');
+    Route::get('/invoices/settings', InvoiceSettingsManager::class)->middleware('module:invoicing')->name('invoices.settings');
     Route::get('/compliance', ComplianceCenter::class)->name('compliance');
     Route::get('/system/migrate', SystemMaintenance::class)->name('system.migrate');
     Route::get('/modules', ModuleManager::class)->name('modules');

@@ -4,6 +4,7 @@ namespace Tests\Feature\Agent;
 
 use App\Livewire\Agent\TicketTimeTracking;
 use App\Livewire\Agent\TicketWorkspace;
+use App\Models\Invoice;
 use App\Models\Module;
 use App\Models\Team;
 use App\Models\Ticket;
@@ -91,7 +92,10 @@ class TimeTrackingTest extends TestCase
         $colleague = User::factory()->create();
         $foreign = $this->ticket->timeEntries()->create(['user_id' => $colleague->id, 'work_date' => today(), 'minutes' => 30]);
         $locked = $this->ticket->timeEntries()->create(['user_id' => $this->agent->id, 'work_date' => today(), 'minutes' => 30]);
-        $locked->forceFill(['invoice_item_id' => 99])->save();
+        $item = Invoice::query()->create(['team_id' => $this->team->id])->items()->create([
+            'position' => 1, 'description' => 'Drucker', 'quantity' => 0.5, 'unit_price_cents' => 9000, 'net_cents' => 4500,
+        ]);
+        $locked->forceFill(['invoice_item_id' => $item->id])->save();
 
         Livewire::actingAs($this->agent)->test(TicketTimeTracking::class, ['ticketId' => $this->ticket->id])
             ->call('delete', $foreign->id)->assertNotFound();

@@ -81,6 +81,29 @@
                 <input id="customer-city" type="text" wire:model="city" maxlength="100" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
                 @error('city') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
+            <div>
+                <label for="customer-country" class="text-xs font-medium text-slate-600">Land (ISO-Code)</label>
+                <input id="customer-country" type="text" wire:model="country" maxlength="2" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm uppercase">
+                @error('country') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div class="md:col-span-2 pt-2 border-t border-slatecalm-100">
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Rechnungsdaten</p>
+            </div>
+            <div>
+                <label for="customer-company" class="text-xs font-medium text-slate-600">Firma</label>
+                <input id="customer-company" type="text" wire:model="company" maxlength="255" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                @error('company') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label for="customer-vat-id" class="text-xs font-medium text-slate-600">USt-IdNr.</label>
+                <input id="customer-vat-id" type="text" wire:model="vat_id" maxlength="15" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                @error('vat_id') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div class="md:col-span-2">
+                <label for="customer-buyer-reference" class="text-xs font-medium text-slate-600">Käuferreferenz / Leitweg-ID <span class="font-normal text-slate-400">(bei Behörden Pflicht, sonst optional)</span></label>
+                <input id="customer-buyer-reference" type="text" wire:model="buyer_reference" maxlength="100" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                @error('buyer_reference') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
             <div class="md:col-span-2">
                 <label for="customer-notes" class="text-xs font-medium text-slate-600">Notizen <span class="font-normal text-slate-400">(nur intern, für Kunden nicht sichtbar)</span></label>
                 <textarea id="customer-notes" wire:model="notes" rows="4" maxlength="5000" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm"></textarea>

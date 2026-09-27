@@ -5,6 +5,7 @@ namespace App\Services\Compliance;
 use App\Models\AppointmentDelivery;
 use App\Models\AuditLog;
 use App\Models\Customer;
+use App\Models\Invoice;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Models\User;
@@ -60,7 +61,10 @@ class GdprService
     {
         return [
             'exported_at' => now()->toIso8601String(),
-            'customer' => $subject['customer']?->only(['id', 'name', 'email', 'phone', 'mobile', 'street', 'postal_code', 'city', 'notes', 'created_at']),
+            'customer' => $subject['customer']?->only(['id', 'name', 'company', 'email', 'phone', 'mobile', 'street', 'postal_code', 'city', 'country', 'vat_id', 'buyer_reference', 'notes', 'created_at']),
+            // Invoices stay out of anonymisation (statutory retention, Art. 17 (3) b GDPR) but belong in the access report.
+            'invoices' => $subject['customer'] ? Invoice::query()->where('customer_id', $subject['customer']->id)->whereNotNull('number')
+                ->get(['number', 'type', 'status', 'issue_date', 'gross_cents', 'buyer'])->toArray() : [],
             'tickets' => $this->tickets($subject)->with(['messages' => fn ($q) => $q->where('visibility', TicketMessage::VISIBILITY_PUBLIC)])
                 ->get()->map(fn (Ticket $ticket) => [
                     ...$ticket->only(['id', 'subject', 'status', 'type', 'source', 'requester_name', 'requester_email', 'requester_phone', 'created_at', 'closed_at']),
@@ -82,6 +86,7 @@ class GdprService
                 'name' => self::PLACEHOLDER,
                 'email' => 'anonymized-'.$subject['customer']->id.'@invalid.invalid',
                 'phone' => null, 'mobile' => null, 'street' => null, 'postal_code' => null, 'city' => null, 'notes' => null,
+                'company' => null, 'vat_id' => null, 'buyer_reference' => null,
                 'password' => Str::random(64),
             ])->save();
         });

@@ -18,12 +18,16 @@ class Customer extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'company',
         'email',
         'phone',
         'mobile',
         'street',
         'postal_code',
         'city',
+        'country',
+        'vat_id',
+        'buyer_reference',
         'notes',
         'password',
         'active',
@@ -34,6 +38,7 @@ class Customer extends Authenticatable
      */
     protected $attributes = [
         'active' => true,
+        'country' => 'DE',
     ];
 
     /**

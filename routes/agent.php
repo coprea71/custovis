@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Agent\InvoiceFileController;
 use App\Http\Controllers\Chat\ChatAttachmentController;
 use App\Livewire\Agent\ApprovalInbox;
 use App\Livewire\Agent\Chat\ChatWorkspace;
@@ -12,6 +13,8 @@ use App\Livewire\Agent\Team\ApiKeyManager;
 use App\Livewire\Agent\Team\CannedResponseManager;
 use App\Livewire\Agent\Team\ErpConnectionManager;
 use App\Livewire\Agent\Team\GitIssueConnectionManager;
+use App\Livewire\Agent\Team\Invoicing\InvoiceEditor;
+use App\Livewire\Agent\Team\Invoicing\InvoiceManager;
 use App\Livewire\Agent\Team\MailLayoutManager;
 use App\Livewire\Agent\Team\TeamDashboard;
 use App\Livewire\Agent\Team\TeamSettings;
@@ -41,6 +44,11 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/team/{team}/settings', TeamSettings::class)->name('team.settings');
     Route::get('/team/{team}/settings/canned-responses', CannedResponseManager::class)->name('team.canned-responses');
     Route::get('/team/{team}/settings/mail-layout', MailLayoutManager::class)->name('team.mail-layout');
+    Route::middleware('module:invoicing')->group(function () {
+        Route::get('/team/{team}/invoices', InvoiceManager::class)->name('team.invoices');
+        Route::get('/team/{team}/invoices/{invoice}', InvoiceEditor::class)->name('team.invoices.show');
+        Route::get('/team/{team}/invoices/{invoice}/{format}', InvoiceFileController::class)->whereIn('format', ['pdf', 'xml'])->name('team.invoices.file');
+    });
     Route::get('/team/{team}/settings/api-keys', ApiKeyManager::class)->name('team.api-keys');
     Route::get('/team/{team}/settings/git-issues', GitIssueConnectionManager::class)->name('team.git-issues');
     Route::get('/team/{team}/settings/whatsapp', WhatsappAccountManager::class)->middleware('module:whatsapp')->name('team.whatsapp');

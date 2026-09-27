@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Mail\InvoiceMail;
 use App\Mail\TicketReplyMail;
+use App\Models\Invoice;
 use App\Models\Mailbox;
 use App\Models\TicketMessage;
 use Illuminate\Support\Facades\Mail;
@@ -25,6 +27,17 @@ class MailSenderService
         Mail::mailer($this->dynamicMailerFor($mailbox))
             ->to($ticket->requester_email, $ticket->requester_name)
             ->send(new TicketReplyMail($message));
+    }
+
+    /**
+     * Invoices go out through the mailbox chosen in the invoicing settings,
+     * otherwise through the system mailer (MAIL_* in .env).
+     */
+    public function sendInvoice(Invoice $invoice, ?Mailbox $mailbox): void
+    {
+        Mail::mailer($mailbox ? $this->dynamicMailerFor($mailbox) : null)
+            ->to($invoice->buyer['email'], $invoice->buyer['name'])
+            ->send(new InvoiceMail($invoice));
     }
 
     private function dynamicMailerFor(Mailbox $mailbox): string
