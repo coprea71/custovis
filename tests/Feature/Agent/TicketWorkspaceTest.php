@@ -3,6 +3,7 @@
 namespace Tests\Feature\Agent;
 
 use App\Livewire\Agent\TicketWorkspace;
+use App\Models\Customer;
 use App\Models\Team;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
@@ -69,6 +70,31 @@ class TicketWorkspaceTest extends TestCase
         ]);
 
         $component->call('$refresh')->assertSee('Neu eingegangen');
+    }
+
+    public function test_sidebar_offers_linked_customer_contact_details_behind_info_button(): void
+    {
+        $user = User::factory()->create();
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+        $customer = Customer::factory()->create(['phone' => '030 123456', 'mobile' => '0170 9876', 'street' => 'Hauptstr. 1',
+            'postal_code' => '10115', 'city' => 'Berlin', 'notes' => 'Rückruf nur vormittags']);
+        $ticket->update(['customer_id' => $customer->id]);
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class, ['ticket' => $ticket])
+            ->assertSeeHtml('aria-label="Kontaktdaten anzeigen"')
+            ->assertSeeHtml('x-show="customerInfo"')
+            ->assertSee(['030 123456', '0170 9876', 'Hauptstr. 1, 10115 Berlin', 'Rückruf nur vormittags']);
+    }
+
+    public function test_sidebar_has_no_info_button_without_linked_customer(): void
+    {
+        $user = User::factory()->create();
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class, ['ticket' => $ticket])
+            ->assertDontSeeHtml('aria-label="Kontaktdaten anzeigen"');
     }
 
     public function test_public_reply_and_internal_note_are_stored_with_correct_visibility(): void

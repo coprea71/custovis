@@ -198,9 +198,22 @@
                         <span class="font-semibold text-slatecalm-900">Ticket-Details</span>
                         <button type="button" @click="details = false" class="px-3 py-2 rounded-lg bg-slatecalm-100 text-slate-700 text-sm font-medium">Schließen</button>
                     </div>
-                    <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Kunde</h3>
-                    <p class="text-sm font-medium text-slatecalm-900">{{ $ticket->requester_name ?: '—' }}</p>
-                    <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: $ticket->requester_phone ?: '—' }}</p>
+                    <div x-data="{ customerInfo: false }" wire:key="customer-info-{{ $ticket->id }}">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Kunde</h3>
+                            @if ($ticket->customer)
+                                <button type="button" @click="customerInfo = ! customerInfo" :aria-expanded="customerInfo"
+                                        title="Kontaktdaten anzeigen" aria-label="Kontaktdaten anzeigen"
+                                        class="w-6 h-6 inline-flex items-center justify-center rounded-full text-xs font-semibold border border-slatecalm-200 text-slate-500 hover:bg-slatecalm-100"
+                                        :class="customerInfo && 'bg-calm-100 text-calm-800 border-calm-200'">i</button>
+                            @endif
+                        </div>
+                        <p class="text-sm font-medium text-slatecalm-900">{{ $ticket->requester_name ?: '—' }}</p>
+                        <p class="text-sm text-slate-500 mb-4">{{ $ticket->requester_email ?: $ticket->requester_phone ?: '—' }}</p>
+                        @if ($ticket->customer)
+                            @include('livewire.agent.partials.ticket-customer-info', ['customer' => $ticket->customer])
+                        @endif
+                    </div>
 
                     @if (\App\Livewire\Agent\TicketErpPanel::availableFor($ticket, auth()->user()))
                         <div class="mb-4">
