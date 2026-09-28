@@ -20,7 +20,13 @@
             </div>
             <button type="button" wire:click="installUpdate" wire:loading.attr="disabled" wire:confirm="Version {{ $update['version'] }} jetzt installieren? Bitte vorher ein Backup anlegen." class="px-4 py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium disabled:opacity-50">
                 <span wire:loading.remove wire:target="installUpdate">Jetzt auf {{ $update['version'] }} aktualisieren</span>
-                <span wire:loading wire:target="installUpdate">Update läuft … bitte warten</span>
+                <span wire:loading.inline-flex wire:target="installUpdate" class="items-center gap-2">
+                    <svg class="size-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"/>
+                        <path d="M4 12a8 8 0 0 1 8-8" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                    Update läuft … bitte warten
+                </span>
             </button>
         @else
             <p class="text-sm text-calm-700">Keine neuere Version bekannt.</p>
