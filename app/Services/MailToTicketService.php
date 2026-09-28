@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DataTransferObjects\IncomingMailMessageData;
 use App\Models\Mailbox;
+use App\Models\SpamRule;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use Illuminate\Support\Str;
@@ -106,6 +107,7 @@ class MailToTicketService
             'requester_name' => $data->fromName,
             // Set on creation so the SLA policy of the right priority applies.
             'priority' => $data->priority ?? 'normal',
+            'spam_at' => SpamRule::matches($mailbox->team_id, $data->fromEmail) ? now() : null,
         ]);
     }
 }

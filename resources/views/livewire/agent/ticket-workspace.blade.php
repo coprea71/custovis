@@ -114,6 +114,24 @@
 
                         <div class="flex items-center gap-3">
                             <button type="button" wire:click="markUnread" class="px-3 py-1.5 rounded-lg bg-slatecalm-100 text-slate-700 text-xs font-medium hover:bg-slatecalm-200">Als ungelesen markieren</button>
+                            @if ($ticket->source === 'mailbox' && $ticket->requester_email)
+                                <div x-data="{ spamAsk: false }" class="relative">
+                                    <button type="button" @click="spamAsk = ! spamAsk" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-700 text-xs font-medium hover:bg-red-100">Spam</button>
+                                    <div x-show="spamAsk" x-cloak @click.outside="spamAsk = false" class="absolute right-0 z-20 mt-2 w-72 rounded-xl border border-slatecalm-200 bg-white p-4 shadow-lg text-sm">
+                                        <p class="font-medium text-slatecalm-900">Künftige Mails als Spam archivieren von:</p>
+                                        <div class="mt-3 space-y-2">
+                                            <button type="button" wire:click="markSpam('{{ \App\Models\SpamRule::TYPE_EMAIL }}')" class="w-full text-left px-3 py-2 rounded-lg bg-slatecalm-100 hover:bg-slatecalm-200 text-slate-800">
+                                                Nur dieser Adresse<br><span class="text-xs text-slate-500 break-all">{{ $ticket->requester_email }}</span>
+                                            </button>
+                                            <button type="button" wire:click="markSpam('{{ \App\Models\SpamRule::TYPE_DOMAIN }}')" class="w-full text-left px-3 py-2 rounded-lg bg-slatecalm-100 hover:bg-slatecalm-200 text-slate-800">
+                                                Der ganzen Domain<br><span class="text-xs text-slate-500 break-all">{{ '@'.\App\Models\SpamRule::valueFor(\App\Models\SpamRule::TYPE_DOMAIN, $ticket->requester_email) }}</span>
+                                            </button>
+                                        </div>
+                                        <p class="mt-3 text-xs text-slate-500">Dieses Ticket wandert ebenfalls in den Spam-Ordner der Administration und wird nach {{ \App\Services\SpamFilterService::RETENTION_DAYS }} Tagen gelöscht.</p>
+                                        <button type="button" @click="spamAsk = false" class="mt-2 text-xs text-calm-700 hover:underline">Abbrechen</button>
+                                    </div>
+                                </div>
+                            @endif
                             <button type="button" @click="details = true" class="hidden md:inline-flex lg:hidden px-3 py-1.5 rounded-lg bg-slatecalm-100 text-slate-700 text-xs font-medium">Details</button>
                             @if ($ticket->source === 'whatsapp')
                                 <span class="text-xs px-2.5 py-1 rounded-full font-medium {{ $whatsappSessionOpen ? 'bg-calm-100 text-calm-800' : 'bg-amber-100 text-amber-800' }}">

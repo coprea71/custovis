@@ -67,6 +67,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'modules.manage',
             'time.track',
             'invoices.manage',
+            'spam.manage',
         ];
 
         $existing = Permission::query()->where('guard_name', 'web')->pluck('name')->all();

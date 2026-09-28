@@ -37,7 +37,7 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 
 | Bereich | Funktionen |
 |---|---|
-| **Ticket-Kern** | IMAP-Import je Mailbox, Antworten per SMTP über die Mailbox des Teams, E-Mail-Layout und Signatur je Team, interne Notizen, Textbausteine, Tags, Collision Detection in Echtzeit |
+| **Ticket-Kern** | IMAP-Import je Mailbox, Antworten per SMTP über die Mailbox des Teams, E-Mail-Layout und Signatur je Team, interne Notizen, Textbausteine, Tags, Spamfilter je Team, Collision Detection in Echtzeit |
 | **Kanäle** | E-Mail, WhatsApp Business (Meta Cloud API), REST-API mit teamverwalteten API-Keys, GitHub-/GitLab-Issues, Telefon über MCP |
 | **ITIL** | Incident, Problem, Change mit CAB-Freigabe, Service Requests aus dem Service-Katalog, SLA-Engine mit Geschäftszeiten und Kunden-SLAs, CMDB |
 | **KI-Layer** | Austauschbare Provider (OpenAI, Anthropic, Ollama, eigener Endpunkt), Zusammenfassung, Antwortvorschlag, Triage, ähnliche Tickets, Budgets je Team, optionale PII-Schwärzung |
@@ -73,6 +73,9 @@ nebeneinander:
   Ticket-Priorität automatisch; ein Farbstreifen zeigt sie in der Liste, Notfälle sind
   rot umrahmt und mit Warnsymbol markiert
 - Tickets für telefonische oder persönliche Anfragen manuell anlegen
+- Spamfilter: Mail-Tickets per Klick als Spam markieren und dabei die Absenderadresse
+  oder die ganze Domain für das Team sperren; künftige Mails landen im Spam-Ordner der
+  Administration, lassen sich dort freigeben und werden nach 30 Tagen gelöscht
 - Filter wie „Mir zugewiesen“; Agenten sehen nur Tickets ihrer Teams
 - Collision Detection: In Echtzeit ist sichtbar, wer ein Ticket gerade bearbeitet
 

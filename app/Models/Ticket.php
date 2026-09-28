@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
+use App\Models\Scopes\NotSpamScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -61,6 +62,7 @@ class Ticket extends Model
         'priority',
         'assigned_to',
         'resolved_with_article_id',
+        'spam_at',
     ];
 
     protected $fillable = [
@@ -85,6 +87,7 @@ class Ticket extends Model
         'sla_resolution_due_at',
         'sla_breached_at',
         'closed_at',
+        'spam_at',
     ];
 
     protected function casts(): array
@@ -95,6 +98,7 @@ class Ticket extends Model
             'sla_response_due_at' => 'datetime',
             'sla_resolution_due_at' => 'datetime',
             'sla_breached_at' => 'datetime',
+            'spam_at' => 'datetime',
         ];
     }
 
@@ -122,6 +126,8 @@ class Ticket extends Model
 
     protected static function booted(): void
     {
+        static::addGlobalScope(new NotSpamScope);
+
         static::creating(function (Ticket $ticket) {
             if ($ticket->customer_id === null && $ticket->requester_email) {
                 $ticket->customer_id = Customer::query()->where('email', $ticket->requester_email)->value('id');
@@ -216,6 +222,16 @@ class Ticket extends Model
      *
      * @param  Builder<Ticket>  $query
      */
+    /**
+     * Spam tickets only, for the admin spam folder.
+     *
+     * @param  Builder<Ticket>  $query
+     */
+    public function scopeOnlySpam(Builder $query): void
+    {
+        $query->withoutGlobalScope(NotSpamScope::class)->whereNotNull('spam_at');
+    }
+
     public function scopeOrderByPriority(Builder $query, string $direction = 'desc'): void
     {
         $cases = collect(self::PRIORITIES)

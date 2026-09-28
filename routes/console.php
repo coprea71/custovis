@@ -34,6 +34,8 @@ Schedule::command('field:prune-locations')->daily()->name('field:prune-locations
 
 Schedule::command('retention:apply')->daily()->name('retention:apply');
 
+Schedule::command('spam:prune')->daily()->name('spam:prune');
+
 Schedule::command('dashboards:refresh-snapshots')->hourly()->name('dashboards:refresh-snapshots');
 
 Schedule::call(fn () => app(UpdateChecker::class)->check())->daily()->name('custovis:check-update');

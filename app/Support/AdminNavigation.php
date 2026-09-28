@@ -26,6 +26,7 @@ class AdminNavigation
         'admin.kb.articles.index' => ['Wissensdatenbank', 'kb.articles.manage', 'knowledge-base'],
         'admin.technicians' => ['Techniker', 'technicians.manage', 'field-service'],
         'admin.customers' => ['Kunden', 'customers.manage'],
+        'admin.spam' => ['Spam', 'spam.manage'],
         'admin.invoices.settings' => ['Rechnungen', 'invoices.manage', 'invoicing'],
         'admin.compliance' => ['Datenschutz', 'compliance.manage'],
         'admin.modules' => ['Module', 'modules.manage'],

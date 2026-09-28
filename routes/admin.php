@@ -15,6 +15,7 @@ use App\Livewire\Admin\RoleManager;
 use App\Livewire\Admin\ServiceCatalogManager;
 use App\Livewire\Admin\Settings\ThemeManager;
 use App\Livewire\Admin\SlaManager;
+use App\Livewire\Admin\SpamManager;
 use App\Livewire\Admin\SystemMaintenance;
 use App\Livewire\Admin\TeamManager;
 use App\Livewire\Admin\TechnicianManager;
@@ -37,6 +38,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/technicians', TechnicianManager::class)->middleware('module:field-service')->name('technicians');
     Route::get('/checklists', ChecklistTemplateManager::class)->middleware('module:field-service')->name('checklists');
     Route::get('/customers', CustomerManager::class)->name('customers');
+    Route::get('/spam', SpamManager::class)->name('spam');
     Route::get('/invoices/settings', InvoiceSettingsManager::class)->middleware('module:invoicing')->name('invoices.settings');
     Route::get('/compliance', ComplianceCenter::class)->name('compliance');
     Route::get('/system/migrate', SystemMaintenance::class)->name('system.migrate');

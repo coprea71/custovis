@@ -6,10 +6,12 @@ use App\Jobs\SendTicketReplyJob;
 use App\Jobs\SendWhatsappReplyJob;
 use App\Models\CannedResponse;
 use App\Models\KnowledgeBaseArticle;
+use App\Models\SpamRule;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Models\TicketReadState;
 use App\Models\WhatsappTemplate;
+use App\Services\SpamFilterService;
 use App\Services\WhatsappMessageSender;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
@@ -90,6 +92,22 @@ class TicketWorkspace extends Component
         abort_unless($ticket, 404);
 
         TicketReadState::markUnread(auth()->user(), $ticket);
+        $this->ticketId = null;
+        $this->replyBody = '';
+    }
+
+    /**
+     * Blocks the sender (or their domain) for the ticket's team and moves the
+     * ticket to the admin spam folder.
+     */
+    public function markSpam(string $type): void
+    {
+        abort_unless(in_array($type, SpamRule::TYPES, true), 422);
+
+        $ticket = $this->selectedTicket();
+        abort_unless($ticket && $ticket->source === 'mailbox', 404);
+
+        app(SpamFilterService::class)->markAsSpam($ticket, $type, auth()->user());
         $this->ticketId = null;
         $this->replyBody = '';
     }

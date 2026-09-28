@@ -18,6 +18,16 @@ Tickets mit Nachrichten, die Sie noch nicht gesehen haben, tragen in der Liste e
 3. Mit **Als ungelesen markieren** im geöffneten Ticket setzen Sie die neueste Nachricht wieder auf ungelesen, zum Beispiel als Erinnerung. Das Ticket wird dabei geschlossen.
 4. **Alle als gelesen markieren** setzt alle Tickets der aktuellen Ansicht (Filter und Suche) auf gelesen.
 
+## Spam markieren
+
+Bei E-Mail-Tickets finden Sie oben im geöffneten Ticket die Schaltfläche **Spam**.
+
+1. Klicken Sie auf **Spam**.
+2. Wählen Sie, ob künftig **Nur dieser Adresse** oder **Der ganzen Domain** (z. B. alle Absender `@beispiel.de`, auch Subdomains) als Spam gilt.
+3. Das Ticket verschwindet sofort aus der Ticketliste. Neue Mails dieses Absenders an Ihr Team werden automatisch als Spam archiviert, niemand wird benachrichtigt.
+
+Spam liegt 30 Tage im Spam-Ordner der Administration (siehe Hilfethema „Spam-Ordner“) und wird dann automatisch gelöscht. Die Sperre gilt nur für Ihr Team. Antworten auf ein bestehendes, normales Ticket werden weiterhin angehängt.
+
 ## Kunden antworten
 
 1. Öffnen Sie das Ticket und lesen Sie den Verlauf.

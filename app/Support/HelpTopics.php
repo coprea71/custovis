@@ -54,6 +54,7 @@ class HelpTopics
         'wissensdatenbank-pflegen' => ['Wissensdatenbank pflegen', 'Kategorien und versionierte Artikel verwalten', 'admin', 'kb.articles.manage', 'knowledge-base'],
         'techniker-verwalten' => ['Techniker & Checklisten', 'Technikerprofile, Skills, Schichten, Abwesenheiten und Checklisten-Vorlagen', 'admin', 'technicians.manage', 'field-service'],
         'kunden' => ['Kunden & Kundenportal', 'Kunden anlegen, ins Portal einladen und sperren', 'admin', 'customers.manage'],
+        'spam' => ['Spam-Ordner', 'Spam prüfen, freigeben und gesperrte Absender verwalten', 'admin', 'spam.manage'],
         'datenschutz' => ['Datenschutz (DSGVO)', 'Auskunft exportieren, Personen anonymisieren, Aufbewahrungsfristen', 'admin', 'compliance.manage'],
         'module' => ['Module', 'Funktionsbereiche ein- und ausschalten und auf Rollen/Nutzer beschränken', 'admin', 'modules.manage'],
         'theme' => ['Theme', 'Erscheinungsbild der gesamten Installation wählen', 'admin', 'system.settings.manage'],

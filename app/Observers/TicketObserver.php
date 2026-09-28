@@ -20,6 +20,11 @@ class TicketObserver
 
     public function created(Ticket $ticket): void
     {
+        // Spam waits unseen in the admin spam folder: nobody to notify, no SLA clock.
+        if ($ticket->spam_at) {
+            return;
+        }
+
         $this->applySlaPolicy($ticket);
         $this->notifyTeamMembers($ticket);
     }

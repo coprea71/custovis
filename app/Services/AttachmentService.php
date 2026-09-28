@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
  */
 class AttachmentService
 {
-    private const DISK = 'local';
+    public const DISK = 'local';
 
     public function storeUploadedFile(TicketMessage $message, UploadedFile $file): TicketAttachment
     {
