@@ -6,6 +6,7 @@ use App\Livewire\Admin\ManagementDashboard;
 use App\Livewire\Agent\Team\TeamDashboard;
 use App\Models\DashboardSnapshot;
 use App\Models\Mailbox;
+use App\Models\Module;
 use App\Models\Team;
 use App\Models\Ticket;
 use App\Models\User;
@@ -70,6 +71,44 @@ class DashboardTest extends TestCase
         Livewire::actingAs($member)
             ->test(TeamDashboard::class, ['team' => $this->ops])
             ->assertForbidden();
+    }
+
+    public function test_agent_area_starts_with_dashboards_of_all_own_teams(): void
+    {
+        $member = User::factory()->create();
+        $this->support->users()->attach($member, ['role_in_team' => 'member']);
+        $this->ops->users()->attach($member, ['role_in_team' => 'member']);
+
+        $this->actingAs($member)->get('/agent')
+            ->assertOk()
+            ->assertSeeInOrder(['Ops', 'Ops-Geheimnis', 'Support', 'Auslastung je Agent']);
+    }
+
+    public function test_start_dashboard_only_shows_own_teams(): void
+    {
+        $member = User::factory()->create();
+        $this->support->users()->attach($member, ['role_in_team' => 'member']);
+
+        $this->actingAs($member)->get('/agent')
+            ->assertOk()
+            ->assertSee('Support')
+            ->assertDontSee('Ops-Geheimnis');
+    }
+
+    public function test_start_page_falls_back_to_ticket_list_without_team(): void
+    {
+        $this->actingAs(User::factory()->create())->get('/agent')
+            ->assertRedirect(route('agent.tickets.index'));
+    }
+
+    public function test_start_page_falls_back_to_ticket_list_without_reporting_module(): void
+    {
+        Module::query()->where('slug', 'reporting')->update(['enabled' => false]);
+        $member = User::factory()->create();
+        $this->support->users()->attach($member, ['role_in_team' => 'member']);
+
+        $this->actingAs($member)->get('/agent')
+            ->assertRedirect(route('agent.tickets.index'));
     }
 
     public function test_management_dashboard_requires_permission(): void

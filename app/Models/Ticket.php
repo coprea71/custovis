@@ -103,6 +103,23 @@ class Ticket extends Model
      * customer SLAs apply from the start and the ticket shows in the portal
      * (same matching as Customer::linkUnassignedTickets()).
      */
+    /**
+     * Removes our "[Ticket #N]" tags, so a subject never carries the number
+     * of another ticket (e.g. "[Ticket #5] RE: [Ticket #3] …").
+     */
+    public static function withoutSubjectTags(string $subject): string
+    {
+        return trim(preg_replace(['/\[Ticket #\d+\]/i', '/\s{2,}/'], ['', ' '], $subject));
+    }
+
+    /**
+     * Ticket number from a "[Ticket #N]" tag in a mail subject, if any.
+     */
+    public static function idFromSubjectTag(string $subject): ?int
+    {
+        return preg_match('/\[Ticket #(\d+)\]/i', $subject, $match) ? (int) $match[1] : null;
+    }
+
     protected static function booted(): void
     {
         static::creating(function (Ticket $ticket) {
@@ -138,6 +155,38 @@ class Ticket extends Model
         $query->where(fn (Builder $inner) => $inner
             ->whereIn('team_id', $user->teams()->select('teams.id'))
             ->orWhere('assigned_to', $user->id));
+    }
+
+    /**
+     * Adds a boolean has_unread for the list marker.
+     *
+     * @param  Builder<Ticket>  $query
+     */
+    public function scopeWithUnreadFlag(Builder $query, User $user): void
+    {
+        $query->withExists(['messages as has_unread' => self::unreadMessagesFor($user)]);
+    }
+
+    /**
+     * @param  Builder<Ticket>  $query
+     */
+    public function scopeUnreadFor(Builder $query, User $user): void
+    {
+        $query->whereHas('messages', self::unreadMessagesFor($user));
+    }
+
+    /**
+     * Unread = above the user's read watermark (0 if the ticket was never
+     * opened) and written by someone else.
+     */
+    private static function unreadMessagesFor(User $user): \Closure
+    {
+        return fn (Builder $messages) => $messages
+            ->notAuthoredBy($user)
+            ->where('ticket_messages.id', '>', TicketReadState::query()
+                ->selectRaw('coalesce(max(last_read_message_id), 0)')
+                ->whereColumn('ticket_read_states.ticket_id', 'ticket_messages.ticket_id')
+                ->where('ticket_read_states.user_id', $user->id));
     }
 
     /**

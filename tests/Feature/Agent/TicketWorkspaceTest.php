@@ -47,7 +47,7 @@ class TicketWorkspaceTest extends TestCase
         $this->team->users()->attach($user);
 
         $this->actingAs($user)
-            ->get('/agent')
+            ->get('/agent/tickets')
             ->assertOk()
             ->assertSee($ticket->subject);
     }

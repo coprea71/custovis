@@ -8,6 +8,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+### Geändert
+
+- Der Agent-Bereich startet mit dem Dashboard: Unter `/agent` stehen die
+  Dashboards aller eigenen Teams untereinander. Die Ticketliste liegt jetzt
+  unter `/agent/tickets`. Ohne Team oder ohne Reporting-Modul geht es direkt
+  zur Ticketliste.
+
 ## [0.3.1] - 2026-09-28
 
 ### Geändert

@@ -46,7 +46,7 @@ class ModuleManagementTest extends TestCase
         Livewire::actingAs($this->admin)->test(ModuleManager::class)->call('toggle', $kb->id);
 
         $this->assertFalse($kb->fresh()->enabled);
-        $this->actingAs($this->agent)->get('/agent')->assertOk()->assertDontSee(route('agent.kb.index'));
+        $this->actingAs($this->agent)->get('/agent/tickets')->assertOk()->assertDontSee(route('agent.kb.index'));
         $this->actingAs($this->agent)->get('/agent/kb')->assertNotFound();
         $this->actingAs(Customer::factory()->create(), 'customer')->get('/portal/kb')->assertNotFound();
         $this->assertDatabaseHas('audit_logs', ['action' => 'module.disabled', 'user_id' => $this->admin->id]);

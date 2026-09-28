@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -41,6 +42,14 @@ class Team extends Model
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function recentlyUpdatedTickets(int $limit = 10): Collection
+    {
+        return $this->tickets()->with('assignee')->latest('updated_at')->limit($limit)->get();
     }
 
     /**

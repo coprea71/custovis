@@ -14,7 +14,7 @@
     <aside class="w-64 bg-slatecalm-50 border-r border-slatecalm-200 flex-col justify-between shrink-0 z-20 hidden md:flex">
         <div class="overflow-y-auto">
             <div class="h-16 px-6 flex items-center border-b border-slatecalm-200">
-                <a href="{{ route('agent.tickets.index') }}" class="flex items-center space-x-2.5">
+                <a href="{{ route('agent.dashboard') }}" class="flex items-center space-x-2.5">
                     <span class="w-9 h-9 rounded-xl bg-calm-600 flex items-center justify-center text-white shadow-sm font-bold">C</span>
                     <span>
                         <span class="block font-semibold text-slatecalm-900 text-sm leading-tight">{{ config('app.name') }}</span>

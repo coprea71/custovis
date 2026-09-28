@@ -8,6 +8,15 @@ Der Ticket-Arbeitsplatz zeigt links die Ticketliste und rechts das geöffnete Ti
 4. Sortieren Sie über **Prio**, **Datum** oder **ID**. Ein zweiter Klick kehrt die Reihenfolge um.
 5. Klicken Sie auf ein Ticket, um es zu öffnen.
 
+## Ungelesene Nachrichten
+
+Tickets mit Nachrichten, die Sie noch nicht gesehen haben, tragen in der Liste einen Punkt vor der Nummer und einen fett gedruckten Betreff. Der Lesestatus gilt nur für Sie: Öffnet ein Kollege das Ticket, bleibt es für Sie ungelesen. Ihre eigenen Antworten und Notizen zählen nie als ungelesen.
+
+1. Mit **Nur ungelesene** zeigen Sie nur Tickets mit neuen Nachrichten. Die Zahl dahinter nennt, wie viele es in der aktuellen Ansicht sind.
+2. Öffnen Sie ein Ticket, gilt es als gelesen. Die neuen Nachrichten sind im Verlauf mit **Neu** markiert und umrahmt.
+3. Mit **Als ungelesen markieren** im geöffneten Ticket setzen Sie die neueste Nachricht wieder auf ungelesen, zum Beispiel als Erinnerung. Das Ticket wird dabei geschlossen.
+4. **Alle als gelesen markieren** setzt alle Tickets der aktuellen Ansicht (Filter und Suche) auf gelesen.
+
 ## Kunden antworten
 
 1. Öffnen Sie das Ticket und lesen Sie den Verlauf.

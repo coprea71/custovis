@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -60,6 +61,16 @@ class TicketMessage extends Model
     public function attachments(): HasMany
     {
         return $this->hasMany(TicketAttachment::class);
+    }
+
+    /**
+     * Own replies and notes are never "new" for their author.
+     *
+     * @param  Builder<TicketMessage>  $query
+     */
+    public function scopeNotAuthoredBy(Builder $query, User $user): void
+    {
+        $query->where(fn (Builder $q) => $q->whereNull('author_user_id')->orWhere('author_user_id', '!=', $user->id));
     }
 
     public function isInternalNote(): bool

@@ -50,7 +50,7 @@ class UserAdministrationTest extends TestCase
             ->call('addMember');
 
         $this->assertTrue($agent->hasRole('agent'));
-        $this->actingAs($agent)->get('/agent')->assertOk()->assertSee('Team-Ticket');
+        $this->actingAs($agent)->get('/agent/tickets')->assertOk()->assertSee('Team-Ticket');
     }
 
     public function test_deactivated_user_cannot_log_in_and_running_session_ends(): void

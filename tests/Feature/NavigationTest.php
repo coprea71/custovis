@@ -44,8 +44,8 @@ class NavigationTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('system_admin');
 
-        $this->actingAs($agent)->get('/agent')->assertOk()->assertSee('Abmelden')->assertDontSee('>Administration<', false);
-        $this->actingAs($admin)->get('/agent')->assertSee('>Administration<', false);
+        $this->actingAs($agent)->get('/agent/tickets')->assertOk()->assertSee('Abmelden')->assertDontSee('>Administration<', false);
+        $this->actingAs($admin)->get('/agent/tickets')->assertSee('>Administration<', false);
         $this->actingAs($admin)->get('/admin/dashboard')->assertOk()->assertSee('Agenten-Bereich')->assertSee('Mailboxen');
 
         $this->actingAs($agent)->post('/agent/logout')->assertRedirect('/agent/login');
@@ -69,7 +69,7 @@ class NavigationTest extends TestCase
         $team->users()->attach($member, ['role_in_team' => 'member']);
 
         $this->actingAs($teamAdmin)->get("/agent/team/{$team->id}/settings")->assertOk()->assertSee('API-Keys')->assertSee('WhatsApp');
-        $this->actingAs($teamAdmin)->get('/agent')->assertSee('Einstellungen');
+        $this->actingAs($teamAdmin)->get('/agent/tickets')->assertSee('Einstellungen');
         $this->actingAs($member)->get("/agent/team/{$team->id}/settings")->assertForbidden();
     }
 }

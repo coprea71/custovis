@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\TeamMailLayout;
+use App\Models\Ticket;
 use App\Models\TicketAttachment;
 use App\Models\TicketMessage;
 use Illuminate\Bus\Queueable;
@@ -10,6 +11,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 
 class TicketReplyMail extends Mailable
@@ -21,7 +23,29 @@ class TicketReplyMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '[Ticket #'.$this->message->ticket_id.'] '.$this->message->ticket->subject,
+            subject: '[Ticket #'.$this->message->ticket_id.'] '.Ticket::withoutSubjectTags($this->message->ticket->subject),
+        );
+    }
+
+    /**
+     * The stored message_id must be the real Message-ID header: customer replies
+     * reference it via In-Reply-To/References, which is how MailToTicketService
+     * files them into this ticket instead of opening a new one.
+     */
+    public function headers(): Headers
+    {
+        $threadIds = $this->message->ticket->messages()
+            ->where('id', '!=', $this->message->id)
+            ->where('visibility', TicketMessage::VISIBILITY_PUBLIC)
+            ->where('message_id', 'like', '%@%')
+            ->orderBy('id')
+            ->pluck('message_id')
+            ->all();
+
+        return new Headers(
+            messageId: $this->message->message_id,
+            references: $threadIds,
+            text: $threadIds === [] ? [] : ['In-Reply-To' => '<'.end($threadIds).'>'],
         );
     }
 

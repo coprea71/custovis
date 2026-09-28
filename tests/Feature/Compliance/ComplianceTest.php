@@ -47,13 +47,13 @@ class ComplianceTest extends TestCase
         $foreign = $this->ticket(['team_id' => $other->id, 'subject' => 'Fremdes Ticket']);
         $agent = $this->agent();
 
-        $this->actingAs($agent)->get('/agent')->assertSee('Eigenes Ticket')->assertDontSee('Fremdes Ticket');
+        $this->actingAs($agent)->get('/agent/tickets')->assertSee('Eigenes Ticket')->assertDontSee('Fremdes Ticket');
         $this->actingAs($agent)->get("/agent/tickets/{$foreign->id}")->assertForbidden();
         Livewire::actingAs($agent)->test(TicketWorkspace::class)->call('selectTicket', $foreign->id)->assertDontSee('Fremdes Ticket');
 
         $admin = User::factory()->create();
         $admin->assignRole('system_admin');
-        $this->actingAs($admin)->get('/agent')->assertSee('Fremdes Ticket');
+        $this->actingAs($admin)->get('/agent/tickets')->assertSee('Fremdes Ticket');
         $this->assertNotNull($own);
     }
 

@@ -23,6 +23,18 @@
                 @endforeach
             </div>
 
+            <div class="flex items-center justify-between gap-2 text-xs">
+                <button
+                    type="button"
+                    wire:click="toggleUnreadOnly"
+                    aria-pressed="{{ $unreadOnly ? 'true' : 'false' }}"
+                    class="px-3 py-1 rounded-lg font-medium shrink-0 transition {{ $unreadOnly ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200' }}"
+                >Nur ungelesene ({{ $unreadCount }})</button>
+                @if ($unreadCount > 0)
+                    <button type="button" wire:click="markAllRead" title="Alle Tickets dieser Ansicht als gelesen markieren" class="text-calm-700 hover:underline font-medium">Alle als gelesen markieren</button>
+                @endif
+            </div>
+
             <div class="flex items-center space-x-2 text-xs">
                 <span class="text-slate-500">Sortieren:</span>
                 @foreach (['priority' => 'Prio', 'created_at' => 'Datum', 'id' => 'ID'] as $value => $label)
@@ -43,7 +55,14 @@
                     class="p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 {{ \App\Models\Ticket::PRIORITY_STRIPES[$item->priority] ?? 'border-l-slate-300' }} {{ $ticketId === $item->id ? 'bg-calm-50/90' : '' }}"
                 >
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-xs font-mono font-semibold text-calm-700 bg-calm-100 px-2 py-0.5 rounded">#{{ $item->id }}</span>
+                        {{-- Dot + bold subject + screen-reader text: unread is never signalled by colour alone. --}}
+                        <span class="flex items-center gap-1.5">
+                            @if ($item->has_unread)
+                                <span class="w-2.5 h-2.5 rounded-full bg-calm-600" aria-hidden="true" data-unread-dot></span>
+                                <span class="sr-only">Ungelesene Nachrichten</span>
+                            @endif
+                            <span class="text-xs font-mono font-semibold text-calm-700 bg-calm-100 px-2 py-0.5 rounded">#{{ $item->id }}</span>
+                        </span>
                         <span class="sr-only">Priorität: {{ \App\Models\Ticket::PRIORITY_LABELS[$item->priority] ?? $item->priority }}</span>
                         <span class="flex items-center gap-1.5 text-[11px] text-slate-400">
                             {{ $item->created_at->diffForHumans() }}
@@ -54,7 +73,7 @@
                             @endif
                         </span>
                     </div>
-                    <p class="text-sm font-medium text-slatecalm-900 truncate">{{ $item->subject }}</p>
+                    <p class="text-sm {{ $item->has_unread ? 'font-bold' : 'font-medium' }} text-slatecalm-900 truncate">{{ $item->subject }}</p>
                     <p class="text-xs text-slate-500 truncate">{{ $item->requester_name ?: $item->requester_email }}</p>
                 </div>
             @empty
@@ -94,6 +113,7 @@
                         </div>
 
                         <div class="flex items-center gap-3">
+                            <button type="button" wire:click="markUnread" class="px-3 py-1.5 rounded-lg bg-slatecalm-100 text-slate-700 text-xs font-medium hover:bg-slatecalm-200">Als ungelesen markieren</button>
                             <button type="button" @click="details = true" class="hidden md:inline-flex lg:hidden px-3 py-1.5 rounded-lg bg-slatecalm-100 text-slate-700 text-xs font-medium">Details</button>
                             @if ($ticket->source === 'whatsapp')
                                 <span class="text-xs px-2.5 py-1 rounded-full font-medium {{ $whatsappSessionOpen ? 'bg-calm-100 text-calm-800' : 'bg-amber-100 text-amber-800' }}">
@@ -110,12 +130,16 @@
 
                     <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
                         @foreach ($ticket->messages as $message)
-                            <div class="rounded-2xl p-4 border {{ $message->isInternalNote() ? 'bg-ocean-50 border-ocean-100' : 'bg-white border-slatecalm-200' }}">
+                            @php($isNew = $message->id > $newSinceMessageId && $message->author_user_id !== auth()->id())
+                            <div class="rounded-2xl p-4 border {{ $message->isInternalNote() ? 'bg-ocean-50 border-ocean-100' : 'bg-white border-slatecalm-200' }} {{ $isNew ? 'ring-2 ring-calm-400' : '' }}">
                                 <div class="flex items-center justify-between mb-2 text-xs text-slate-500">
                                     <span class="font-medium text-slatecalm-800">
                                         {{ $message->authorUser?->name ?? $message->authorCustomer?->name ?? $message->external_author_name ?? $message->external_author_email }}
                                     </span>
                                     <span>
+                                        @if ($isNew)
+                                            <span class="text-calm-700 font-semibold" data-new-message>Neu</span> ·
+                                        @endif
                                         @if ($message->isInternalNote())
                                             <span class="text-ocean-700 font-semibold">Interne Notiz</span> ·
                                         @endif

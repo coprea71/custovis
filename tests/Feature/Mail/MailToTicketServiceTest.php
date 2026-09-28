@@ -143,4 +143,43 @@ class MailToTicketServiceTest extends TestCase
 
         $this->assertSame(2, Ticket::query()->count());
     }
+
+    public function test_reply_without_headers_is_matched_by_subject_tag_of_the_requester(): void
+    {
+        $mailbox = $this->makeMailbox();
+        $service = new MailToTicketService(app(AttachmentService::class));
+        $first = $service->import($mailbox, $this->mail('msg-1@customer.example', 'sql error', 'kunde@example.com'));
+
+        $reply = $service->import($mailbox, $this->mail('msg-2@customer.example', 'RE: [Ticket #'.$first->ticket_id.'] sql error', 'Kunde@Example.com'));
+
+        $this->assertSame(1, Ticket::query()->count());
+        $this->assertSame($first->ticket_id, $reply->ticket_id);
+    }
+
+    public function test_subject_tag_of_a_foreign_ticket_opens_a_new_ticket_without_the_tag(): void
+    {
+        $mailbox = $this->makeMailbox();
+        $service = new MailToTicketService(app(AttachmentService::class));
+        $first = $service->import($mailbox, $this->mail('msg-1@customer.example', 'sql error', 'kunde@example.com'));
+
+        $other = $service->import($mailbox, $this->mail('msg-2@other.example', 'RE: [Ticket #'.$first->ticket_id.'] sql error', 'fremder@example.com'));
+
+        $this->assertNotSame($first->ticket_id, $other->ticket_id);
+        $this->assertSame('RE: sql error', $other->ticket->subject);
+    }
+
+    private function mail(string $messageId, string $subject, string $fromEmail): IncomingMailMessageData
+    {
+        return new IncomingMailMessageData(
+            messageId: $messageId,
+            inReplyTo: null,
+            references: [],
+            subject: $subject,
+            fromEmail: $fromEmail,
+            fromName: 'Max Kunde',
+            bodyHtml: null,
+            bodyText: 'Text',
+            attachments: [],
+        );
+    }
 }

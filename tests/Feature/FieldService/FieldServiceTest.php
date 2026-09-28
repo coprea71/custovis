@@ -180,14 +180,14 @@ class FieldServiceTest extends TestCase
         $this->actingAs($admin)->get('/field')->assertForbidden()->assertSee('kein aktives Technikerprofil');
         $this->actingAs($admin)->getJson('/field/today')->assertForbidden()
             ->assertJsonPath('message', fn (string $message) => str_contains($message, 'kein aktives Technikerprofil'));
-        $this->actingAs($admin)->get('/agent')->assertOk()->assertDontSee('Techniker-App');
+        $this->actingAs($admin)->get('/agent/tickets')->assertOk()->assertDontSee('Techniker-App');
 
         $technician = $this->technician('Tina');
-        $this->actingAs($technician->user)->get('/agent')->assertSee('Techniker-App');
+        $this->actingAs($technician->user)->get('/agent/tickets')->assertSee('Techniker-App');
 
         $technician->update(['active' => false]);
         $this->actingAs($technician->user)->get('/field')->assertForbidden();
-        $this->actingAs($technician->user->fresh())->get('/agent')->assertDontSee('Techniker-App');
+        $this->actingAs($technician->user->fresh())->get('/agent/tickets')->assertDontSee('Techniker-App');
     }
 
     public function test_routing_service_uses_osrm_and_validates_answers(): void

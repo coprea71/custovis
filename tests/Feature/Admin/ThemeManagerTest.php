@@ -79,7 +79,7 @@ class ThemeManagerTest extends TestCase
             ->call('activate', Theme::query()->where('slug', 'ozean')->value('id'));
 
         $this->assertDatabaseHas('audit_logs', ['action' => 'theme.changed', 'user_id' => $admin->id]);
-        $this->withoutVite()->actingAs($admin)->get('/agent')->assertSee('data-theme="ozean"', false);
+        $this->withoutVite()->actingAs($admin)->get('/agent/tickets')->assertSee('data-theme="ozean"', false);
         $this->withoutVite()->actingAs($admin)->get('/admin/settings/theme')->assertSee('data-theme="ozean"', false);
     }
 

@@ -6,12 +6,13 @@ use App\DataTransferObjects\IncomingMailMessageData;
 use App\Models\Mailbox;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
+use Illuminate\Support\Str;
 
 /**
  * Maps a parsed incoming mail into a ticket/ticket_message, matching
  * replies to their existing ticket via In-Reply-To/References headers
- * instead of subject-line parsing (subjects get mangled by mail clients,
- * headers don't).
+ * first (subjects get mangled by mail clients, headers don't); the
+ * "[Ticket #N]" subject tag is only a guarded fallback.
  */
 class MailToTicketService
 {
@@ -57,6 +58,11 @@ class MailToTicketService
 
     private function findExistingTicket(Mailbox $mailbox, IncomingMailMessageData $data): ?Ticket
     {
+        return $this->findByHeaders($mailbox, $data) ?? $this->findBySubjectTag($mailbox, $data);
+    }
+
+    private function findByHeaders(Mailbox $mailbox, IncomingMailMessageData $data): ?Ticket
+    {
         $referencedIds = array_filter([$data->inReplyTo, ...$data->references]);
 
         if ($referencedIds === []) {
@@ -69,6 +75,25 @@ class MailToTicketService
             ->first();
     }
 
+    /**
+     * Fallback for clients that drop the threading headers. Only the ticket's
+     * own requester may reply this way, so a guessed "[Ticket #N]" in a
+     * stranger's subject cannot inject messages into someone else's ticket.
+     */
+    private function findBySubjectTag(Mailbox $mailbox, IncomingMailMessageData $data): ?Ticket
+    {
+        $ticketId = Ticket::idFromSubjectTag($data->subject);
+
+        if ($ticketId === null) {
+            return null;
+        }
+
+        return Ticket::query()
+            ->where('mailbox_id', $mailbox->id)
+            ->where('requester_email', Str::lower(trim($data->fromEmail)))
+            ->find($ticketId);
+    }
+
     private function createTicket(Mailbox $mailbox, IncomingMailMessageData $data): Ticket
     {
         return Ticket::query()->create([
@@ -76,7 +101,7 @@ class MailToTicketService
             'mailbox_id' => $mailbox->id,
             'type' => 'support_ticket',
             'source' => 'mailbox',
-            'subject' => $data->subject,
+            'subject' => Ticket::withoutSubjectTags($data->subject),
             'requester_email' => $data->fromEmail,
             'requester_name' => $data->fromName,
             // Set on creation so the SLA policy of the right priority applies.

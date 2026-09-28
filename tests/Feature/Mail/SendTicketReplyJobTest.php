@@ -40,6 +40,35 @@ class SendTicketReplyJobTest extends TestCase
         $this->assertSame($globalFrom, config('mail.from'));
     }
 
+    public function test_reply_carries_its_stored_message_id_and_threads_to_the_customer_mail(): void
+    {
+        $mailbox = Mailbox::factory()->create();
+        $reply = $this->replyFor($mailbox);
+        $reply->ticket->messages()->create([
+            'visibility' => TicketMessage::VISIBILITY_PUBLIC,
+            'direction' => 'incoming',
+            'body_text' => 'Hilfe!',
+            'message_id' => 'msg-1@customer.example',
+        ]);
+        $reply->update(['message_id' => 'custovis-abc@support.example']);
+
+        $headers = (new TicketReplyMail($reply->fresh()))->headers();
+
+        $this->assertSame('custovis-abc@support.example', $headers->messageId);
+        $this->assertSame(['msg-1@customer.example'], $headers->references);
+        $this->assertSame('<msg-1@customer.example>', $headers->text['In-Reply-To']);
+    }
+
+    public function test_subject_never_contains_the_tag_of_another_ticket(): void
+    {
+        $reply = $this->replyFor(Mailbox::factory()->create());
+        $reply->ticket->update(['subject' => 'RE: [Ticket #3] sql error']);
+
+        $subject = (new TicketReplyMail($reply->fresh()))->envelope()->subject;
+
+        $this->assertSame('[Ticket #'.$reply->ticket_id.'] RE: sql error', $subject);
+    }
+
     private function replyFor(Mailbox $mailbox): TicketMessage
     {
         $ticket = Ticket::query()->create([

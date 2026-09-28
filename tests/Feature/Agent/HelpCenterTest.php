@@ -90,6 +90,6 @@ class HelpCenterTest extends TestCase
 
     public function test_account_menu_links_to_help(): void
     {
-        $this->actingAs($this->agent)->get('/agent')->assertSee(route('agent.help.index'));
+        $this->actingAs($this->agent)->get('/agent/tickets')->assertSee(route('agent.help.index'));
     }
 }

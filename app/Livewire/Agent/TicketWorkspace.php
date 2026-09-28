@@ -8,6 +8,7 @@ use App\Models\CannedResponse;
 use App\Models\KnowledgeBaseArticle;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
+use App\Models\TicketReadState;
 use App\Models\WhatsappTemplate;
 use App\Services\WhatsappMessageSender;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,6 +35,11 @@ class TicketWorkspace extends Component
 
     public string $search = '';
 
+    public bool $unreadOnly = false;
+
+    /** Read position when the ticket was opened; messages above it are shown as new. */
+    public int $newSinceMessageId = 0;
+
     public string $replyVisibility = TicketMessage::VISIBILITY_PUBLIC;
 
     public string $replyBody = '';
@@ -47,6 +53,7 @@ class TicketWorkspace extends Component
         }
 
         $this->ticketId = $ticket?->id;
+        $this->rememberReadPosition();
     }
 
     public function selectTicket(int $ticketId): void
@@ -54,6 +61,46 @@ class TicketWorkspace extends Component
         $this->ticketId = $ticketId;
         $this->replyBody = '';
         $this->replyVisibility = TicketMessage::VISIBILITY_PUBLIC;
+        $this->rememberReadPosition();
+    }
+
+    private function rememberReadPosition(): void
+    {
+        $this->newSinceMessageId = $this->ticketId ? TicketReadState::watermarkFor(auth()->user(), $this->ticketId) : 0;
+    }
+
+    public function toggleUnreadOnly(): void
+    {
+        $this->unreadOnly = ! $this->unreadOnly;
+        $this->resetPage();
+        $this->deselectTicketHiddenByFilter();
+    }
+
+    /**
+     * Closes the ticket as well, otherwise the next render would mark it
+     * read again right away.
+     */
+    public function markUnread(): void
+    {
+        $ticket = $this->selectedTicket();
+        abort_unless($ticket, 404);
+
+        TicketReadState::markUnread(auth()->user(), $ticket);
+        $this->ticketId = null;
+        $this->replyBody = '';
+    }
+
+    /**
+     * Only the tickets of the current view, so a filtered list can be cleared
+     * without touching tickets the agent has not looked at.
+     */
+    public function markAllRead(): void
+    {
+        $this->filteredTickets()
+            ->unreadFor(auth()->user())
+            ->withMax('messages', 'id')
+            ->get()
+            ->each(fn (Ticket $ticket) => TicketReadState::moveWatermark(auth()->user(), $ticket->id, (int) $ticket->messages_max_id));
     }
 
     #[On('ticket-updated')]
@@ -243,6 +290,7 @@ class TicketWorkspace extends Component
             ->visibleTo(auth()->user())
             ->when($this->statusFilter === 'mine', fn ($query) => $query->where('assigned_to', auth()->id())->where('status', '!=', 'closed'))
             ->when(in_array($this->statusFilter, Ticket::STATUSES, true), fn ($query) => $query->where('status', $this->statusFilter))
+            ->when($this->unreadOnly, fn ($query) => $query->unreadFor(auth()->user()))
             ->when($this->search !== '', fn ($query) => $query->where(
                 fn ($q) => $q->where('subject', 'like', "%{$this->search}%")
                     ->orWhere('requester_email', 'like', "%{$this->search}%")
@@ -251,15 +299,22 @@ class TicketWorkspace extends Component
 
     public function render()
     {
+        $ticket = $this->selectedTicket();
+
+        // Before the list query, so the open ticket is not flagged as unread.
+        if ($ticket) {
+            TicketReadState::markRead(auth()->user(), $ticket);
+        }
+
         $tickets = $this->filteredTickets()
+            ->withUnreadFlag(auth()->user())
             ->tap(fn ($query) => $this->applySort($query))
             ->paginate(20);
-
-        $ticket = $this->selectedTicket();
 
         return view('livewire.agent.ticket-workspace', [
             'tickets' => $tickets,
             'ticket' => $ticket,
+            'unreadCount' => $this->filteredTickets()->unreadFor(auth()->user())->count(),
             'cannedResponses' => $ticket
                 ? CannedResponse::query()->where('team_id', $ticket->team_id)->orderBy('title')->get()
                 : collect(),

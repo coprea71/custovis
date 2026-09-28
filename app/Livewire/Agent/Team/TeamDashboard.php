@@ -27,7 +27,7 @@ class TeamDashboard extends Component
         return view('livewire.agent.team.team-dashboard', [
             'snapshot' => $snapshots->forScope($this->team),
             // Live, not snapshotted: cheap (indexed, limited) and only useful when current.
-            'recentTickets' => $this->team->tickets()->with('assignee')->latest('updated_at')->limit(10)->get(),
+            'recentTickets' => $this->team->recentlyUpdatedTickets(),
         ]);
     }
 }

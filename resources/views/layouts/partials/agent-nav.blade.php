@@ -1,4 +1,9 @@
 <nav class="p-3 space-y-1" aria-label="Hauptnavigation">
+    @module('reporting')
+        @if (auth()->user()->teams->isNotEmpty())
+            <x-nav-link :href="route('agent.dashboard')" :active="request()->routeIs('agent.dashboard')">Dashboard</x-nav-link>
+        @endif
+    @endmodule
     <x-nav-link :href="route('agent.tickets.index')" :active="request()->routeIs('agent.tickets.*')">Tickets</x-nav-link>
     @module('team-chat')
         @can('chat.channels.view')

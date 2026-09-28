@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Agent\InvoiceFileController;
 use App\Http\Controllers\Chat\ChatAttachmentController;
+use App\Livewire\Agent\AgentDashboard;
 use App\Livewire\Agent\ApprovalInbox;
 use App\Livewire\Agent\Chat\ChatWorkspace;
 use App\Livewire\Agent\CreateTicket;
@@ -23,7 +24,9 @@ use App\Livewire\Agent\TicketWorkspace;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:web'])->group(function () {
-    Route::get('/', TicketWorkspace::class)->name('tickets.index');
+    // No module:reporting guard: without dashboards the page redirects to the ticket list instead of a 404.
+    Route::get('/', AgentDashboard::class)->name('dashboard');
+    Route::get('/tickets', TicketWorkspace::class)->name('tickets.index');
     Route::get('/tickets/create', CreateTicket::class)->name('tickets.create');
     Route::get('/tickets/{ticket}', TicketWorkspace::class)->name('tickets.show');
 
