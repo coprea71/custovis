@@ -8,6 +8,18 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-09-28
+
+### Hinzugefügt
+
+- Spamfilter: Die Schaltfläche „Spam“ in E-Mail-Tickets sperrt wahlweise die
+  Absenderadresse oder die ganze Domain (inkl. Subdomains) für das Team. Das
+  Ticket und künftige Mails dieses Absenders landen ohne Benachrichtigung im
+  neuen Spam-Ordner unter „Administration → Spam“ (Berechtigung
+  `spam.manage`). Dort lassen sich Tickets freigeben oder löschen und Sperren
+  aufheben; Spam wird nach 30 Tagen automatisch gelöscht (`spam:prune`,
+  täglich). Schema-Update: Spalte `tickets.spam_at`, Tabelle `spam_rules`.
+
 ## [0.4.1] - 2026-09-28
 
 ### Geändert
