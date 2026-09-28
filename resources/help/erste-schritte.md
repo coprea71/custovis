@@ -26,9 +26,10 @@ Bei jeder weiteren Anmeldung fragt Custovis nach Passwort und dem aktuellen Code
 
 ## Sich zurechtfinden
 
-1. Die **Navigation** links (auf dem Smartphone über **Menü**) führt zu Tickets, Team-Chat, Wissensdatenbank und – je Team – zu Dashboard und Einstellungen.
-2. Unten im Menü finden Sie **Kontosicherheit**, diese **Hilfe**, ggf. **Administration** und **Abmelden**.
-3. Unter der Überschrift eines Teams stehen dessen **Dashboard** und, wenn Sie Team-Admin sind, die **Einstellungen**.
+1. Nach der Anmeldung sehen Sie die Dashboards Ihrer Teams (Menüpunkt **Dashboard** ganz oben). Ohne Team startet Custovis mit der Ticketliste.
+2. Die **Navigation** links (auf dem Smartphone über **Menü**) führt zu Tickets, Team-Chat, Wissensdatenbank und – je Team – zu Dashboard und Einstellungen.
+3. Unten im Menü finden Sie **Kontosicherheit**, diese **Hilfe**, ggf. **Administration** und **Abmelden**.
+4. Unter der Überschrift eines Teams stehen dessen **Dashboard** und, wenn Sie Team-Admin sind, die **Einstellungen**.
 
 ## E-Mail bei neuen Tickets
 
