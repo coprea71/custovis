@@ -8,12 +8,31 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-28
+
+### Hinzugefügt
+
+- Ungelesene Nachrichten werden je Agent gekennzeichnet (Punkt und fetter
+  Betreff in der Ticketliste, „Neu“ im Verlauf). Dazu kommen der Filter
+  „Nur ungelesene“ sowie „Als ungelesen markieren“ und „Alle als gelesen
+  markieren“. Schema-Update: neue Tabelle `ticket_read_states`.
+- Die Reihenfolge des Ticketverlaufs lässt sich umschalten. Standardmäßig
+  steht die neueste Nachricht oben, per Schaltfläche geht es auf „neueste
+  unten“.
+
 ### Geändert
 
 - Der Agent-Bereich startet mit dem Dashboard: Unter `/agent` stehen die
   Dashboards aller eigenen Teams untereinander. Die Ticketliste liegt jetzt
   unter `/agent/tickets`. Ohne Team oder ohne Reporting-Modul geht es direkt
   zur Ticketliste.
+
+### Behoben
+
+- Ticket-Antworten senden die gespeicherte Message-ID samt `References` und
+  `In-Reply-To`, sodass Kundenantworten wieder im richtigen Ticket landen.
+  Die Zuordnung über `[Ticket #N]` im Betreff greift nur noch für den
+  Anfragenden, fremde Ticketnummern erscheinen nicht mehr im Betreff.
 
 ## [0.3.1] - 2026-09-28
 
