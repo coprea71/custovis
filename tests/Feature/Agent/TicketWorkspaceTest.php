@@ -259,4 +259,20 @@ class TicketWorkspaceTest extends TestCase
             ->set('search', 'gibt es nicht')
             ->assertSet('ticketId', null);
     }
+
+    public function test_message_history_shows_newest_first_by_default_and_can_be_toggled(): void
+    {
+        $user = User::factory()->create();
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+        $ticket->messages()->create(['visibility' => TicketMessage::VISIBILITY_PUBLIC, 'body_text' => 'Erste Nachricht']);
+        $this->travel(1)->hours();
+        $ticket->messages()->create(['visibility' => TicketMessage::VISIBILITY_PUBLIC, 'body_text' => 'Zweite Nachricht']);
+
+        Livewire::actingAs($user)
+            ->test(TicketWorkspace::class, ['ticket' => $ticket])
+            ->assertSeeInOrder(['Zweite Nachricht', 'Erste Nachricht'])
+            ->call('toggleMessageOrder')
+            ->assertSeeInOrder(['Erste Nachricht', 'Zweite Nachricht']);
+    }
 }

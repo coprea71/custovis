@@ -129,7 +129,12 @@
                     </div>
 
                     <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
-                        @foreach ($ticket->messages as $message)
+                        <div class="flex justify-end">
+                            <button type="button" wire:click="toggleMessageOrder" class="px-3 py-1.5 rounded-lg bg-slatecalm-100 text-slate-700 text-xs font-medium hover:bg-slatecalm-200">
+                                ⇅ {{ $newestMessagesFirst ? 'Neueste oben' : 'Neueste unten' }}
+                            </button>
+                        </div>
+                        @foreach ($newestMessagesFirst ? $ticket->messages->reverse() : $ticket->messages as $message)
                             @php($isNew = $message->id > $newSinceMessageId && $message->author_user_id !== auth()->id())
                             <div class="rounded-2xl p-4 border {{ $message->isInternalNote() ? 'bg-ocean-50 border-ocean-100' : 'bg-white border-slatecalm-200' }} {{ $isNew ? 'ring-2 ring-calm-400' : '' }}">
                                 <div class="flex items-center justify-between mb-2 text-xs text-slate-500">

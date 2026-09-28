@@ -7,6 +7,7 @@ Der Ticket-Arbeitsplatz zeigt links die Ticketliste und rechts das geöffnete Ti
 3. Filtern Sie mit den Schaltflächen **Alle**, **Mir zugewiesen**, **Offen**, **Wartend** oder **Geschlossen**.
 4. Sortieren Sie über **Prio**, **Datum** oder **ID**. Ein zweiter Klick kehrt die Reihenfolge um.
 5. Klicken Sie auf ein Ticket, um es zu öffnen.
+6. Der Verlauf zeigt standardmäßig die neueste Nachricht oben. Mit der Schaltfläche **Neueste oben** bzw. **Neueste unten** über dem Verlauf wechseln Sie die Reihenfolge. Die Einstellung gilt für alle Tickets, bis Sie sich abmelden.
 
 ## Ungelesene Nachrichten
 

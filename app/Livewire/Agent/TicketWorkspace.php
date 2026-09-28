@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -39,6 +40,9 @@ class TicketWorkspace extends Component
 
     /** Read position when the ticket was opened; messages above it are shown as new. */
     public int $newSinceMessageId = 0;
+
+    #[Session]
+    public bool $newestMessagesFirst = true;
 
     public string $replyVisibility = TicketMessage::VISIBILITY_PUBLIC;
 
@@ -148,6 +152,11 @@ class TicketWorkspace extends Component
         }
 
         $this->resetPage();
+    }
+
+    public function toggleMessageOrder(): void
+    {
+        $this->newestMessagesFirst = ! $this->newestMessagesFirst;
     }
 
     public function sendReply(): void
