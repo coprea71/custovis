@@ -8,6 +8,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-09-28
+
+### Geändert
+
+- Die Hilfe beschreibt die neue Dashboard-Startseite des Agent-Bereichs
+  (Themen „Erste Schritte“ und „Team-Dashboard“).
+
 ## [0.4.0] - 2026-09-28
 
 ### Hinzugefügt
