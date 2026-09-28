@@ -76,7 +76,8 @@ nebeneinander:
 - Spamfilter: Mail-Tickets per Klick als Spam markieren und dabei die Absenderadresse
   oder die ganze Domain für das Team sperren; künftige Mails landen im Spam-Ordner der
   Administration, lassen sich dort freigeben und werden nach 30 Tagen gelöscht
-- Filter wie „Mir zugewiesen“; Agenten sehen nur Tickets ihrer Teams
+- Filter wie „Mir zugewiesen“, die Einstellungen von Filter und Sortierung bleiben je
+  Nutzer gespeichert; Agenten sehen nur Tickets ihrer Teams
 - Collision Detection: In Echtzeit ist sichtbar, wer ein Ticket gerade bearbeitet
 
 ### Kanäle und Schnittstellen

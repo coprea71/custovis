@@ -8,6 +8,17 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-09-28
+
+### Hinzugefügt
+
+- Die Filtereinstellungen der Ticketliste (Status-Filter, „Nur ungelesene“,
+  Sortierfeld und -richtung) werden je Nutzer gespeichert, sobald sie sich
+  ändern, und beim nächsten Öffnen wiederhergestellt. Schema-Update: Spalte
+  `users.ticket_filters`.
+- Beim Installieren eines Programm-Updates unter „Administration → System“
+  zeigt die Schaltfläche einen Lade-Spinner, bis das Update abgeschlossen ist.
+
 ## [0.5.0] - 2026-09-28
 
 ### Hinzugefügt
