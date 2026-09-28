@@ -41,6 +41,7 @@
     </aside>
 
     <main class="flex-1 flex flex-col h-full overflow-hidden">
+        <x-update-notice />
         {{ $slot }}
     </main>
 </x-layouts.app>

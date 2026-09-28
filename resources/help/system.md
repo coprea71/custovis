@@ -2,7 +2,7 @@ Custovis läuft auch auf einfachem Webhosting ohne SSH. Updates spielen Sie per 
 
 ## Update mit einem Klick
 
-Custovis prüft einmal täglich, ob auf GitHub eine neue Version veröffentlicht wurde. Ist das der Fall, erscheint im Adminbereich oben der Hinweis **Neue Version … verfügbar**.
+Custovis prüft einmal täglich, ob auf GitHub eine neue Version veröffentlicht wurde. Ist das der Fall, erscheint für Administratoren oben auf jeder Seite (Admin-, Agenten- und Techniker-Bereich) der Hinweis **Neue Version … verfügbar**.
 
 1. Legen Sie ein **Backup** der Datenbank und der Dateien an.
 2. Klicken Sie im Hinweis auf **Jetzt aktualisieren** oder öffnen Sie **Administration → System**.

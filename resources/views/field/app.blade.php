@@ -6,6 +6,8 @@
         @vite(['resources/js/field.js'])
     </x-slot:head>
 
+    <x-update-notice />
+
     <div x-data="fieldApp" x-cloak class="max-w-xl mx-auto min-h-full flex flex-col">
         <header class="sticky top-0 z-10 bg-white border-b border-slatecalm-200 px-4 py-3 flex items-center justify-between">
             <div>

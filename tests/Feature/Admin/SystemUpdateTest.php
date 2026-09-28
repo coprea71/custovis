@@ -55,6 +55,15 @@ class SystemUpdateTest extends TestCase
         $this->actingAs($this->admin)->get(route('admin.users'))->assertSee('Neue Version 9.9.9 verfügbar');
     }
 
+    public function test_admin_sees_notice_outside_the_admin_area(): void
+    {
+        $this->fakeLatestRelease('v9.9.9', null);
+        app(UpdateChecker::class)->check();
+
+        $this->actingAs($this->admin)->get(route('agent.tickets.index'))->assertSee('Neue Version 9.9.9 verfügbar');
+        $this->actingAs($this->admin)->get(route('account.security'))->assertSee('Neue Version 9.9.9 verfügbar');
+    }
+
     public function test_notice_is_hidden_for_current_version_and_for_users_without_permission(): void
     {
         $this->fakeLatestRelease('v'.config('custovis.version'), null);
