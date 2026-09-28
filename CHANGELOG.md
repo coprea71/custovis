@@ -8,6 +8,41 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-28
+
+### Hinzugefügt
+
+- Rechnungsmodul (Modul `invoicing`, Permission `invoices.manage`):
+  Einzel- und Sammelrechnungen aus erfassten Ticket-Zeiten und freien
+  Positionen, fortlaufende Nummern je Jahr, E-Rechnung als XRechnung 3.0 und
+  ZUGFeRD-PDF/A-3 (EN 16931), Storno per Stornorechnung, Versand per E-Mail.
+  Rechnungseinstellungen unter „Administration“; Kunden erhalten Firma, Land,
+  USt-IdNr. und Leitweg-ID. Die DSGVO-Auskunft enthält Rechnungen.
+- Zeiterfassung an Tickets (Modul `time-tracking`, Permission `time.track`):
+  manuelle Buchung oder Start/Stopp-Timer, abrechenbar oder intern.
+- SLA je Kunde mit Vorrang vor der Team-SLA (Administration → SLA).
+- Priorität „Notfall“ mit rot umrahmter Kennzeichnung und Prioritätsstreifen
+  in der Ticketliste.
+- Priorität aus eingehenden Mails (`X-Priority`, `Importance`,
+  `Priority: urgent`) wird übernommen.
+- Telefon, Mobil, Adresse und interne Notizen für Kunden; Anzeige und Pflege
+  fehlender Kontaktdaten direkt im Ticket über den Info-Knopf.
+- E-Mail-Layout und Signatur je Team (Akzentfarbe, Schrift, Logo, Kopf- und
+  Fußzeile) mit Live-Vorschau.
+- Versionsnummer unten links in allen Bereichen.
+
+### Geändert
+
+- Tickets derselben E-Mail-Adresse werden immer demselben Kunden zugeordnet
+  (Adresse normalisiert, Alt-Tickets per Migration nachträglich zugeordnet).
+- Der Hinweis auf eine neue Version erscheint für Admins mit
+  `system.maintain` auf allen internen Seiten, nicht nur im Adminbereich.
+
+### Behoben
+
+- Ticket-Antworten werden zuverlässig über die Team-Mailbox versendet.
+- Der Web-Cron-Worker stoppt nicht mehr vor dem ersten Job am Speicherlimit.
+
 ## [0.2.0] - 2026-09-26
 
 ### Hinzugefügt
