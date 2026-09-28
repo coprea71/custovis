@@ -8,6 +8,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-09-28
+
+### Geändert
+
+- Keine funktionalen Änderungen gegenüber 0.3.0; Release zum Prüfen der
+  Update-Funktion (Hinweis und Ein-Klick-Update).
+
 ## [0.3.0] - 2026-09-28
 
 ### Hinzugefügt
