@@ -59,7 +59,38 @@ class TicketWorkspace extends Component
         }
 
         $this->ticketId = $ticket?->id;
+        $this->restoreFilters();
         $this->rememberReadPosition();
+    }
+
+    /**
+     * Stored values are re-checked against the whitelists, because the
+     * allowed statuses or sort fields may change between releases.
+     */
+    private function restoreFilters(): void
+    {
+        $filters = auth()->user()->ticket_filters ?? [];
+
+        if (in_array($filters['status'] ?? null, ['all', 'mine', ...Ticket::STATUSES], true)) {
+            $this->statusFilter = $filters['status'];
+        }
+        if (in_array($filters['sort_field'] ?? null, self::SORT_FIELDS, true)) {
+            $this->sortField = $filters['sort_field'];
+        }
+        if (in_array($filters['sort_direction'] ?? null, ['asc', 'desc'], true)) {
+            $this->sortDirection = $filters['sort_direction'];
+        }
+        $this->unreadOnly = (bool) ($filters['unread_only'] ?? false);
+    }
+
+    private function saveFilters(): void
+    {
+        auth()->user()->forceFill(['ticket_filters' => [
+            'status' => $this->statusFilter,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
+            'unread_only' => $this->unreadOnly,
+        ]])->save();
     }
 
     public function selectTicket(int $ticketId): void
@@ -78,6 +109,7 @@ class TicketWorkspace extends Component
     public function toggleUnreadOnly(): void
     {
         $this->unreadOnly = ! $this->unreadOnly;
+        $this->saveFilters();
         $this->resetPage();
         $this->deselectTicketHiddenByFilter();
     }
@@ -136,6 +168,7 @@ class TicketWorkspace extends Component
         abort_unless(in_array($status, ['all', 'mine', ...Ticket::STATUSES], true), 422);
 
         $this->statusFilter = $status;
+        $this->saveFilters();
         $this->resetPage();
         $this->deselectTicketHiddenByFilter();
     }
@@ -169,6 +202,7 @@ class TicketWorkspace extends Component
             $this->sortDirection = $field === 'priority' ? 'desc' : 'asc';
         }
 
+        $this->saveFilters();
         $this->resetPage();
     }
 

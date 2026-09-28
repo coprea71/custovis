@@ -221,6 +221,38 @@ class TicketWorkspaceTest extends TestCase
         );
     }
 
+    public function test_filter_settings_are_saved_per_user_and_restored(): void
+    {
+        $user = User::factory()->create();
+        $other = User::factory()->create();
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class)
+            ->call('setStatusFilter', 'closed')
+            ->call('sortTickets', 'id')
+            ->call('toggleUnreadOnly');
+
+        Livewire::actingAs($user->fresh())->test(TicketWorkspace::class)
+            ->assertSet('statusFilter', 'closed')
+            ->assertSet('sortField', 'id')
+            ->assertSet('sortDirection', 'asc')
+            ->assertSet('unreadOnly', true);
+
+        Livewire::actingAs($other)->test(TicketWorkspace::class)
+            ->assertSet('statusFilter', 'open')
+            ->assertSet('sortField', 'priority')
+            ->assertSet('unreadOnly', false);
+    }
+
+    public function test_invalid_stored_filters_fall_back_to_defaults(): void
+    {
+        $user = User::factory()->create();
+        $user->forceFill(['ticket_filters' => ['status' => 'gibt-es-nicht', 'sort_field' => 'subject']])->save();
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class)
+            ->assertSet('statusFilter', 'open')
+            ->assertSet('sortField', 'priority');
+    }
+
     public function test_unknown_sort_field_is_rejected(): void
     {
         $user = User::factory()->create();

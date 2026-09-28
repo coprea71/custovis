@@ -57,6 +57,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'active' => 'boolean',
             'notify_new_tickets' => 'boolean',
+            'ticket_filters' => 'array',
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
