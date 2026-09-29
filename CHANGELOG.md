@@ -8,6 +8,35 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-09-29
+
+### Hinzugefügt
+
+- GitLab-Issue-Import mit eigener GitLab-Instanz: Je Verbindung lässt sich
+  optional eine GitLab-Server-URL hinterlegen (leer = gitlab.com). Die
+  Abfragen folgen keinen Weiterleitungen, damit das Token nicht an fremde
+  Hosts gelangt. Schema-Update: Spalte `git_issue_connections.base_url`.
+- KI-Jobs werden jetzt ausgelöst: Triage und ähnliche Tickets laufen bei
+  neuen Tickets, Zusammenfassung und Antwortvorschlag auf Knopfdruck im
+  Ticket.
+- Die Team-Einstellungen zeigen je WhatsApp-Konto die Callback-URL für den
+  Webhook.
+- Die Kachel „Offene Tickets“ im Team-Dashboard führt zur gefilterten
+  Ticketliste. Das Management-Dashboard verlinkt auf die unerledigten
+  Tickets und auf die einzelnen Teams.
+
+### Behoben
+
+- Der Polling-Modus des Git-Issue-Imports brach mit einem Fatal Error ab
+  (Namenskonflikt mit dem Queue-Trait) und hat deshalb nie Issues abgerufen.
+- Die KI-Triage hebt die Priorität nur noch an, statt sie zu überschreiben.
+- Ähnliche Tickets werden nur noch innerhalb des eigenen Teams gesucht.
+
+### Geändert
+
+- Die Hilfe beschreibt KI-Assistent und WhatsApp-Webhook als
+  Schritt-für-Schritt-Anleitung.
+
 ## [0.6.0] - 2026-09-28
 
 ### Hinzugefügt

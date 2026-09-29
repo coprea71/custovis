@@ -86,7 +86,7 @@ nebeneinander:
   inklusive 24-Stunden-Regel und genehmigter Vorlagen.
 - **REST-API** (`POST /api/v1/tickets`) mit API-Keys, die jedes Team selbst verwaltet.
 - **GitHub-/GitLab-Issues** werden per Webhook oder regelmäßiger Abfrage als Tickets
-  importiert.
+  importiert, auch aus selbst betriebenen GitLab-Instanzen.
 - **MCP-Schnittstelle** (`POST /mcp`) für KI-Telefonassistenten: Tickets anlegen und
   suchen, Status abfragen, Gesprächsnotizen ergänzen, freigegebene Hilfe-Artikel
   durchsuchen ([Anleitung](docs/mcp-integration.md)).
