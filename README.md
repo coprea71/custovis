@@ -4,6 +4,8 @@
 [![Release](https://img.shields.io/github/v/release/coprea71/custovis)](https://github.com/coprea71/custovis/releases)
 [![Lizenz: AGPL v3](https://img.shields.io/badge/Lizenz-AGPL%20v3-blue.svg)](LICENSE)
 
+[English](README.en.md) | **Deutsch**
+
 **Custovis ist eine quelloffene ITSM- und Kundenservice-Suite (AGPLv3) auf Basis von
 Laravel 12.** Sie vereint Shared-Mailbox-Ticketing (wie FreeScout), Self-Service und
 KI-Funktionen (wie Zammad) sowie Incident-, Problem-, Change- und Request-Management
