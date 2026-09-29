@@ -6,6 +6,7 @@ use App\DataTransferObjects\CustomerDto;
 use App\Models\ErpConnection;
 use App\Services\Erp\Contracts\CustomerLookupInterface;
 use App\Services\Erp\ErpLookupException;
+use App\Support\PublicHost;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -20,10 +21,12 @@ abstract class HttpAdapter implements CustomerLookupInterface
 
     protected function http(): PendingRequest
     {
-        return Http::acceptJson()
+        $request = Http::acceptJson()
             ->asJson()
             ->timeout(self::TIMEOUT_SECONDS)
             ->connectTimeout(self::CONNECT_TIMEOUT_SECONDS);
+
+        return PublicHost::guard($request, fn () => new ErpLookupException('ERP host resolves to an internal address.'));
     }
 
     /**

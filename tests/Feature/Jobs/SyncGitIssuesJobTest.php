@@ -48,6 +48,17 @@ class SyncGitIssuesJobTest extends TestCase
         Http::assertNotSent(fn (Request $request) => str_contains($request->url(), 'evil.example.com'));
     }
 
+    public function test_gitlab_polling_refuses_internal_hosts(): void
+    {
+        Http::fake();
+
+        $connection = $this->gitlabConnection('https://10.0.0.5');
+        $this->runJob($connection);
+
+        Http::assertNothingSent();
+        $this->assertNull($connection->fresh()->last_synced_at);
+    }
+
     private function runJob(GitIssueConnection $connection): void
     {
         (new SyncGitIssuesJob($connection))->handle(app(GitIssueImportService::class));

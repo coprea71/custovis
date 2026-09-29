@@ -128,6 +128,20 @@ class ErpCustomerLookupServiceTest extends TestCase
         $this->service()->lookup($this->makeConnection($team), 'kunde@example.com', $this->makeMember($team));
     }
 
+    public function test_internal_erp_host_is_refused_before_sending(): void
+    {
+        $team = $this->makeTeam();
+        Http::fake();
+
+        try {
+            $this->service()->lookup($this->makeConnection($team, overrides: ['base_url' => 'https://127.0.0.1']), 'kunde@example.com', $this->makeMember($team));
+            $this->fail('Expected ErpLookupException.');
+        } catch (ErpLookupException) {
+        }
+
+        Http::assertNothingSent();
+    }
+
     public function test_circuit_breaker_opens_after_repeated_failures(): void
     {
         $team = $this->makeTeam();

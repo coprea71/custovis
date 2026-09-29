@@ -2,12 +2,13 @@
 
 namespace App\Rules;
 
+use App\Support\PublicHost;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 /**
  * External service URLs: HTTPS only (plain HTTP just for local/testing),
- * no embedded credentials, no query or fragment.
+ * no embedded credentials, no query or fragment, no internal hosts.
  */
 class SafeExternalUrl implements ValidationRule
 {
@@ -33,6 +34,10 @@ class SafeExternalUrl implements ValidationRule
 
         if (isset($parts['query']) || isset($parts['fragment'])) {
             $fail('Die URL darf keine Parameter oder Anker enthalten.');
+        }
+
+        if (PublicHost::isInternal($value)) {
+            $fail('Die URL darf nicht auf eine interne Adresse zeigen.');
         }
     }
 }

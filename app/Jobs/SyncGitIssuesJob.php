@@ -4,11 +4,13 @@ namespace App\Jobs;
 
 use App\Models\GitIssueConnection;
 use App\Services\GitIssueImportService;
+use App\Support\PublicHost;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 use Throwable;
 
 class SyncGitIssuesJob implements ShouldQueue
@@ -133,9 +135,11 @@ class SyncGitIssuesJob implements ShouldQueue
         }
     }
 
-    // No redirects: a user-supplied GitLab host must not forward the token elsewhere.
     private function gitlabRequest(): PendingRequest
     {
-        return Http::withHeaders(['PRIVATE-TOKEN' => $this->gitConnection->access_token])->withoutRedirecting();
+        return PublicHost::guard(
+            Http::withHeaders(['PRIVATE-TOKEN' => $this->gitConnection->access_token]),
+            fn () => new RuntimeException('GitLab host resolves to an internal address.'),
+        );
     }
 }

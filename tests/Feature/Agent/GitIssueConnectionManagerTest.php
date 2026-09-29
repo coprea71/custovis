@@ -107,6 +107,23 @@ class GitIssueConnectionManagerTest extends TestCase
         $this->assertDatabaseCount('git_issue_connections', 0);
     }
 
+    public function test_gitlab_base_url_rejects_internal_hosts(): void
+    {
+        [$team, $user] = $this->teamWithAdmin();
+
+        Livewire::actingAs($user)
+            ->test(GitIssueConnectionManager::class, ['team' => $team])
+            ->set('provider', 'gitlab')
+            ->set('repository', 'acme/widgets')
+            ->set('baseUrl', 'https://192.168.1.20')
+            ->set('accessToken', 'glpat_secret')
+            ->set('webhookSecret', 'wh_secret_123')
+            ->call('createConnection')
+            ->assertHasErrors('baseUrl');
+
+        $this->assertDatabaseCount('git_issue_connections', 0);
+    }
+
     public function test_base_url_is_ignored_for_github(): void
     {
         [$team, $user] = $this->teamWithAdmin();
