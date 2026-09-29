@@ -26,7 +26,7 @@ class MailToTicketService
         }
 
         $ticket = $this->findExistingTicket($mailbox, $data) ?? $this->createTicket($mailbox, $data);
-        $this->raisePriority($ticket, $data->priority);
+        $ticket->raisePriority($data->priority);
 
         $message = $ticket->messages()->create([
             'visibility' => TicketMessage::VISIBILITY_PUBLIC,
@@ -43,18 +43,6 @@ class MailToTicketService
         }
 
         return $message;
-    }
-
-    /**
-     * A mail flagged as high/urgent raises the ticket priority, never lowers it.
-     */
-    private function raisePriority(Ticket $ticket, ?string $priority): void
-    {
-        $rank = array_flip(Ticket::PRIORITIES);
-
-        if ($priority !== null && isset($rank[$priority]) && $rank[$priority] > ($rank[$ticket->priority] ?? 0)) {
-            $ticket->update(['priority' => $priority]);
-        }
     }
 
     private function findExistingTicket(Mailbox $mailbox, IncomingMailMessageData $data): ?Ticket

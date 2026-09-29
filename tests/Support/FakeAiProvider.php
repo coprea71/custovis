@@ -8,6 +8,8 @@ class FakeAiProvider implements AiProviderInterface
 {
     public static array $calls = [];
 
+    public static ?string $classification = null;
+
     public function summarize(string $text): string
     {
         self::$calls[] = ['summarize', $text];
@@ -26,7 +28,7 @@ class FakeAiProvider implements AiProviderInterface
     {
         self::$calls[] = ['classify', $text];
 
-        return $labels[0] ?? '';
+        return self::$classification ?? $labels[0] ?? '';
     }
 
     public function embed(string $text): array

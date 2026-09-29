@@ -29,7 +29,7 @@ class AutoTriageJob implements ShouldQueue
         $priority = trim($provider->classify($text, Ticket::AUTOMATIC_PRIORITIES));
 
         if (in_array($priority, Ticket::AUTOMATIC_PRIORITIES, true)) {
-            $this->ticket->update(['priority' => $priority]);
+            $this->ticket->raisePriority($priority);
         }
 
         $this->logUsage($this->ticket, 'classify', $factory->providerNameFor($this->ticket->team, 'classify'), $provider->lastUsageTokens());

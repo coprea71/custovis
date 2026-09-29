@@ -205,6 +205,19 @@ class Ticket extends Model
         $this->recordReopening($actorName, $authorUserId);
     }
 
+    /**
+     * Automatic sources (mail flags, AI triage) may raise the priority but
+     * never lower one a person or channel has already set.
+     */
+    public function raisePriority(?string $priority): void
+    {
+        $rank = array_flip(self::PRIORITIES);
+
+        if ($priority !== null && isset($rank[$priority]) && $rank[$priority] > ($rank[$this->priority] ?? 0)) {
+            $this->update(['priority' => $priority]);
+        }
+    }
+
     public function recordReopening(string $actorName, ?int $authorUserId = null): void
     {
         $this->messages()->create([

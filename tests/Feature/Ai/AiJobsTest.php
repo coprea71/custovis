@@ -19,6 +19,12 @@ class AiJobsTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function tearDown(): void
+    {
+        FakeAiProvider::$classification = null;
+        parent::tearDown();
+    }
+
     private function bindFakeFactory(): void
     {
         $fake = new class extends AiProviderFactory
@@ -93,14 +99,27 @@ class AiJobsTest extends TestCase
         ]);
     }
 
-    public function test_auto_triage_job_sets_priority_from_classification(): void
+    public function test_auto_triage_job_raises_priority_from_classification(): void
     {
         $this->bindFakeFactory();
+        FakeAiProvider::$classification = 'urgent';
         $ticket = $this->makeTicket();
 
         (new AutoTriageJob($ticket))->handle(app(AiProviderFactory::class));
 
-        $this->assertSame('low', $ticket->refresh()->priority);
+        $this->assertSame('urgent', $ticket->refresh()->priority);
+    }
+
+    public function test_auto_triage_job_never_lowers_priority(): void
+    {
+        $this->bindFakeFactory();
+        FakeAiProvider::$classification = 'low';
+        $ticket = $this->makeTicket();
+        $ticket->update(['priority' => 'emergency']);
+
+        (new AutoTriageJob($ticket))->handle(app(AiProviderFactory::class));
+
+        $this->assertSame('emergency', $ticket->refresh()->priority);
     }
 
     public function test_job_is_skipped_when_budget_exceeded(): void
