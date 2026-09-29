@@ -4,6 +4,10 @@ document.addEventListener('alpine:init', () => {
         channel: null,
 
         join() {
+            if (!window.Echo) {
+                return;
+            }
+
             this.channel = window.Echo.join(`ticket.${ticketId}`)
                 .here((users) => {
                     this.others = users.filter((user) => user.id !== me.id);
