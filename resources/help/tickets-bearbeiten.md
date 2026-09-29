@@ -4,7 +4,7 @@ Der Ticket-Arbeitsplatz zeigt links die Ticketliste und rechts das geöffnete Ti
 
 1. Klicken Sie in der Navigation auf **Tickets**.
 2. Suchen Sie im Feld **Tickets oder E-Mail suchen...** nach Betreff oder Absenderadresse.
-3. Filtern Sie mit den Schaltflächen **Alle**, **Mir zugewiesen**, **Offen**, **Wartend** oder **Geschlossen**.
+3. Filtern Sie mit den Schaltflächen **Alle**, **Mir zugewiesen**, **Unerledigt** (offen und wartend), **Offen**, **Wartend** oder **Geschlossen**.
 4. Sortieren Sie über **Prio**, **Datum** oder **ID**. Ein zweiter Klick kehrt die Reihenfolge um. Filter, Sortierung und **Nur ungelesene** werden für Ihr Konto gespeichert und beim nächsten Öffnen wiederhergestellt.
 5. Klicken Sie auf ein Ticket, um es zu öffnen.
 6. Der Verlauf zeigt standardmäßig die neueste Nachricht oben. Mit der Schaltfläche **Neueste oben** bzw. **Neueste unten** über dem Verlauf wechseln Sie die Reihenfolge. Die Einstellung gilt für alle Tickets, bis Sie sich abmelden.

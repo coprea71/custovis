@@ -92,7 +92,7 @@ class DashboardTest extends TestCase
 
         $this->actingAs($member)->get('/agent')
             ->assertOk()
-            ->assertSee(route('agent.tickets.index', ['team' => $this->support->id, 'status' => 'open']));
+            ->assertSee(route('agent.tickets.index', ['team' => $this->support->id, 'status' => 'unresolved']));
     }
 
     public function test_start_dashboard_only_shows_own_teams(): void
@@ -136,6 +136,24 @@ class DashboardTest extends TestCase
             ->test(ManagementDashboard::class)
             ->assertOk()
             ->assertSee('Offene Tickets je Team');
+    }
+
+    public function test_management_dashboard_links_teams_only_for_users_seeing_all_tickets(): void
+    {
+        $manager = User::factory()->create();
+        $manager->givePermissionTo(Permission::findOrCreate('dashboard.management.view', 'web'));
+        $teamLink = route('agent.tickets.index', ['team' => $this->ops->id, 'status' => 'unresolved']);
+
+        Livewire::actingAs($manager)
+            ->test(ManagementDashboard::class)
+            ->assertDontSee($teamLink);
+
+        $manager->givePermissionTo(Permission::findOrCreate('tickets.view.all', 'web'));
+
+        Livewire::actingAs($manager->fresh())
+            ->test(ManagementDashboard::class)
+            ->assertSee($teamLink)
+            ->assertSee(route('agent.tickets.index', ['status' => 'unresolved']));
     }
 
     public function test_management_dashboard_warns_about_failing_mailboxes(): void

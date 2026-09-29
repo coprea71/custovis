@@ -322,7 +322,7 @@ class TicketWorkspaceTest extends TestCase
         $user->forceFill(['ticket_filters' => ['status' => 'all']])->save();
 
         $this->actingAs($user)
-            ->get('/agent/tickets?team='.$this->team->id.'&status=open')
+            ->get('/agent/tickets?team='.$this->team->id.'&status=unresolved')
             ->assertOk()
             ->assertSee('Team: Support')
             ->assertSee('Testticket')
@@ -355,5 +355,25 @@ class TicketWorkspaceTest extends TestCase
             ->call('clearTeamFilter')
             ->assertSet('teamFilter', null)
             ->assertDontSee('Team: Support');
+    }
+
+    public function test_unresolved_filter_shows_open_and_pending_but_not_closed(): void
+    {
+        $user = User::factory()->create();
+        $this->makeTicket();
+        $this->team->users()->attach($user);
+        foreach (['pending' => 'Wartendes Ticket', 'closed' => 'Erledigtes Ticket'] as $status => $subject) {
+            Ticket::query()->create([
+                'team_id' => $this->team->id, 'type' => 'support_ticket', 'source' => 'api', 'status' => $status,
+                'subject' => $subject, 'requester_email' => 'k@example.com', 'requester_name' => 'K',
+            ]);
+        }
+
+        Livewire::actingAs($user)
+            ->test(TicketWorkspace::class)
+            ->call('setStatusFilter', 'unresolved')
+            ->assertSee('Testticket')
+            ->assertSee('Wartendes Ticket')
+            ->assertDontSee('Erledigtes Ticket');
     }
 }

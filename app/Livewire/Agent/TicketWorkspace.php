@@ -31,6 +31,9 @@ class TicketWorkspace extends Component
 
     public const SORT_FIELDS = ['id', 'created_at', 'priority'];
 
+    /** "unresolved" = everything but closed, matching the dashboards' "Offene Tickets" count. */
+    public const LIST_FILTERS = ['all', 'mine', 'unresolved', ...Ticket::STATUSES];
+
     public ?int $ticketId = null;
 
     public string $statusFilter = 'open';
@@ -79,7 +82,7 @@ class TicketWorkspace extends Component
     private function applyLinkFilters(): void
     {
         $status = request()->query('status');
-        if (in_array($status, ['all', 'mine', ...Ticket::STATUSES], true)) {
+        if (in_array($status, self::LIST_FILTERS, true)) {
             $this->statusFilter = $status;
         }
 
@@ -115,7 +118,7 @@ class TicketWorkspace extends Component
     {
         $filters = auth()->user()->ticket_filters ?? [];
 
-        if (in_array($filters['status'] ?? null, ['all', 'mine', ...Ticket::STATUSES], true)) {
+        if (in_array($filters['status'] ?? null, self::LIST_FILTERS, true)) {
             $this->statusFilter = $filters['status'];
         }
         if (in_array($filters['sort_field'] ?? null, self::SORT_FIELDS, true)) {
@@ -209,7 +212,7 @@ class TicketWorkspace extends Component
 
     public function setStatusFilter(string $status): void
     {
-        abort_unless(in_array($status, ['all', 'mine', ...Ticket::STATUSES], true), 422);
+        abort_unless(in_array($status, self::LIST_FILTERS, true), 422);
 
         $this->statusFilter = $status;
         $this->saveFilters();
@@ -395,6 +398,7 @@ class TicketWorkspace extends Component
             ->visibleTo(auth()->user())
             ->when($this->teamFilter !== null, fn ($query) => $query->where('team_id', $this->teamFilter))
             ->when($this->statusFilter === 'mine', fn ($query) => $query->where('assigned_to', auth()->id())->where('status', '!=', 'closed'))
+            ->when($this->statusFilter === 'unresolved', fn ($query) => $query->where('status', '!=', 'closed'))
             ->when(in_array($this->statusFilter, Ticket::STATUSES, true), fn ($query) => $query->where('status', $this->statusFilter))
             ->when($this->unreadOnly, fn ($query) => $query->unreadFor(auth()->user()))
             ->when($this->search !== '', fn ($query) => $query->where(

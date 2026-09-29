@@ -14,7 +14,7 @@
             >
 
             <div class="flex items-center space-x-2 text-xs overflow-x-auto">
-                @foreach (['all' => 'Alle', 'mine' => 'Mir zugewiesen', ...\App\Models\Ticket::STATUS_LABELS] as $value => $label)
+                @foreach (['all' => 'Alle', 'mine' => 'Mir zugewiesen', 'unresolved' => 'Unerledigt', ...\App\Models\Ticket::STATUS_LABELS] as $value => $label)
                     <button
                         type="button"
                         wire:click="setStatusFilter('{{ $value }}')"

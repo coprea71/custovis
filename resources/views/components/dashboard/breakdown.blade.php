@@ -1,4 +1,4 @@
-@props(['title', 'items' => [], 'labels' => []])
+@props(['title', 'items' => [], 'labels' => [], 'links' => []])
 @php($max = max([1, ...array_values($items)]))
 <div class="bg-white border border-slatecalm-200 rounded-2xl p-5">
     <h2 class="text-sm font-semibold text-slatecalm-900 mb-3">{{ $title }}</h2>
@@ -6,7 +6,11 @@
         @forelse ($items as $label => $total)
             <li>
                 <div class="flex justify-between text-sm">
-                    <span class="text-slate-600">{{ $labels[$label] ?? $label }}</span>
+                    @if (isset($links[$label]))
+                        <a href="{{ $links[$label] }}" class="text-slate-600 hover:text-calm-700 hover:underline">{{ $labels[$label] ?? $label }}</a>
+                    @else
+                        <span class="text-slate-600">{{ $labels[$label] ?? $label }}</span>
+                    @endif
                     <span class="font-medium text-slatecalm-900">{{ $total }}</span>
                 </div>
                 <div class="mt-1 h-1.5 rounded-full bg-slatecalm-100">

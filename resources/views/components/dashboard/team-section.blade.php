@@ -7,7 +7,7 @@
     </div>
 
     <x-dashboard.overview :data="$snapshot->data"
-                          :open-tickets-url="route('agent.tickets.index', ['team' => $team->id, 'status' => 'open'])" />
+                          :open-tickets-url="route('agent.tickets.index', ['team' => $team->id, 'status' => 'unresolved'])" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <x-dashboard.breakdown title="Auslastung je Agent (offene Tickets)" :items="$snapshot->data['agent_load']" />
