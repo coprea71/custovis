@@ -235,6 +235,8 @@ php artisan custovis:install  # optional: --demo
 - **Web cron only (no shell cron job):** under **Administration → System → Web-Cron**
   generate a secret URL and have it called every minute. It replaces both cron job
   and queue worker.
+- **Timezone:** `APP_TIMEZONE` in `.env` (default `Europe/Berlin`). Business hours,
+  SLA deadlines and appointments use this timezone.
 - **Two-factor authentication** is mandatory for agents and admins in production.
   It is set up on first login.
 - **Updates:** upload the new version via FTP, then run the pending migrations under

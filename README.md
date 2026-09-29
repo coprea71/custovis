@@ -239,6 +239,8 @@ php artisan custovis:install  # optional: --demo
   Ohne dauerhaften Prozess geht auch ein Cronjob mit `queue:work --stop-when-empty`.
 - **Nur Web-Cron möglich (kein Shell-Cronjob):** Unter **Administration → System → Web-Cron**
   eine geheime URL erzeugen und minütlich aufrufen lassen. Sie ersetzt Cronjob und Queue-Worker.
+- **Zeitzone:** `APP_TIMEZONE` in der `.env` (Standard `Europe/Berlin`). Geschäftszeiten,
+  SLA-Fristen und Einsatztermine gelten in dieser Zeitzone.
 - **Zwei-Faktor-Authentifizierung** ist für Agenten und Admins in Produktion Pflicht.
   Sie wird beim ersten Login eingerichtet.
 - **Updates:** neue Version per FTP hochladen, dann unter **Administration → System**

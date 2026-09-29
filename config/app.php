@@ -67,13 +67,13 @@ return [
     | Application Timezone
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the default timezone for your application, which
-    | will be used by the PHP date and date-time functions. The timezone
-    | is set to "UTC" by default as it is suitable for most use cases.
+    | Timestamps are stored and shown in this timezone. Business hours, SLA
+    | deadlines and appointments are entered as local wall-clock time, so it
+    | must be the teams' local zone. Changing it later does not convert data.
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'Europe/Berlin'),
 
     /*
     |--------------------------------------------------------------------------
