@@ -8,6 +8,16 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-09-29
+
+### Sicherheit
+
+- Server-URLs von ERP-Connector und eigener GitLab-Instanz dürfen nicht mehr
+  auf interne Adressen zeigen (Loopback, private Netze, Cloud-Metadaten,
+  IPv4 und IPv6). Geprüft wird bei der Eingabe und erneut vor jeder Anfrage.
+  ERP- und GitLab-Anfragen folgen keinen Weiterleitungen mehr; eine
+  ERP-URL muss daher direkt auf die API zeigen.
+
 ## [0.7.0] - 2026-09-29
 
 ### Hinzugefügt

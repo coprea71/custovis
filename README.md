@@ -164,7 +164,8 @@ da ist, wird automatisch synchronisiert.
 
 Zwei-Faktor-Authentifizierung ist für Agenten und Admins Pflicht, Passkeys werden
 unterstützt. Sicherheitsrelevante Änderungen landen im Audit-Log, Zugangsdaten
-externer Systeme werden verschlüsselt gespeichert. Für die DSGVO gibt es Auskunft und
+externer Systeme werden verschlüsselt gespeichert. Server-URLs externer Systeme
+dürfen nicht auf interne Adressen zeigen (SSRF-Schutz). Für die DSGVO gibt es Auskunft und
 Anonymisierung je Kunde sowie konfigurierbare Aufbewahrungsfristen
 ([Compliance-Übersicht](docs/compliance/README.md)).
 
