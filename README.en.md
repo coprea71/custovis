@@ -13,6 +13,8 @@ CMDB (like iTop/GLPI) and technician dispatching in a single application. Every
 feature is free: no paywall, no editions. Custovis also runs on plain shared hosting
 without SSH access: installation and updates work via FTP/SFTP and a web installer.
 
+![Custovis agent workspace with ticket list, conversation and sidebar](.github/screenshots/tickets.webp)
+
 > **Note:** The user interface is currently available in German only.
 
 ## Who is Custovis for?
@@ -53,6 +55,22 @@ modules. Custovis includes all of it from day one:
 | **Time tracking & invoicing** | Book time on tickets (timer), single and collective invoices, e-invoices as ZUGFeRD PDF and XRechnung XML, GoBD-compliant numbering and cancellation |
 | **Administration** | Users, teams, roles and permissions, customer management, module management per role/user, themes, schema updates without a shell |
 | **Compliance** | Mandatory 2FA, passkeys, audit log, encrypted credentials, GDPR data export and anonymisation, retention periods |
+
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src=".github/screenshots/dispatch.webp" alt="Dispatcher board with map and drag & drop"><br><sub>Dispatcher board with map and drag & drop</sub></td>
+    <td width="50%"><img src=".github/screenshots/management-dashboard.webp" alt="Management dashboard across all teams"><br><sub>Management dashboard across all teams</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src=".github/screenshots/knowledge-base.webp" alt="Knowledge base"><br><sub>Knowledge base</sub></td>
+    <td width="50%"><img src=".github/screenshots/portal.webp" alt="Customer portal"><br><sub>Customer portal</sub></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src=".github/screenshots/field-app.webp" alt="Offline-capable technician app" width="260"><br><sub>Offline-capable technician app</sub></td>
+  </tr>
+</table>
 
 ## Feature details
 

@@ -14,6 +14,8 @@ Funktionen sind kostenlos, es gibt keine Paywall und keine Editionen. Custovis l
 auch auf einfachem Webhosting ohne SSH-Zugang: Installation und Updates erfolgen per
 FTP/SFTP und Web-Installer.
 
+![Agenten-Arbeitsplatz von Custovis mit Ticketliste, Konversation und Seitenleiste](.github/screenshots/tickets.webp)
+
 ## Für wen ist Custovis?
 
 - **Kundenservice-Teams**, die E-Mails, WhatsApp-Nachrichten und Anrufe als Tickets
@@ -52,6 +54,22 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 | **Zeiterfassung & Rechnungen** | Zeit am Ticket buchen (Timer), Einzel- und Sammelrechnungen, E-Rechnung als ZUGFeRD-PDF und XRechnung-XML, GoBD-konforme Nummern und Storno |
 | **Administration** | Nutzer, Teams, Rollen und Berechtigungen, Kundenverwaltung, Modulverwaltung je Rolle/Nutzer, Themes, Schema-Updates ohne Shell |
 | **Compliance** | 2FA-Pflicht, Passkeys, Audit-Log, verschlüsselte Zugangsdaten, DSGVO-Auskunft und -Anonymisierung, Aufbewahrungsfristen |
+
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src=".github/screenshots/dispatch.webp" alt="Einsatzplanung mit Karte und Drag & Drop"><br><sub>Einsatzplanung mit Karte und Drag & Drop</sub></td>
+    <td width="50%"><img src=".github/screenshots/management-dashboard.webp" alt="Management-Dashboard über alle Teams"><br><sub>Management-Dashboard über alle Teams</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src=".github/screenshots/knowledge-base.webp" alt="Wissensdatenbank"><br><sub>Wissensdatenbank</sub></td>
+    <td width="50%"><img src=".github/screenshots/portal.webp" alt="Kundenportal"><br><sub>Kundenportal</sub></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src=".github/screenshots/field-app.webp" alt="Offlinefähige Techniker-App" width="260"><br><sub>Offlinefähige Techniker-App</sub></td>
+  </tr>
+</table>
 
 ## Funktionsbeschreibung
 
