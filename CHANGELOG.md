@@ -8,6 +8,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.7.2] - 2026-09-29
+
+### Geändert
+
+- Interne Dokumentation (`docs/`) ist nicht mehr Teil des Repositorys und
+  des Release-Archivs. Die README verweist nicht mehr darauf.
+
 ## [0.7.1] - 2026-09-29
 
 ### Sicherheit
