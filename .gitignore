@@ -26,3 +26,6 @@ Thumbs.db
 
 # Lokale Deploy-/Hilfsskripte (enthalten Zugangslogik, nie ins Repo)
 *.bat
+
+# Lokale Dokumentation/Planung (nicht im öffentlichen Repo)
+/docs/
