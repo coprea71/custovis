@@ -10,7 +10,7 @@
         {{ $appointment->ticket->subject }}
     </p>
     <p class="text-slate-500">{{ $appointment->address }}@if ($appointment->kind === 'delivery') · Auslieferung @endif</p>
-    <div class="flex gap-2 pt-1">
+    <div class="flex flex-wrap gap-x-2 gap-y-1 pt-1">
         <button type="button" wire:click="$set('suggestFor', {{ $appointment->id }})" class="text-ocean-700 hover:underline">Vorschläge</button>
         @if ($appointment->technician_profile_id)
             <button type="button" wire:click="unassign({{ $appointment->id }})" class="text-slate-500 hover:underline">Zurücknehmen</button>
