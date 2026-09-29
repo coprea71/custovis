@@ -6,6 +6,7 @@ use App\Models\GitIssueConnection;
 use App\Services\GitIssueImportService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -90,8 +91,8 @@ class SyncGitIssuesJob implements ShouldQueue
         $projectPath = urlencode($this->gitConnection->repository);
         $since = $this->gitConnection->last_synced_at?->toIso8601String();
 
-        $response = Http::withHeaders(['PRIVATE-TOKEN' => $this->gitConnection->access_token])
-            ->get("https://gitlab.com/api/v4/projects/{$projectPath}/issues", array_filter([
+        $response = $this->gitlabRequest()
+            ->get("{$this->gitConnection->gitlabApiUrl()}/projects/{$projectPath}/issues", array_filter([
                 'updated_after' => $since,
             ]))
             ->throw();
@@ -113,8 +114,8 @@ class SyncGitIssuesJob implements ShouldQueue
 
     private function syncGitlabComments(GitIssueImportService $importer, string $projectPath, string $issueIid): void
     {
-        $response = Http::withHeaders(['PRIVATE-TOKEN' => $this->gitConnection->access_token])
-            ->get("https://gitlab.com/api/v4/projects/{$projectPath}/issues/{$issueIid}/notes")
+        $response = $this->gitlabRequest()
+            ->get("{$this->gitConnection->gitlabApiUrl()}/projects/{$projectPath}/issues/{$issueIid}/notes")
             ->throw();
 
         foreach ($response->json() ?? [] as $note) {
@@ -130,5 +131,11 @@ class SyncGitIssuesJob implements ShouldQueue
                 authorName: $note['author']['username'] ?? 'unknown',
             );
         }
+    }
+
+    // No redirects: a user-supplied GitLab host must not forward the token elsewhere.
+    private function gitlabRequest(): PendingRequest
+    {
+        return Http::withHeaders(['PRIVATE-TOKEN' => $this->gitConnection->access_token])->withoutRedirecting();
     }
 }

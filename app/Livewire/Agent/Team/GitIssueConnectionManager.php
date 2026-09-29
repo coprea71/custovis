@@ -5,6 +5,7 @@ namespace App\Livewire\Agent\Team;
 use App\Models\AuditLog;
 use App\Models\GitIssueConnection;
 use App\Models\Team;
+use App\Rules\SafeExternalUrl;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -19,6 +20,8 @@ class GitIssueConnectionManager extends Component
     public string $provider = 'github';
 
     public string $repository = '';
+
+    public string $baseUrl = '';
 
     public string $accessToken = '';
 
@@ -48,6 +51,7 @@ class GitIssueConnectionManager extends Component
         $data = $this->validate([
             'provider' => ['required', 'in:github,gitlab'],
             'repository' => ['required', 'string', 'max:255'],
+            'baseUrl' => ['exclude_unless:provider,gitlab', 'nullable', 'string', 'max:255', new SafeExternalUrl],
             'accessToken' => ['required', 'string'],
             'webhookSecret' => ['required', 'string', 'min:8'],
             'syncMode' => ['required', 'in:webhook,poll'],
@@ -57,6 +61,7 @@ class GitIssueConnectionManager extends Component
             'team_id' => $this->team->id,
             'provider' => $data['provider'],
             'repository' => $data['repository'],
+            'base_url' => ($data['baseUrl'] ?? null) ?: null,
             'access_token' => $data['accessToken'],
             'webhook_secret' => $data['webhookSecret'],
             'sync_mode' => $data['syncMode'],
@@ -68,7 +73,7 @@ class GitIssueConnectionManager extends Component
             'repository' => $connection->repository,
         ]);
 
-        $this->reset(['repository', 'accessToken', 'webhookSecret']);
+        $this->reset(['repository', 'baseUrl', 'accessToken', 'webhookSecret']);
         $this->syncMode = 'webhook';
     }
 

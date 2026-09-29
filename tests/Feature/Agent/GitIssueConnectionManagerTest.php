@@ -67,4 +67,72 @@ class GitIssueConnectionManagerTest extends TestCase
             ->test(GitIssueConnectionManager::class, ['team' => $team])
             ->assertForbidden();
     }
+
+    public function test_gitlab_connection_stores_self_hosted_base_url(): void
+    {
+        [$team, $user] = $this->teamWithAdmin();
+
+        Livewire::actingAs($user)
+            ->test(GitIssueConnectionManager::class, ['team' => $team])
+            ->set('provider', 'gitlab')
+            ->set('repository', 'acme/widgets')
+            ->set('baseUrl', 'https://gitlab.example.de')
+            ->set('accessToken', 'glpat_secret')
+            ->set('webhookSecret', 'wh_secret_123')
+            ->set('syncMode', 'poll')
+            ->call('createConnection')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('git_issue_connections', [
+            'team_id' => $team->id,
+            'provider' => 'gitlab',
+            'base_url' => 'https://gitlab.example.de',
+        ]);
+    }
+
+    public function test_gitlab_base_url_rejects_credentials_in_url(): void
+    {
+        [$team, $user] = $this->teamWithAdmin();
+
+        Livewire::actingAs($user)
+            ->test(GitIssueConnectionManager::class, ['team' => $team])
+            ->set('provider', 'gitlab')
+            ->set('repository', 'acme/widgets')
+            ->set('baseUrl', 'https://user:pass@gitlab.example.de')
+            ->set('accessToken', 'glpat_secret')
+            ->set('webhookSecret', 'wh_secret_123')
+            ->call('createConnection')
+            ->assertHasErrors('baseUrl');
+
+        $this->assertDatabaseCount('git_issue_connections', 0);
+    }
+
+    public function test_base_url_is_ignored_for_github(): void
+    {
+        [$team, $user] = $this->teamWithAdmin();
+
+        Livewire::actingAs($user)
+            ->test(GitIssueConnectionManager::class, ['team' => $team])
+            ->set('provider', 'github')
+            ->set('repository', 'acme/widgets')
+            ->set('baseUrl', 'not a url')
+            ->set('accessToken', 'ghp_secret')
+            ->set('webhookSecret', 'wh_secret_123')
+            ->call('createConnection')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('git_issue_connections', ['provider' => 'github', 'base_url' => null]);
+    }
+
+    /**
+     * @return array{Team, User}
+     */
+    private function teamWithAdmin(): array
+    {
+        $team = Team::query()->create(['name' => 'Support', 'slug' => 'support']);
+        $user = User::factory()->create();
+        $team->users()->attach($user, ['role_in_team' => 'team_admin']);
+
+        return [$team, $user];
+    }
 }

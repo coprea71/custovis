@@ -23,6 +23,7 @@ class GitIssueConnection extends Model
         'team_id',
         'provider',
         'repository',
+        'base_url',
         'sync_mode',
     ];
 
@@ -46,6 +47,7 @@ class GitIssueConnection extends Model
         'team_id',
         'provider',
         'repository',
+        'base_url',
         'access_token',
         'webhook_secret',
         'sync_mode',
@@ -83,6 +85,11 @@ class GitIssueConnection extends Model
     public function isRevoked(): bool
     {
         return $this->revoked_at !== null;
+    }
+
+    public function gitlabApiUrl(): string
+    {
+        return rtrim($this->base_url ?: 'https://gitlab.com', '/').'/api/v4';
     }
 
     public function externalRefPrefix(): string

@@ -11,6 +11,7 @@ Issues aus einem GitHub- oder GitLab-Repository lassen sich automatisch als Tick
 1. Klicken Sie unter Ihrem Team auf **Einstellungen** und dann auf **Git-Issues**.
 2. Wählen Sie den **Anbieter**: GitHub oder GitLab.
 3. Tragen Sie das **Repository** ein: bei GitHub `besitzer/repository`, bei GitLab den Projektpfad.
+   Nutzen Sie eine eigene GitLab-Instanz, tragen Sie zusätzlich die **GitLab-Server-URL** ein, z. B. `https://gitlab.example.de`. Leer bedeutet gitlab.com.
 4. Tragen Sie **Access Token** und **Webhook Secret** ein.
 5. Wählen Sie den **Sync-Modus**: **Webhook (empfohlen)** überträgt neue Issues sofort, **Polling** fragt alle 5 Minuten nach.
 6. Klicken Sie auf **Verbindung anlegen**.

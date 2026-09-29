@@ -12,7 +12,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 bg-white border border-slatecalm-200 rounded-2xl p-6">
             <div>
                 <label class="text-xs font-medium text-slate-600">Anbieter</label>
-                <select wire:model="provider" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                <select wire:model.live="provider" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
                     <option value="github">GitHub</option>
                     <option value="gitlab">GitLab</option>
                 </select>
@@ -22,6 +22,13 @@
                 <input type="text" wire:model="repository" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
                 @error('repository') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
+            @if ($provider === 'gitlab')
+                <div class="md:col-span-2">
+                    <label class="text-xs font-medium text-slate-600">GitLab-Server-URL (optional, leer = gitlab.com)</label>
+                    <input type="url" wire:model="baseUrl" placeholder="https://gitlab.example.de" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
+                    @error('baseUrl') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+            @endif
             <div>
                 <label class="text-xs font-medium text-slate-600">Access Token</label>
                 <input type="password" wire:model="accessToken" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm">
@@ -50,6 +57,9 @@
             <div class="p-4 flex items-center justify-between">
                 <div>
                     <p class="font-medium text-slatecalm-900">{{ ucfirst($connection->provider) }} — {{ $connection->repository }}</p>
+                    @if ($connection->base_url)
+                        <p class="text-xs text-slate-500">{{ $connection->base_url }}</p>
+                    @endif
                     <p class="text-xs text-slate-500">
                         {{ $connection->sync_mode }} ·
                         {{ $connection->isRevoked() ? 'Widerrufen' : 'Aktiv' }} ·
