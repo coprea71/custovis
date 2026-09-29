@@ -85,6 +85,16 @@ class DashboardTest extends TestCase
             ->assertSeeInOrder(['Ops', 'Ops-Geheimnis', 'Support', 'Auslastung je Agent']);
     }
 
+    public function test_open_tickets_tile_links_to_team_ticket_list(): void
+    {
+        $member = User::factory()->create();
+        $this->support->users()->attach($member, ['role_in_team' => 'member']);
+
+        $this->actingAs($member)->get('/agent')
+            ->assertOk()
+            ->assertSee(route('agent.tickets.index', ['team' => $this->support->id, 'status' => 'open']));
+    }
+
     public function test_start_dashboard_only_shows_own_teams(): void
     {
         $member = User::factory()->create();

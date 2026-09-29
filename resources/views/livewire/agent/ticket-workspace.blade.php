@@ -23,6 +23,13 @@
                 @endforeach
             </div>
 
+            @if ($filterTeam)
+                <div class="flex items-center gap-2 text-xs">
+                    <span class="px-3 py-1 rounded-lg bg-calm-100 text-calm-800 font-medium">Team: {{ $filterTeam->name }}</span>
+                    <button type="button" wire:click="clearTeamFilter" class="text-calm-700 hover:underline font-medium">Alle Teams anzeigen</button>
+                </div>
+            @endif
+
             <div class="flex items-center justify-between gap-2 text-xs">
                 <button
                     type="button"

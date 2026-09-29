@@ -307,4 +307,53 @@ class TicketWorkspaceTest extends TestCase
             ->call('toggleMessageOrder')
             ->assertSeeInOrder(['Erste Nachricht', 'Zweite Nachricht']);
     }
+
+    public function test_dashboard_link_filters_list_by_team_and_status(): void
+    {
+        $user = User::factory()->create();
+        $this->makeTicket();
+        $this->team->users()->attach($user);
+        $other = Team::query()->create(['name' => 'Vertrieb', 'slug' => 'vertrieb']);
+        $other->users()->attach($user);
+        Ticket::query()->create([
+            'team_id' => $other->id, 'type' => 'support_ticket', 'source' => 'api',
+            'subject' => 'Vertriebsticket', 'requester_email' => 'v@example.com', 'requester_name' => 'V',
+        ]);
+        $user->forceFill(['ticket_filters' => ['status' => 'all']])->save();
+
+        $this->actingAs($user)
+            ->get('/agent/tickets?team='.$this->team->id.'&status=open')
+            ->assertOk()
+            ->assertSee('Team: Support')
+            ->assertSee('Testticket')
+            ->assertDontSee('Vertriebsticket');
+    }
+
+    public function test_team_filter_ignores_foreign_team(): void
+    {
+        $user = User::factory()->create();
+        $this->makeTicket();
+        $foreign = Team::query()->create(['name' => 'Fremdteam', 'slug' => 'fremd']);
+
+        Livewire::withQueryParams(['team' => $foreign->id])
+            ->actingAs($user)
+            ->test(TicketWorkspace::class)
+            ->assertSet('teamFilter', null)
+            ->assertDontSee('Team: Fremdteam');
+    }
+
+    public function test_team_filter_can_be_cleared(): void
+    {
+        $user = User::factory()->create();
+        $this->makeTicket();
+        $this->team->users()->attach($user);
+
+        Livewire::withQueryParams(['team' => $this->team->id])
+            ->actingAs($user)
+            ->test(TicketWorkspace::class)
+            ->assertSet('teamFilter', $this->team->id)
+            ->call('clearTeamFilter')
+            ->assertSet('teamFilter', null)
+            ->assertDontSee('Team: Support');
+    }
 }

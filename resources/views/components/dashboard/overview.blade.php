@@ -1,4 +1,4 @@
-@props(['data'])
+@props(['data', 'openTicketsUrl' => null])
 {{-- Tiles shared by the management and the team dashboard (7.md, DRY). --}}
 @php
     $typeLabels = ['support_ticket' => 'Support-Ticket', 'incident' => 'Incident', 'problem' => 'Problem', 'change' => 'Change', 'service_request' => 'Service-Request'];
@@ -6,7 +6,7 @@
     $percent = fn (?float $rate) => $rate === null ? '–' : number_format($rate, 1, ',', '.').' %';
 @endphp
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <x-dashboard.kpi label="Offene Tickets" :value="array_sum($data['open_by_type'])" />
+    <x-dashboard.kpi label="Offene Tickets" :value="array_sum($data['open_by_type'])" :href="$openTicketsUrl" />
     <x-dashboard.kpi label="Überfällig" :value="array_sum($data['overdue_by_type'])" hint="SLA verletzt oder Lösungsfrist überschritten" />
     <x-dashboard.kpi label="SLA-Compliance" :value="$percent($data['sla_compliance']['rate'])" :hint="$data['sla_compliance']['total'].' Tickets mit SLA, letzte 30 Tage'" />
     <x-dashboard.kpi label="Change-Erfolgsrate" :value="$percent($data['change_success']['rate'])" :hint="$data['change_success']['total'].' abgeschlossene/abgelehnte Changes'" />

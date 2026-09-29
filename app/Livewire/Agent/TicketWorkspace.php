@@ -7,6 +7,7 @@ use App\Jobs\SendWhatsappReplyJob;
 use App\Models\CannedResponse;
 use App\Models\KnowledgeBaseArticle;
 use App\Models\SpamRule;
+use App\Models\Team;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Models\TicketReadState;
@@ -16,8 +17,10 @@ use App\Services\WhatsappMessageSender;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Session;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -31,6 +34,11 @@ class TicketWorkspace extends Component
     public ?int $ticketId = null;
 
     public string $statusFilter = 'open';
+
+    /** Set by dashboard links (?team=ID); locked so it is only ever validated in mount. */
+    #[Locked]
+    #[Url(as: 'team', except: null)]
+    public ?int $teamFilter = null;
 
     public string $sortField = 'priority';
 
@@ -60,7 +68,43 @@ class TicketWorkspace extends Component
 
         $this->ticketId = $ticket?->id;
         $this->restoreFilters();
+        $this->applyLinkFilters();
         $this->rememberReadPosition();
+    }
+
+    /**
+     * Dashboard tiles link here with ?team=ID&status=open. Both values are
+     * whitelisted; a team the agent cannot see is silently dropped.
+     */
+    private function applyLinkFilters(): void
+    {
+        $status = request()->query('status');
+        if (in_array($status, ['all', 'mine', ...Ticket::STATUSES], true)) {
+            $this->statusFilter = $status;
+        }
+
+        if ($this->teamFilter !== null && ! $this->visibleTeams()->whereKey($this->teamFilter)->exists()) {
+            $this->teamFilter = null;
+        }
+    }
+
+    /**
+     * @return Builder<Team>
+     */
+    private function visibleTeams(): Builder
+    {
+        $user = auth()->user();
+
+        return Team::query()->when(
+            ! $user->can('tickets.view.all'),
+            fn (Builder $query) => $query->whereIn('id', $user->teams()->select('teams.id'))
+        );
+    }
+
+    public function clearTeamFilter(): void
+    {
+        $this->teamFilter = null;
+        $this->resetPage();
     }
 
     /**
@@ -349,6 +393,7 @@ class TicketWorkspace extends Component
     {
         return Ticket::query()
             ->visibleTo(auth()->user())
+            ->when($this->teamFilter !== null, fn ($query) => $query->where('team_id', $this->teamFilter))
             ->when($this->statusFilter === 'mine', fn ($query) => $query->where('assigned_to', auth()->id())->where('status', '!=', 'closed'))
             ->when(in_array($this->statusFilter, Ticket::STATUSES, true), fn ($query) => $query->where('status', $this->statusFilter))
             ->when($this->unreadOnly, fn ($query) => $query->unreadFor(auth()->user()))
@@ -375,6 +420,7 @@ class TicketWorkspace extends Component
         return view('livewire.agent.ticket-workspace', [
             'tickets' => $tickets,
             'ticket' => $ticket,
+            'filterTeam' => $this->teamFilter !== null ? Team::query()->find($this->teamFilter) : null,
             'unreadCount' => $this->filteredTickets()->unreadFor(auth()->user())->count(),
             'cannedResponses' => $ticket
                 ? CannedResponse::query()->where('team_id', $ticket->team_id)->orderBy('title')->get()

@@ -6,7 +6,8 @@
         <p class="text-xs text-slate-400">Stand: {{ $snapshot->generated_at->format('d.m.Y H:i') }} Uhr</p>
     </div>
 
-    <x-dashboard.overview :data="$snapshot->data" />
+    <x-dashboard.overview :data="$snapshot->data"
+                          :open-tickets-url="route('agent.tickets.index', ['team' => $team->id, 'status' => 'open'])" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <x-dashboard.breakdown title="Auslastung je Agent (offene Tickets)" :items="$snapshot->data['agent_load']" />
