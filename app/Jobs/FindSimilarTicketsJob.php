@@ -69,6 +69,8 @@ class FindSimilarTicketsJob implements ShouldQueue
     {
         return TicketEmbedding::query()
             ->where('ticket_id', '!=', $this->ticket->id)
+            // Ticket numbers of other teams must not leak into this team's notes.
+            ->whereHas('ticket', fn ($query) => $query->where('team_id', $this->ticket->team_id))
             ->get()
             ->map(fn (TicketEmbedding $embedding) => [
                 'ticket_id' => $embedding->ticket_id,
