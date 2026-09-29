@@ -8,6 +8,26 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-09-29
+
+### Hinzugefügt
+
+- Ohne Reverb-Server (z. B. auf Webhosting ohne Shell) aktualisiert sich der
+  Team-Chat alle 5 Sekunden, und im Ticket ist per Polling sichtbar, wer es
+  gerade ebenfalls geöffnet hat.
+
+### Geändert
+
+- Die Reverb-Zugangsdaten werden zur Laufzeit aus der `.env` gelesen statt
+  beim Frontend-Build eingebaut. Echtzeit funktioniert damit auch mit dem
+  Release-Archiv; die Variablen `VITE_REVERB_*` entfallen.
+
+### Behoben
+
+- Ohne konfigurierten Reverb-Server schlug jede Chat-Nachricht als
+  Hintergrund-Job fehl (Broadcast an einen nicht vorhandenen Server) und
+  landete in den fehlgeschlagenen Jobs.
+
 ## [0.7.4] - 2026-09-29
 
 ### Behoben
