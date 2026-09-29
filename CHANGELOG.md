@@ -8,6 +8,15 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.7.3] - 2026-09-29
+
+### Behoben
+
+- Die Karte in der Einsatzplanung wurde nicht angezeigt, wenn kein
+  Reverb-Key konfiguriert war (so auch im Release-Archiv). Ohne Key
+  startet Custovis jetzt einfach ohne Echtzeit-Verbindung, statt das
+  gesamte Frontend-Skript abzubrechen.
+
 ## [0.7.2] - 2026-09-29
 
 ### Geändert
