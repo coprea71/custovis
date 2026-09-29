@@ -24,6 +24,17 @@ Die Anwendungsfälle:
 2. Klicken Sie auf **Speichern**.
 3. Ist das Budget eines Monats aufgebraucht, werden keine weiteren KI-Anfragen für das Team ausgeführt.
 
+## Wann die KI arbeitet und wo die Ergebnisse erscheinen
+
+Die KI arbeitet nur, wenn das Modul **AiAgent** (KI-Funktionen) aktiv ist, für den Anwendungsfall ein Anbieter eingerichtet ist (oder die installationsweite Voreinstellung greift) und das Monatsbudget nicht aufgebraucht ist. Die Anfragen laufen im Hintergrund. Das Ergebnis erscheint, sobald der Hintergrunddienst (Queue-Worker oder Web-Cron) gelaufen ist, meist nach ein bis zwei Minuten.
+
+- **classify** (Triage): läuft automatisch bei jedem neuen Ticket. Die KI kann die Priorität nur anheben, nie senken. Einen **Notfall** vergibt sie nie.
+- **embed** (ähnliche Tickets): läuft automatisch bei jedem neuen Ticket. Findet die KI ähnliche Tickets Ihres Teams, erscheint im Ticket die interne Notiz **KI: Ähnliche Tickets** mit „Ähnliche Tickets: #…“.
+- **summarize**: auf Knopfdruck im Ticket über **Zusammenfassen**. Das Ergebnis erscheint als interne Notiz **KI-Zusammenfassung**.
+- **suggest_reply**: auf Knopfdruck im Ticket über **Antwort vorschlagen**. Das Ergebnis erscheint als interne Notiz **KI-Antwortvorschlag**, die Sie in Ihre Antwort übernehmen können.
+
+Spam-Tickets werden nie an die KI geschickt.
+
 ## Gut zu wissen
 
 - Ein leeres API-Key-Feld behält beim Speichern den bisher hinterlegten Key. Keys werden verschlüsselt gespeichert und nie wieder angezeigt.

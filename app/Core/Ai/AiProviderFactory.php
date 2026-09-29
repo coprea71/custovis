@@ -57,6 +57,25 @@ class AiProviderFactory
             ->value('provider') ?? config('services.default_ai_provider', 'openai');
     }
 
+    /**
+     * A team row always counts as configured; otherwise the .env fallback
+     * of the default provider must carry its credential/endpoint.
+     */
+    public function isConfigured(Team $team, string $useCase): bool
+    {
+        if (AiSetting::query()->where('team_id', $team->id)->where('use_case', $useCase)->exists()) {
+            return true;
+        }
+
+        return filled(match (config('services.default_ai_provider', 'openai')) {
+            'openai' => config('services.openai.key'),
+            'anthropic' => config('services.anthropic.key'),
+            'ollama' => config('services.ollama.endpoint'),
+            'custom' => config('services.custom_ai.endpoint'),
+            default => null,
+        });
+    }
+
     public function redactPiiFor(Team $team, string $useCase): bool
     {
         return AiSetting::query()

@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Core\Ai\Support\AiTicketAssistant;
 use App\Models\SlaPolicy;
 use App\Models\Ticket;
 use App\Models\User;
@@ -16,7 +17,10 @@ use Illuminate\Support\Facades\Notification;
  */
 class TicketObserver
 {
-    public function __construct(private readonly BusinessHoursCalendar $calendar) {}
+    public function __construct(
+        private readonly BusinessHoursCalendar $calendar,
+        private readonly AiTicketAssistant $assistant,
+    ) {}
 
     public function created(Ticket $ticket): void
     {
@@ -27,6 +31,7 @@ class TicketObserver
 
         $this->applySlaPolicy($ticket);
         $this->notifyTeamMembers($ticket);
+        $this->assistant->ticketCreated($ticket);
     }
 
     private function applySlaPolicy(Ticket $ticket): void

@@ -64,6 +64,16 @@ Ist der Absender noch kein Kunde und Sie dürfen Kunden verwalten, erscheint in 
 2. Prüfen Sie Name und E-Mail-Adresse und klicken Sie auf **Anlegen**.
 3. Der Kunde erhält erst dann Zugang zum Kundenportal, wenn ihm eine Einladung gesendet wird (siehe Hilfethema „Kunden & Kundenportal“).
 
+## KI-Assistent nutzen
+
+Ist das Modul AiAgent (KI-Funktionen) aktiv, finden Sie in der Seitenleiste den Abschnitt **KI-Assistent**.
+
+1. Klicken Sie auf **Zusammenfassen** oder **Antwort vorschlagen**.
+2. Nach kurzer Zeit erscheint im Verlauf eine interne Notiz **KI-Zusammenfassung** bzw. **KI-Antwortvorschlag**. Kunden sehen sie nie.
+3. Übernehmen Sie einen Antwortvorschlag in das Antwortfeld, prüfen und ändern Sie ihn und klicken Sie auf **Senden**. Die KI schickt selbst nie etwas an den Kunden.
+
+Bei neuen Tickets arbeitet die KI automatisch: Sie kann die Priorität anheben (nie senken) und schreibt eine interne Notiz **KI: Ähnliche Tickets** mit „Ähnliche Tickets: #…“, wenn es ähnliche Tickets Ihres Teams gibt. Fehlen die Schaltflächen, ist für Ihr Team kein KI-Anbieter eingerichtet oder das Monatsbudget ist aufgebraucht (siehe Hilfethema „KI-Einstellungen“).
+
 ## Gut zu wissen
 
 - Als wichtig markierte E-Mails setzen die Priorität automatisch auf **Hoch**, als dringend markierte auf **Dringend**. Einen **Notfall** legt immer ein Mensch fest, auch die KI-Einstufung vergibt ihn nicht.

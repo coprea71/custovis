@@ -11,6 +11,7 @@ use App\Models\Team;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Services\Dashboard\DashboardSnapshotService;
+use App\Services\ModuleAccess;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -104,6 +105,7 @@ class DashboardTest extends TestCase
     public function test_start_page_falls_back_to_ticket_list_without_reporting_module(): void
     {
         Module::query()->where('slug', 'reporting')->update(['enabled' => false]);
+        app(ModuleAccess::class)->flush();
         $member = User::factory()->create();
         $this->support->users()->attach($member, ['role_in_team' => 'member']);
 

@@ -344,6 +344,12 @@
                             </div>
                         @endcan
                     @endmodule
+
+                    @if (\App\Livewire\Agent\TicketAiPanel::availableFor($ticket, auth()->user()))
+                        <div class="mt-5">
+                            <livewire:agent.ticket-ai-panel :ticket-id="$ticket->id" :key="'ai-panel-'.$ticket->id" />
+                        </div>
+                    @endif
                 </aside>
               </div>
             </div>
