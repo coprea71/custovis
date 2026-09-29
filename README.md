@@ -49,7 +49,7 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 | **ERP-Anbindung** | Kundendaten aus Odoo oder Shopware 6 live in der Ticket-Sidebar, ohne Datenimport |
 | **Zeiterfassung & Rechnungen** | Zeit am Ticket buchen (Timer), Einzel- und Sammelrechnungen, E-Rechnung als ZUGFeRD-PDF und XRechnung-XML, GoBD-konforme Nummern und Storno |
 | **Administration** | Nutzer, Teams, Rollen und Berechtigungen, Kundenverwaltung, Modulverwaltung je Rolle/Nutzer, Themes, Schema-Updates ohne Shell |
-| **Compliance** | 2FA-Pflicht, Passkeys, Audit-Log, verschlüsselte Zugangsdaten, DSGVO-Auskunft und -Anonymisierung, Aufbewahrungsfristen ([Details](docs/compliance/README.md)) |
+| **Compliance** | 2FA-Pflicht, Passkeys, Audit-Log, verschlüsselte Zugangsdaten, DSGVO-Auskunft und -Anonymisierung, Aufbewahrungsfristen |
 
 ## Funktionsbeschreibung
 
@@ -89,7 +89,7 @@ nebeneinander:
   importiert, auch aus selbst betriebenen GitLab-Instanzen.
 - **MCP-Schnittstelle** (`POST /mcp`) für KI-Telefonassistenten: Tickets anlegen und
   suchen, Status abfragen, Gesprächsnotizen ergänzen, freigegebene Hilfe-Artikel
-  durchsuchen ([Anleitung](docs/mcp-integration.md)).
+  durchsuchen.
 
 ### ITIL-Prozesse
 
@@ -166,8 +166,7 @@ Zwei-Faktor-Authentifizierung ist für Agenten und Admins Pflicht, Passkeys werd
 unterstützt. Sicherheitsrelevante Änderungen landen im Audit-Log, Zugangsdaten
 externer Systeme werden verschlüsselt gespeichert. Server-URLs externer Systeme
 dürfen nicht auf interne Adressen zeigen (SSRF-Schutz). Für die DSGVO gibt es Auskunft und
-Anonymisierung je Kunde sowie konfigurierbare Aufbewahrungsfristen
-([Compliance-Übersicht](docs/compliance/README.md)).
+Anonymisierung je Kunde sowie konfigurierbare Aufbewahrungsfristen.
 
 ## Tech-Stack
 
@@ -237,10 +236,6 @@ php artisan test
 
 ## Weitere Dokumentation
 
-- [MCP-Anbindung für KI-Telefonassistenten](docs/mcp-integration.md)
-- [Compliance-Übersicht (DSGVO/ISO 27001)](docs/compliance/README.md)
-- [ERP-Anbindung und Auftragsverarbeitung](docs/compliance/erp-integration.md)
-- [Architektur und Planhistorie](docs/planhub/0.md)
 - [Änderungsprotokoll](CHANGELOG.md)
 
 ## Lizenz
