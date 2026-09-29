@@ -15,10 +15,12 @@ Custovis bindet WhatsApp über die offizielle **Meta WhatsApp Business Cloud API
 
 ## Webhook bei Meta eintragen
 
-1. Tragen Sie in der Meta-App unter **WhatsApp → Konfiguration** die **Callback-URL** ein. Kopieren Sie dazu die Callback-URL, die in Custovis unter dem jeweiligen WhatsApp-Konto angezeigt wird.
-2. Tragen Sie denselben **Webhook Verify Token** wie in Custovis ein und bestätigen Sie.
-3. Abonnieren Sie das Webhook-Feld **messages**.
-4. Schicken Sie eine Test-Nachricht an Ihre WhatsApp-Nummer. Nach kurzer Zeit erscheint sie als Ticket.
+1. Öffnen Sie in Custovis unter Ihrem Team **Einstellungen → WhatsApp**.
+2. Unter dem angelegten Konto steht die **Callback-URL** (endet auf `/webhooks/whatsapp/` und eine Nummer). Ein Klick darauf markiert sie vollständig. Kopieren Sie sie mit Strg+C bzw. Cmd+C.
+3. Öffnen Sie in der Meta-App **WhatsApp → Konfiguration** und fügen Sie die URL als **Callback-URL** ein.
+4. Tragen Sie denselben **Webhook Verify Token** wie in Custovis ein und klicken Sie auf **Bestätigen und speichern**. Meta prüft die Verbindung sofort; eine Fehlermeldung deutet auf eine falsch kopierte URL, einen abweichenden Verify Token oder ein ausgeschaltetes WhatsApp-Modul hin.
+5. Abonnieren Sie das Webhook-Feld **messages**.
+6. Schicken Sie eine Test-Nachricht an Ihre WhatsApp-Nummer. Nach kurzer Zeit erscheint sie als Ticket.
 
 ## Auf WhatsApp-Tickets antworten
 

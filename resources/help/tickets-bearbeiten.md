@@ -66,13 +66,34 @@ Ist der Absender noch kein Kunde und Sie dürfen Kunden verwalten, erscheint in 
 
 ## KI-Assistent nutzen
 
-Ist das Modul AiAgent (KI-Funktionen) aktiv, finden Sie in der Seitenleiste den Abschnitt **KI-Assistent**.
+Ist das Modul **AiAgent** (KI-Funktionen) aktiv und für Ihr Team ein KI-Anbieter eingerichtet, finden Sie in der Seitenleiste den Abschnitt **KI-Assistent**. Die Einrichtung beschreibt das Hilfethema „KI-Einstellungen“.
 
-1. Klicken Sie auf **Zusammenfassen** oder **Antwort vorschlagen**.
-2. Nach kurzer Zeit erscheint im Verlauf eine interne Notiz **KI-Zusammenfassung** bzw. **KI-Antwortvorschlag**. Kunden sehen sie nie.
-3. Übernehmen Sie einen Antwortvorschlag in das Antwortfeld, prüfen und ändern Sie ihn und klicken Sie auf **Senden**. Die KI schickt selbst nie etwas an den Kunden.
+### Ticket zusammenfassen
 
-Bei neuen Tickets arbeitet die KI automatisch: Sie kann die Priorität anheben (nie senken) und schreibt eine interne Notiz **KI: Ähnliche Tickets** mit „Ähnliche Tickets: #…“, wenn es ähnliche Tickets Ihres Teams gibt. Fehlen die Schaltflächen, ist für Ihr Team kein KI-Anbieter eingerichtet oder das Monatsbudget ist aufgebraucht (siehe Hilfethema „KI-Einstellungen“).
+1. Öffnen Sie das Ticket.
+2. Klicken Sie in der Seitenleiste unter **KI-Assistent** auf **Zusammenfassen**.
+3. Darunter erscheint „In Arbeit – das Ergebnis erscheint in Kürze als interne Notiz.“ Sie können währenddessen normal weiterarbeiten.
+4. Nach ein bis zwei Minuten erscheint im Verlauf die interne Notiz **KI-Zusammenfassung**. Der Verlauf aktualisiert sich von selbst.
+
+### Antwortvorschlag nutzen
+
+1. Klicken Sie unter **KI-Assistent** auf **Antwort vorschlagen**.
+2. Warten Sie, bis im Verlauf die interne Notiz **KI-Antwortvorschlag** erscheint.
+3. Markieren und kopieren Sie den Text der Notiz.
+4. Wählen Sie über dem Antwortfeld **Öffentliche Antwort** und fügen Sie den Text ein.
+5. Prüfen und ändern Sie den Vorschlag und klicken Sie auf **Senden**.
+
+Die KI schickt selbst nie etwas an den Kunden. Ihre Notizen sind intern, Kunden sehen sie nie.
+
+### Was bei neuen Tickets automatisch passiert
+
+- Die KI kann die **Priorität** anheben, zum Beispiel von **Normal** auf **Hoch**. Sie senkt sie nie und vergibt nie einen **Notfall**.
+- Gibt es ähnliche Tickets Ihres Teams, erscheint die interne Notiz **KI: Ähnliche Tickets** mit „Ähnliche Tickets: #…“. Die Nummern stehen in der Ticketliste vor dem Betreff. Mit der Sortierung nach **ID** finden Sie sie schnell.
+
+### Wenn der KI-Assistent fehlt
+
+- **Kein Abschnitt KI-Assistent:** Das Modul ist aus oder für Sie nicht freigegeben. Wenden Sie sich an Ihre Administration.
+- **Hinweis „Kein KI-Provider eingerichtet oder Monatsbudget aufgebraucht“:** Ihr Team-Admin richtet unter **Einstellungen → KI** einen Anbieter ein oder erhöht das Budget.
 
 ## Gut zu wissen
 
