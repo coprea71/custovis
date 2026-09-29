@@ -56,6 +56,9 @@
                 <div>
                     <p class="font-medium text-slatecalm-900">{{ $account->display_name }}</p>
                     <p class="text-xs text-slate-500">Phone Number ID: {{ $account->phone_number_id }} · {{ $account->active ? 'Aktiv' : 'Inaktiv' }}</p>
+                    <p class="text-xs text-slate-500 mt-1">
+                        Callback-URL: <code class="select-all text-slatecalm-900">{{ url('/webhooks/whatsapp/'.$account->id) }}</code>
+                    </p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button wire:click="testConnection({{ $account->id }})" class="text-xs px-3 py-1.5 rounded-lg font-medium bg-slatecalm-100 text-slate-700 hover:bg-slatecalm-200">
