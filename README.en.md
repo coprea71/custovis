@@ -13,7 +13,7 @@ CMDB (like iTop/GLPI) and technician dispatching in a single application. Every
 feature is free: no paywall, no editions. Custovis also runs on plain shared hosting
 without SSH access: installation and updates work via FTP/SFTP and a web installer.
 
-![Custovis agent workspace with ticket list, conversation and sidebar](.github/screenshots/tickets.webp)
+![Custovis in action: replying to a ticket and assigning a job to a technician via drag & drop](.github/screenshots/demo.gif)
 
 > **Note:** The user interface is currently available in German only.
 

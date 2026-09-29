@@ -14,7 +14,7 @@ Funktionen sind kostenlos, es gibt keine Paywall und keine Editionen. Custovis l
 auch auf einfachem Webhosting ohne SSH-Zugang: Installation und Updates erfolgen per
 FTP/SFTP und Web-Installer.
 
-![Agenten-Arbeitsplatz von Custovis mit Ticketliste, Konversation und Seitenleiste](.github/screenshots/tickets.webp)
+![Custovis in Aktion: Ticket beantworten und Einsatz per Drag & Drop einem Techniker zuweisen](.github/screenshots/demo.gif)
 
 ## Für wen ist Custovis?
 
