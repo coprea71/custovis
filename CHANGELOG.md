@@ -8,6 +8,18 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.7.4] - 2026-09-29
+
+### Behoben
+
+- Custovis lief intern in UTC. Dadurch zeigte die Techniker-App Einsätze
+  ein bis zwei Stunden später an als das Dispatcher-Board, und Zeitangaben,
+  Geschäftszeiten und SLA-Fristen waren gegenüber der Ortszeit verschoben.
+  Die Zeitzone ist jetzt über `APP_TIMEZONE` einstellbar (Standard
+  `Europe/Berlin`). Bestehende Zeitstempel werden beim Datenbank-Update
+  sommerzeitgenau umgerechnet, von Hand eingegebene Einsatz- und
+  Change-Zeitfenster bleiben unverändert.
+
 ## [0.7.3] - 2026-09-29
 
 ### Behoben
