@@ -29,3 +29,6 @@ Thumbs.db
 
 # Lokale Dokumentation/Planung (nicht im öffentlichen Repo)
 /docs/
+
+# Landingpage: Screenshots kopiert der Pages-Workflow aus .github/screenshots
+/site/assets/screenshots/

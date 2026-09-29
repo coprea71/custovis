@@ -1,0 +1,16 @@
+# Custovis
+
+> Custovis is an open-source (AGPL-3.0) service suite built on Laravel 12 that combines shared-mailbox ticketing, ITIL processes with a CMDB, a knowledge base, a customer portal, AI assistance and technician dispatching in one self-hosted application.
+
+- License: AGPL-3.0, all features free, no paid editions or modules
+- Stack: Laravel 12, PHP 8.2+, MySQL/MariaDB, Livewire, Alpine.js
+- Runs on shared hosting without SSH (web installer, one-click updates, web cron)
+- User interface: German
+
+## Links
+- [Website](https://coprea71.github.io/custovis/)
+- [Source code and README](https://github.com/coprea71/custovis)
+- [Releases](https://github.com/coprea71/custovis/releases)
+- [Custovis vs FreeScout](https://coprea71.github.io/custovis/compare/freescout.html)
+- [Custovis vs Zammad](https://coprea71.github.io/custovis/compare/zammad.html)
+- [Custovis vs GLPI](https://coprea71.github.io/custovis/compare/glpi.html)

@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir -p dist
           zip -rq "dist/custovis-${GITHUB_REF_NAME}.zip" . \
-            -x '.git/*' '.github/*' 'node_modules/*' 'tests/*' 'dist/*' '.env' 'storage/logs/*.log' 'docs/planhub/*'
+            -x '.git/*' '.github/*' 'node_modules/*' 'tests/*' 'dist/*' '.env' 'storage/logs/*.log' 'docs/planhub/*' 'site/*'
 
       - name: Release-Notes aus dem CHANGELOG
         run: |
