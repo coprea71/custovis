@@ -10,6 +10,7 @@ use App\Models\AiSetting;
 use App\Models\Ticket;
 use App\Observers\TicketObserver;
 use App\Services\ModuleAccess;
+use App\Support\Realtime;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
@@ -49,6 +50,11 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('mcp-health', fn (Request $request) => Limit::perMinute(30)->by($request->ip()));
 
         Ticket::observe(TicketObserver::class);
+
+        // Queued broadcasts to a Reverb server that does not exist would only pile up as failed jobs.
+        if (config('broadcasting.default') === 'reverb' && ! Realtime::enabled()) {
+            config(['broadcasting.default' => 'null']);
+        }
 
         Blade::if('module', fn (string $slug) => app(ModuleAccess::class)->allows(auth('web')->user(), $slug));
 

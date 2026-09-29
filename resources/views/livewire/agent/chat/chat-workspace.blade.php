@@ -1,4 +1,4 @@
-<div class="flex-1 flex overflow-hidden" wire:poll.30s>
+<div class="flex-1 flex overflow-hidden" wire:poll.{{ $pollInterval }}>
     {{-- Below md only one pane fits: the list hides while a conversation is open. --}}
     <section class="w-full md:w-72 shrink-0 border-r border-slatecalm-200 bg-white {{ $conversation ? 'hidden md:flex' : 'flex' }} flex-col overflow-y-auto">
         <div class="p-4 border-b border-slatecalm-200">

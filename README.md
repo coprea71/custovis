@@ -194,7 +194,8 @@ Anonymisierung je Kunde sowie konfigurierbare Aufbewahrungsfristen.
 - Auth: Laravel Fortify und Sanctum mit getrennten Guards (`web`, `customer`, `sanctum`), TOTP-2FA
 - Rechte: `spatie/laravel-permission` und ein eigenes Team-Modell
 - Frontend: Livewire, Blade und Alpine.js, Tailwind über Vite (kein CDN, kein Filament)
-- Echtzeit: Laravel Reverb; Queues: Datenbank-Treiber (cron-tauglich), Redis optional
+- Echtzeit: Laravel Reverb, optional – ohne Reverb-Server (z. B. Webhosting ohne Shell)
+  aktualisieren sich Team-Chat und Kollisionserkennung per Polling; Queues: Datenbank-Treiber (cron-tauglich), Redis optional
 - MCP: offizielles `laravel/mcp` (Streamable HTTP)
 - E-Rechnung: `horstoeko/zugferd` (XRechnung/ZUGFeRD), PDF über `barryvdh/laravel-dompdf`
 

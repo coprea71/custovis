@@ -190,7 +190,8 @@ anonymisation per customer as well as configurable retention periods.
 - Auth: Laravel Fortify and Sanctum with separate guards (`web`, `customer`, `sanctum`), TOTP 2FA
 - Permissions: `spatie/laravel-permission` and a custom team model
 - Frontend: Livewire, Blade and Alpine.js, Tailwind via Vite (no CDN, no Filament)
-- Real time: Laravel Reverb; queues: database driver (cron-friendly), Redis optional
+- Real time: Laravel Reverb, optional – without a Reverb server (e.g. shared hosting
+  without a shell) team chat and collision detection update via polling; queues: database driver (cron-friendly), Redis optional
 - MCP: official `laravel/mcp` (Streamable HTTP)
 - E-invoicing: `horstoeko/zugferd` (XRechnung/ZUGFeRD), PDF via `barryvdh/laravel-dompdf`
 

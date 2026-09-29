@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use App\Services\Chat\ChatAccess;
 use App\Services\Chat\ChatService;
+use App\Support\Realtime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
@@ -52,6 +53,10 @@ class ChatWorkspace extends Component
      */
     public function getListeners(): array
     {
+        if (! Realtime::enabled()) {
+            return [];
+        }
+
         $conversation = $this->conversation();
 
         return $conversation ? ["echo-private:{$conversation->broadcastName()},ChatMessageSent" => '$refresh'] : [];
@@ -108,6 +113,7 @@ class ChatWorkspace extends Component
             'conversation' => $conversation,
             'messages' => $conversation ? $conversation->messages()->with('author')->latest('id')->limit(self::MESSAGE_LIMIT)->get()->reverse() : collect(),
             'canPost' => $conversation && $access->canPost($user, $conversation),
+            'pollInterval' => Realtime::enabled() ? '30s' : '5s',
             'directCandidates' => $user->can('chat.direct.create') ? User::permission('chat.channels.view')->whereKeyNot($user->id)->orderBy('name')->get() : collect(),
         ]);
     }

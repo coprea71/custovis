@@ -146,10 +146,14 @@
                                 </span>
                             @endif
 
-                            <div class="flex items-center gap-2 text-xs text-calm-700" x-show="others.length > 0" x-cloak>
-                                <span class="w-2 h-2 rounded-full bg-calm-500"></span>
-                                <span x-text="collisionLabel()"></span>
-                            </div>
+                            @if (\App\Support\Realtime::enabled())
+                                <div class="flex items-center gap-2 text-xs text-calm-700" x-show="others.length > 0" x-cloak>
+                                    <span class="w-2 h-2 rounded-full bg-calm-500"></span>
+                                    <span x-text="collisionLabel()"></span>
+                                </div>
+                            @else
+                                <livewire:agent.ticket-presence :ticket-id="$ticket->id" :key="'presence-'.$ticket->id" />
+                            @endif
                         </div>
                     </div>
 
