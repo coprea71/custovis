@@ -14,36 +14,36 @@ class SyncGitIssuesJob implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public GitIssueConnection $connection)
+    public function __construct(public GitIssueConnection $gitConnection)
     {
         $this->onQueue('git-sync');
     }
 
     public function handle(GitIssueImportService $importer): void
     {
-        if ($this->connection->isRevoked() || $this->connection->sync_mode !== GitIssueConnection::SYNC_POLL) {
+        if ($this->gitConnection->isRevoked() || $this->gitConnection->sync_mode !== GitIssueConnection::SYNC_POLL) {
             return;
         }
 
         try {
-            match ($this->connection->provider) {
+            match ($this->gitConnection->provider) {
                 GitIssueConnection::PROVIDER_GITHUB => $this->syncGithub($importer),
                 GitIssueConnection::PROVIDER_GITLAB => $this->syncGitlab($importer),
                 default => null,
             };
 
-            $this->connection->update(['last_synced_at' => now()]);
+            $this->gitConnection->update(['last_synced_at' => now()]);
         } catch (Throwable $e) {
-            Log::error("SyncGitIssuesJob: failed for connection [{$this->connection->id}]: {$e->getMessage()}");
+            Log::error("SyncGitIssuesJob: failed for connection [{$this->gitConnection->id}]: {$e->getMessage()}");
         }
     }
 
     private function syncGithub(GitIssueImportService $importer): void
     {
-        $since = $this->connection->last_synced_at?->toIso8601String();
+        $since = $this->gitConnection->last_synced_at?->toIso8601String();
 
-        $response = Http::withToken($this->connection->access_token)
-            ->get("https://api.github.com/repos/{$this->connection->repository}/issues", array_filter([
+        $response = Http::withToken($this->gitConnection->access_token)
+            ->get("https://api.github.com/repos/{$this->gitConnection->repository}/issues", array_filter([
                 'state' => 'all',
                 'since' => $since,
             ]))
@@ -55,7 +55,7 @@ class SyncGitIssuesJob implements ShouldQueue
             }
 
             $importer->importIssue(
-                connection: $this->connection,
+                connection: $this->gitConnection,
                 externalIssueId: (string) $issue['number'],
                 title: $issue['title'],
                 body: $issue['body'],
@@ -70,13 +70,13 @@ class SyncGitIssuesJob implements ShouldQueue
 
     private function syncGithubComments(GitIssueImportService $importer, string $issueNumber): void
     {
-        $response = Http::withToken($this->connection->access_token)
-            ->get("https://api.github.com/repos/{$this->connection->repository}/issues/{$issueNumber}/comments")
+        $response = Http::withToken($this->gitConnection->access_token)
+            ->get("https://api.github.com/repos/{$this->gitConnection->repository}/issues/{$issueNumber}/comments")
             ->throw();
 
         foreach ($response->json() ?? [] as $comment) {
             $importer->importComment(
-                connection: $this->connection,
+                connection: $this->gitConnection,
                 externalIssueId: $issueNumber,
                 externalCommentId: (string) $comment['id'],
                 body: $comment['body'],
@@ -87,10 +87,10 @@ class SyncGitIssuesJob implements ShouldQueue
 
     private function syncGitlab(GitIssueImportService $importer): void
     {
-        $projectPath = urlencode($this->connection->repository);
-        $since = $this->connection->last_synced_at?->toIso8601String();
+        $projectPath = urlencode($this->gitConnection->repository);
+        $since = $this->gitConnection->last_synced_at?->toIso8601String();
 
-        $response = Http::withHeaders(['PRIVATE-TOKEN' => $this->connection->access_token])
+        $response = Http::withHeaders(['PRIVATE-TOKEN' => $this->gitConnection->access_token])
             ->get("https://gitlab.com/api/v4/projects/{$projectPath}/issues", array_filter([
                 'updated_after' => $since,
             ]))
@@ -98,7 +98,7 @@ class SyncGitIssuesJob implements ShouldQueue
 
         foreach ($response->json() ?? [] as $issue) {
             $importer->importIssue(
-                connection: $this->connection,
+                connection: $this->gitConnection,
                 externalIssueId: (string) $issue['iid'],
                 title: $issue['title'],
                 body: $issue['description'],
@@ -113,7 +113,7 @@ class SyncGitIssuesJob implements ShouldQueue
 
     private function syncGitlabComments(GitIssueImportService $importer, string $projectPath, string $issueIid): void
     {
-        $response = Http::withHeaders(['PRIVATE-TOKEN' => $this->connection->access_token])
+        $response = Http::withHeaders(['PRIVATE-TOKEN' => $this->gitConnection->access_token])
             ->get("https://gitlab.com/api/v4/projects/{$projectPath}/issues/{$issueIid}/notes")
             ->throw();
 
@@ -123,7 +123,7 @@ class SyncGitIssuesJob implements ShouldQueue
             }
 
             $importer->importComment(
-                connection: $this->connection,
+                connection: $this->gitConnection,
                 externalIssueId: $issueIid,
                 externalCommentId: (string) $note['id'],
                 body: $note['body'],
