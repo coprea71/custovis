@@ -18,7 +18,7 @@
                 <p class="text-sm text-amber-900">Version {{ $update['version'] }} ist verfügbar. <a href="{{ $update['url'] }}" target="_blank" rel="noopener" class="underline">Änderungen ansehen</a></p>
                 <p class="text-xs text-amber-800">Vorher ein Backup von Datenbank und Dateien anlegen. Das Update lädt das Release-Archiv von GitHub, prüft die Prüfsumme, überschreibt die Programmdateien (nicht <code>.env</code> und <code>storage/</code>) und führt danach die Migrationen aus.</p>
             </div>
-            <button type="button" wire:click="installUpdate" wire:loading.attr="disabled" wire:confirm="Version {{ $update['version'] }} jetzt installieren? Bitte vorher ein Backup anlegen." class="px-4 py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium disabled:opacity-50">
+            <button type="button" wire:click="installUpdate" wire:loading.attr="disabled" wire:confirm="Version {{ $update['version'] }} jetzt installieren? Bitte vorher ein Backup von Datenbank und Dateien anlegen und die Seite während des Updates nicht schließen." class="px-4 py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium disabled:opacity-50">
                 <span wire:loading.remove wire:target="installUpdate">Jetzt auf {{ $update['version'] }} aktualisieren</span>
                 <span wire:loading.inline-flex wire:target="installUpdate" class="items-center gap-2">
                     <svg class="size-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -47,7 +47,7 @@
             <ul class="text-xs font-mono text-slate-600 space-y-1">
                 @foreach ($pending as $migration)<li>{{ $migration }}</li>@endforeach
             </ul>
-            <button type="button" wire:click="migrate" wire:confirm="Ausstehende Migrationen jetzt ausführen?" class="px-4 py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium">{{ count($pending) }} Migration(en) ausführen</button>
+            <button type="button" wire:click="migrate" wire:loading.attr="disabled" wire:confirm="Ausstehende Migrationen jetzt ausführen? Bitte vorher ein Backup der Datenbank anlegen." class="px-4 py-2 bg-calm-600 hover:bg-calm-700 text-white rounded-xl text-sm font-medium disabled:opacity-50">{{ count($pending) }} Migration(en) ausführen</button>
         @endif
     </section>
 

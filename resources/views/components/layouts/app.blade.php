@@ -30,6 +30,7 @@
     <div class="fixed bottom-1 left-2 z-30 text-[10px] text-slate-400 pointer-events-none select-none" aria-label="Version">v{{ config('custovis.version') }}</div>
 
     @if ($scripts)
+        <x-confirm-dialog />
         @livewireScripts
     @endif
 </body>

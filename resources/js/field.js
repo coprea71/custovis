@@ -17,6 +17,7 @@ Alpine.data('fieldApp', () => ({
     syncing: false,
     lastSync: null,
     notices: [],
+    hint: '',
 
     async init() {
         this.queue = (await store.get('queue')) ?? [];
@@ -102,7 +103,10 @@ Alpine.data('fieldApp', () => ({
 
     sign(appointment, form, canvas) {
         const data = Object.fromEntries(new FormData(form));
-        if (!data.signer_name || canvas.dataset.empty !== 'false') return alert('Bitte Name und Unterschrift erfassen.');
+        if (!data.signer_name || canvas.dataset.empty !== 'false') {
+            this.hint = 'Bitte Name und Unterschrift erfassen.';
+            return;
+        }
         this.enqueue('signature', appointment.id, { signer_name: data.signer_name, png: canvas.toDataURL('image/png') });
         form.reset();
         clearPad(canvas);
@@ -111,7 +115,8 @@ Alpine.data('fieldApp', () => ({
     deliver(appointment, form, canvas) {
         const data = Object.fromEntries(new FormData(form));
         if (!data.delivery_note_number || !data.recipient_name || canvas.dataset.empty !== 'false') {
-            return alert('Lieferscheinnummer, Name des Empfängers und Unterschrift sind Pflicht.');
+            this.hint = 'Lieferscheinnummer, Name des Empfängers und Unterschrift sind Pflicht.';
+            return;
         }
         this.enqueue('delivery', appointment.id, { ...data, signature: canvas.toDataURL('image/png') });
         appointment.delivered = true;

@@ -106,5 +106,15 @@
                 </section>
             </main>
         </template>
+
+        <div x-show="hint" x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4" @click.self="hint = ''" @keydown.escape.window="hint = ''">
+            <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 space-y-4" role="alertdialog" aria-modal="true" aria-labelledby="field-hint-title" aria-describedby="field-hint-message">
+                <h2 id="field-hint-title" class="font-semibold text-slatecalm-900">Angaben fehlen</h2>
+                <p id="field-hint-message" class="text-sm text-slate-600" x-text="hint"></p>
+                <div class="flex justify-end">
+                    <button type="button" @click="hint = ''" class="text-sm px-4 py-2 rounded-xl bg-calm-600 hover:bg-calm-700 text-white font-medium">OK</button>
+                </div>
+            </div>
+        </div>
     </div>
 </x-layouts.app>
