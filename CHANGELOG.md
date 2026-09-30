@@ -8,6 +8,21 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-09-30
+
+### Hinzugefügt
+
+- Tickets beim Öffnen automatisch zuweisen: Ist die Option in den
+  Team-Einstellungen eingeschaltet, wird ein offenes, noch niemandem
+  zugewiesenes Ticket dem Teammitglied zugewiesen, das es öffnet. Bereits
+  zugewiesene und geschlossene Tickets bleiben unverändert. Nur Team-Admins
+  können die Option ändern.
+
+### Behoben
+
+- Die Aktionen der Einsatzkarten im Dispatcher-Board laufen in schmalen
+  Spalten nicht mehr über den Rand.
+
 ## [0.8.0] - 2026-09-29
 
 ### Hinzugefügt

@@ -89,6 +89,8 @@ thread. The workspace at `/agent` shows the ticket list and the ticket side by s
   customer – across all channels, case-insensitive, and retroactively when the
   customer is created or their address changes
 - change status, priority, team and assignee directly in the sidebar
+- optional per team (switched on by the team admin): unassigned tickets are assigned
+  automatically to the team member who opens them
 - emails flagged as important or urgent (X-Priority, Importance) set the ticket
   priority automatically; a colour bar shows it in the list, emergencies are framed
   in red and marked with a warning icon

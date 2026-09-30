@@ -89,6 +89,8 @@ nebeneinander:
   Kanäle, unabhängig von Groß-/Kleinschreibung, auch rückwirkend beim Anlegen des Kunden
   oder Ändern seiner Adresse
 - Status, Priorität, Team und Bearbeiter direkt in der Seitenleiste ändern
+- optional je Team (vom Team-Admin eingeschaltet): unzugewiesene Tickets gehen beim
+  Öffnen automatisch an das Teammitglied, das sie ansieht
 - als wichtig oder dringend markierte E-Mails (X-Priority, Importance) setzen die
   Ticket-Priorität automatisch; ein Farbstreifen zeigt sie in der Liste, Notfälle sind
   rot umrahmt und mit Warnsymbol markiert
