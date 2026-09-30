@@ -8,6 +8,16 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-09-30
+
+### Geändert
+
+- Sicherheitsabfragen (z. B. Löschen, Stornieren, Update installieren,
+  Datenbank-Migrationen ausführen) erscheinen als Dialog im Seitendesign
+  statt als Browser-Popup.
+- Die Techniker-App meldet fehlende Angaben bei Unterschrift und Lieferschein
+  per Hinweis-Dialog statt Browser-Popup.
+
 ## [0.9.0] - 2026-09-30
 
 ### Hinzugefügt
