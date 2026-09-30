@@ -48,6 +48,8 @@ Spam liegt 30 Tage im Spam-Ordner der Administration (siehe Hilfethema „Spam-O
 2. Stellen Sie im Abschnitt **Bearbeitung** Status, Priorität, Team und Bearbeiter ein.
 3. Klicken Sie auf **Übernehmen**.
 
+Hat Ihr Team-Admin unter **Einstellungen** die Option **Tickets beim Öffnen automatisch zuweisen** eingeschaltet, werden Sie beim Öffnen eines offenen, noch niemandem zugewiesenen Tickets automatisch als Bearbeiter eingetragen. Bereits zugewiesene und geschlossene Tickets bleiben unverändert.
+
 Tipp: Setzen Sie den Status auf **Wartend**, wenn Sie auf eine Rückmeldung des Kunden warten, und auf **Geschlossen**, wenn das Anliegen erledigt ist.
 
 ## Tags vergeben

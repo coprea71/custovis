@@ -40,9 +40,23 @@ class TeamSettings extends Component
         $this->team = $team;
     }
 
+    /**
+     * Team-wide workflow switch; deliberately limited to team admins, not to
+     * holders of team.manage.
+     */
+    public function toggleAutoAssign(): void
+    {
+        abort_unless(Auth::user()->isTeamAdminOf($this->team), 403);
+
+        $this->team->forceFill(['auto_assign_on_view' => ! $this->team->auto_assign_on_view])->save();
+    }
+
     public function render()
     {
-        return view('livewire.agent.team.team-settings', ['pages' => $this->pages($this->team)]);
+        return view('livewire.agent.team.team-settings', [
+            'pages' => $this->pages($this->team),
+            'isTeamAdmin' => Auth::user()->isTeamAdminOf($this->team),
+        ]);
     }
 
     /**

@@ -407,6 +407,27 @@ class TicketWorkspace extends Component
             ));
     }
 
+    /**
+     * Teams can opt in (team admin setting) to hand an unassigned ticket to
+     * whoever opens it first. Only active team members qualify, matching the
+     * assignee rule of TicketPropertiesPanel.
+     */
+    private function autoAssign(Ticket $ticket): void
+    {
+        $team = $ticket->team;
+
+        if ($ticket->assigned_to !== null || $ticket->status === 'closed' || ! $team?->auto_assign_on_view) {
+            return;
+        }
+
+        if (! $team->users()->whereKey(auth()->id())->where('active', true)->exists()) {
+            return;
+        }
+
+        $ticket->update(['assigned_to' => auth()->id()]);
+        $ticket->setRelation('assignee', auth()->user());
+    }
+
     public function render()
     {
         $ticket = $this->selectedTicket();
@@ -414,6 +435,7 @@ class TicketWorkspace extends Component
         // Before the list query, so the open ticket is not flagged as unread.
         if ($ticket) {
             TicketReadState::markRead(auth()->user(), $ticket);
+            $this->autoAssign($ticket);
         }
 
         $tickets = $this->filteredTickets()
