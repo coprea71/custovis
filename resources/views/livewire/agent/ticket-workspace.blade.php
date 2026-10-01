@@ -13,7 +13,7 @@
                 class="w-full pl-3 pr-4 py-1.5 bg-white border border-slatecalm-200 text-slate-700 text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-calm-400 transition placeholder-slate-400"
             >
 
-            <div class="flex items-center space-x-2 text-xs overflow-x-auto">
+            <div class="flex flex-wrap items-center gap-1.5 text-xs">
                 @foreach (['all' => 'Alle', 'mine' => 'Mir zugewiesen', 'unresolved' => 'Unerledigt', ...\App\Models\Ticket::STATUS_LABELS] as $value => $label)
                     <button
                         type="button"
@@ -24,13 +24,13 @@
             </div>
 
             @if ($filterTeam)
-                <div class="flex items-center gap-2 text-xs">
+                <div class="flex flex-wrap items-center gap-2 text-xs">
                     <span class="px-3 py-1 rounded-lg bg-calm-100 text-calm-800 font-medium">Team: {{ $filterTeam->name }}</span>
                     <button type="button" wire:click="clearTeamFilter" class="text-calm-700 hover:underline font-medium">Alle Teams anzeigen</button>
                 </div>
             @endif
 
-            <div class="flex items-center justify-between gap-2 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
                 <button
                     type="button"
                     wire:click="toggleUnreadOnly"
@@ -42,7 +42,7 @@
                 @endif
             </div>
 
-            <div class="flex items-center space-x-2 text-xs">
+            <div class="flex flex-wrap items-center gap-1.5 text-xs">
                 <span class="text-slate-500">Sortieren:</span>
                 @foreach (['priority' => 'Prio', 'created_at' => 'Datum', 'id' => 'ID'] as $value => $label)
                     <button
