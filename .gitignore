@@ -32,3 +32,6 @@ Thumbs.db
 
 # Landingpage: Screenshots kopiert der Pages-Workflow aus .github/screenshots
 /site/assets/screenshots/
+
+# Lokales Arbeitsjournal der Claude-Sessions
+/.task-journal.md
