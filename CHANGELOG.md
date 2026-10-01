@@ -8,6 +8,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.9.2] - 2026-10-01
+
+### Behoben
+
+- Die Filter- und Sortier-Schaltflächen der Ticketliste brechen bei schmaler
+  Spalte in die nächste Zeile um, statt horizontal zu scrollen.
+
 ## [0.9.1] - 2026-09-30
 
 ### Geändert
