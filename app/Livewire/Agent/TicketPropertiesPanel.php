@@ -34,6 +34,16 @@ class TicketPropertiesPanel extends Component
         $this->fill($ticket->only(['status', 'priority', 'assigned_to', 'team_id']));
     }
 
+    public function updated(string $property): void
+    {
+        // A team switch would otherwise fail validation whenever the current assignee is not a member of the new team.
+        if ($property === 'team_id' && ! in_array($this->assigned_to, $this->assignableUserIds((int) $this->team_id), true)) {
+            $this->assigned_to = null;
+        }
+
+        $this->save();
+    }
+
     public function save(): void
     {
         $ticket = $this->ticket();

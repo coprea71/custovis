@@ -55,6 +55,28 @@ class TicketHandlingTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['action' => 'ticket.updated', 'user_id' => $this->agent->id]);
     }
 
+    public function test_changes_are_saved_immediately_without_submit(): void
+    {
+        $ticket = $this->ticket();
+
+        Livewire::actingAs($this->agent)->test(TicketPropertiesPanel::class, ['ticketId' => $ticket->id])
+            ->set('priority', 'urgent')->assertHasNoErrors()->assertDispatched('ticket-updated');
+
+        $this->assertSame('urgent', $ticket->fresh()->priority);
+    }
+
+    public function test_team_switch_clears_assignee_outside_new_team(): void
+    {
+        $ticket = $this->ticket();
+        $ticket->update(['assigned_to' => $this->colleague->id]);
+        $this->agent->teams()->attach($this->ops);
+
+        Livewire::actingAs($this->agent)->test(TicketPropertiesPanel::class, ['ticketId' => $ticket->id])
+            ->set('team_id', $this->ops->id)->assertHasNoErrors()->assertSet('assigned_to', null);
+
+        $this->assertSame([$this->ops->id, null], [$ticket->fresh()->team_id, $ticket->fresh()->assigned_to]);
+    }
+
     public function test_agent_reopening_closed_ticket_records_internal_note(): void
     {
         $this->freezeTime();
