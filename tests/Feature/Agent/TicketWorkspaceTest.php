@@ -292,6 +292,18 @@ class TicketWorkspaceTest extends TestCase
             ->assertSet('ticketId', null);
     }
 
+    public function test_selecting_ticket_focuses_reply_field(): void
+    {
+        $user = User::factory()->create();
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class)
+            ->call('selectTicket', $ticket->id)
+            ->assertDispatched('focus-reply')
+            ->assertSeeHtml('data-reply-body');
+    }
+
     public function test_message_history_shows_newest_first_by_default_and_can_be_toggled(): void
     {
         $user = User::factory()->create();

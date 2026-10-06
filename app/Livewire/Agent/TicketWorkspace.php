@@ -146,6 +146,7 @@ class TicketWorkspace extends Component
         $this->replyBody = '';
         $this->replyVisibility = TicketMessage::VISIBILITY_PUBLIC;
         $this->rememberReadPosition();
+        $this->dispatch('focus-reply');
     }
 
     private function rememberReadPosition(): void

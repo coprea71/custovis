@@ -1,5 +1,6 @@
 {{-- Polling instead of Reverb: web-cron-only hosts cannot run a websocket server. --}}
-<div class="flex flex-1 h-full overflow-hidden" wire:poll.30s>
+<div class="flex flex-1 h-full overflow-hidden" wire:poll.30s
+    x-data x-on:focus-reply.window="$nextTick(() => $el.querySelector('[data-reply-body]')?.focus())">
 
     {{-- Ticket list (master) --}}
     {{-- Below md only one pane fits: the list hides while a ticket is open. --}}
@@ -238,6 +239,7 @@
                         @else
                             <textarea
                                 wire:model="replyBody"
+                                data-reply-body
                                 rows="3"
                                 placeholder="Antwort verfassen..."
                                 class="w-full border border-slatecalm-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-calm-400"
