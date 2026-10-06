@@ -8,6 +8,15 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.9.3] - 2026-10-06
+
+### Geändert
+
+- Beim Öffnen eines Tickets steht der Cursor direkt im Antwortfeld.
+- Status, Priorität, Team und Bearbeiter in der Ticket-Seitenleiste werden
+  sofort gespeichert; der Button „Übernehmen“ entfällt. Beim Teamwechsel wird
+  ein Bearbeiter, der nicht zum neuen Team gehört, entfernt.
+
 ## [0.9.2] - 2026-10-01
 
 ### Behoben

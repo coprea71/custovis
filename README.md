@@ -88,7 +88,7 @@ nebeneinander:
 - Tickets derselben E-Mail-Adresse landen automatisch beim selben Kunden – über alle
   Kanäle, unabhängig von Groß-/Kleinschreibung, auch rückwirkend beim Anlegen des Kunden
   oder Ändern seiner Adresse
-- Status, Priorität, Team und Bearbeiter direkt in der Seitenleiste ändern
+- Status, Priorität, Team und Bearbeiter direkt in der Seitenleiste ändern (wird sofort gespeichert)
 - optional je Team (vom Team-Admin eingeschaltet): unzugewiesene Tickets gehen beim
   Öffnen automatisch an das Teammitglied, das sie ansieht
 - als wichtig oder dringend markierte E-Mails (X-Priority, Importance) setzen die
