@@ -17,6 +17,7 @@
     </header>
 
     <x-update-notice />
+    <x-backup-notice />
 
     <main class="p-4 md:p-6 max-w-5xl mx-auto">
         {{ $slot }}

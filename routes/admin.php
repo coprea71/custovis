@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\BackupRestoreController;
+use App\Livewire\Admin\BackupManager;
 use App\Livewire\Admin\ChecklistTemplateManager;
 use App\Livewire\Admin\CmdbManager;
 use App\Livewire\Admin\ComplianceCenter;
@@ -42,6 +44,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/invoices/settings', InvoiceSettingsManager::class)->middleware('module:invoicing')->name('invoices.settings');
     Route::get('/compliance', ComplianceCenter::class)->name('compliance');
     Route::get('/system/migrate', SystemMaintenance::class)->name('system.migrate');
+    Route::get('/backup', BackupManager::class)->name('backup');
+    Route::post('/backup/restore', BackupRestoreController::class)->name('backup.restore');
     Route::get('/modules', ModuleManager::class)->name('modules');
     Route::get('/settings/theme', ThemeManager::class)->name('settings.theme');
 });

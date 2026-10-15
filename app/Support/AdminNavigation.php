@@ -32,6 +32,7 @@ class AdminNavigation
         'admin.modules' => ['Module', 'modules.manage'],
         'admin.settings.theme' => ['Theme', 'system.settings.manage'],
         'admin.system.migrate' => ['System', 'system.maintain'],
+        'admin.backup' => ['Datensicherung', 'system.maintain'],
     ];
 
     /**

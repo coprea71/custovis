@@ -3,6 +3,9 @@
         <div class="w-10 h-10 rounded-xl bg-calm-600 flex items-center justify-center text-white font-bold mb-4">C</div>
         <h1 class="text-lg font-semibold text-slatecalm-900 mb-6">{{ config('app.name') }}</h1>
 
+        @if (session('backup-restored'))
+            <div class="mb-4 text-sm text-calm-700" role="status">Die Datensicherung wurde zurückgespielt. Bitte neu anmelden.</div>
+        @endif
         @if ($errors->any())
             <div class="mb-4 text-sm text-red-600">
                 {{ $errors->first() }}

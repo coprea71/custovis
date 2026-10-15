@@ -4,6 +4,7 @@ use App\Jobs\FetchMailboxJob;
 use App\Jobs\SyncGitIssuesJob;
 use App\Models\GitIssueConnection;
 use App\Models\Mailbox;
+use App\Services\Backup\ScheduledBackup;
 use App\Services\Update\UpdateChecker;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -18,6 +19,9 @@ Schedule::call(function () {
         fn (Mailbox $mailbox) => FetchMailboxJob::dispatch($mailbox)
     );
 })->everyMinute()->name('mailboxes:fetch');
+
+// Every minute because a web cron may call at any minute; runIfDue() applies the daily interval.
+Schedule::call(fn () => app(ScheduledBackup::class)->runIfDue())->everyMinute()->name('backup:scheduled');
 
 Schedule::command('sla:check-breaches')->everyFiveMinutes()->name('sla:check-breaches');
 

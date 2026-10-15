@@ -59,6 +59,7 @@ class HelpTopics
         'module' => ['Module', 'Funktionsbereiche ein- und ausschalten und auf Rollen/Nutzer beschränken', 'admin', 'modules.manage'],
         'theme' => ['Theme', 'Erscheinungsbild der gesamten Installation wählen', 'admin', 'system.settings.manage'],
         'system' => ['System-Updates & Web-Cron', 'Datenbank-Updates ohne Shell ausführen und den Web-Cron einrichten', 'admin', 'system.maintain'],
+        'datensicherung' => ['Datensicherung', 'Datenbank verschlüsselt sichern, automatisch sichern lassen und zurückspielen', 'admin', 'system.maintain'],
         'management-dashboard' => ['Management-Dashboard', 'Kennzahlen über alle Teams und Warnungen zum Mailabruf', 'admin', 'dashboard.management.view', 'reporting'],
     ];
 
