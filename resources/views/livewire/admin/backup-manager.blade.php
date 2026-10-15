@@ -12,10 +12,10 @@
         </div>
 
         <p class="text-sm {{ $overdue ? 'text-amber-800' : 'text-calm-700' }}">
-            @if ($lastDownloadedAt)
-                Letzte Sicherung heruntergeladen am {{ $lastDownloadedAt->timezone(config('app.timezone'))->format('d.m.Y H:i') }} Uhr.
+            @if ($lastBackupAt)
+                Letzte Sicherung am {{ $lastBackupAt->timezone(config('app.timezone'))->format('d.m.Y H:i') }} Uhr.
             @else
-                Es wurde noch keine Sicherung heruntergeladen.
+                Es wurde noch keine Sicherung erstellt.
             @endif
             @if ($overdue) Bitte alle {{ \App\Services\Backup\BackupService::REMINDER_DAYS }} Tage sichern. @endif
         </p>

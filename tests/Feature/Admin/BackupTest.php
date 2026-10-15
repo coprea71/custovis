@@ -69,17 +69,20 @@ class BackupTest extends TestCase
         $this->assertDatabaseHas('teams', ['name' => 'Bleibt']);
     }
 
-    public function test_download_sets_timestamp_and_hides_reminder(): void
+    public function test_reminder_disappears_after_backup_and_returns_after_interval_even_when_deleted(): void
     {
-        $this->createBackup();
         $this->actingAs($this->admin)->get(route('admin.users'))->assertSee('Datensicherung fällig');
 
-        Livewire::actingAs($this->admin)->test(BackupManager::class)->call('downloadArchive')->assertFileDownloaded();
+        $this->createBackup();
+        Livewire::actingAs($this->admin)->test(BackupManager::class)->call('downloadArchive')->assertFileDownloaded()
+            ->call('deleteStored');
 
-        $this->assertFalse(app(BackupService::class)->isOverdue());
+        $this->assertNull(app(BackupService::class)->latest());
         $this->actingAs($this->admin)->get(route('admin.users'))->assertDontSee('Datensicherung fällig');
 
-        $this->travel(8)->days();
+        $this->travel(6)->days();
+        $this->assertFalse(app(BackupService::class)->isOverdue());
+        $this->travel(2)->days();
         $this->assertTrue(app(BackupService::class)->isOverdue());
     }
 

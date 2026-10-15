@@ -11,7 +11,7 @@ Außerhalb von Custovis öffnen Sie die ZIP-Datei z. B. mit 7-Zip; der Windows-E
 
 ## Erinnerung
 
-Liegt die letzte heruntergeladene oder automatische Sicherung mehr als 7 Tage zurück, sehen Administratoren oben auf jeder Seite den Hinweis **Datensicherung fällig**.
+Liegt die letzte Sicherung (erstellt, heruntergeladen oder automatisch) mehr als 7 Tage zurück, sehen Administratoren oben auf jeder Seite den Hinweis **Datensicherung fällig**. Das Löschen einer Sicherung vom Server setzt die 7 Tage nicht zurück.
 
 ## Automatische Sicherung
 

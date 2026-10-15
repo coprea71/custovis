@@ -99,6 +99,7 @@ class BackupManager extends Component
         set_time_limit(600);
 
         $name = $backups->create();
+        $backups->markBackedUp();
         AuditLog::record('system.backup_created', Auth::user(), null, null, ['name' => $name]);
         $this->output = 'Sicherung erstellt. Bitte ZIP-Datei und Passwort-Datei herunterladen und getrennt aufbewahren.';
     }
@@ -106,7 +107,7 @@ class BackupManager extends Component
     public function downloadArchive(BackupService $backups): BinaryFileResponse
     {
         $backup = $this->latestOrFail($backups);
-        $backups->markDownloaded();
+        $backups->markBackedUp();
         AuditLog::record('system.backup_downloaded', Auth::user(), null, null, ['name' => $backup['name']]);
 
         return response()->download($backup['archive']);
@@ -130,7 +131,7 @@ class BackupManager extends Component
     {
         return view('livewire.admin.backup-manager', [
             'backup' => $backups->latest(),
-            'lastDownloadedAt' => $backups->lastDownloadedAt(),
+            'lastBackupAt' => $backups->lastBackupAt(),
             'overdue' => $backups->isOverdue(),
             'scheduledLastRunAt' => $backups->timestamp(BackupService::LAST_SCHEDULED_KEY),
             'scheduledError' => Setting::read(ScheduledBackup::ERROR_KEY),

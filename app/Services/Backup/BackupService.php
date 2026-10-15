@@ -15,7 +15,8 @@ use ZipArchive;
  */
 class BackupService
 {
-    public const LAST_DOWNLOAD_KEY = 'backup.last_downloaded_at';
+    // Key name predates counting created backups; kept so existing timestamps stay valid.
+    public const LAST_BACKUP_KEY = 'backup.last_downloaded_at';
 
     public const LAST_SCHEDULED_KEY = 'backup.scheduled.last_run_at';
 
@@ -79,14 +80,14 @@ class BackupService
         File::deleteDirectory($this->directory());
     }
 
-    public function markDownloaded(): void
+    public function markBackedUp(): void
     {
-        Setting::write(self::LAST_DOWNLOAD_KEY, now()->toIso8601String());
+        Setting::write(self::LAST_BACKUP_KEY, now()->toIso8601String());
     }
 
-    public function lastDownloadedAt(): ?Carbon
+    public function lastBackupAt(): ?Carbon
     {
-        return $this->timestamp(self::LAST_DOWNLOAD_KEY);
+        return $this->timestamp(self::LAST_BACKUP_KEY);
     }
 
     public function timestamp(string $key): ?Carbon
@@ -97,11 +98,12 @@ class BackupService
     }
 
     /**
-     * A download or a successful scheduled backup both count as "gesichert".
+     * A created, downloaded or scheduled backup counts as "gesichert"; deleting
+     * the file from the server afterwards does not reset the reminder interval.
      */
     public function isOverdue(): bool
     {
-        $last = collect([$this->lastDownloadedAt(), $this->timestamp(self::LAST_SCHEDULED_KEY)])->filter()->max();
+        $last = collect([$this->lastBackupAt(), $this->timestamp(self::LAST_SCHEDULED_KEY)])->filter()->max();
 
         return $last === null || $last->lt(now()->subDays(self::REMINDER_DAYS));
     }
