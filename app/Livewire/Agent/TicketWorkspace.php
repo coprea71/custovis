@@ -416,12 +416,17 @@ class TicketWorkspace extends Component
     /**
      * @return Builder<Ticket>
      */
-    private function filteredTickets(): Builder
+    /**
+     * @param  string|null  $assignee  overrides the assignee filter, for the counts on its buttons
+     */
+    private function filteredTickets(?string $assignee = null): Builder
     {
+        $assignee ??= $this->assigneeFilter;
+
         return Ticket::query()
             ->visibleTo(auth()->user())
             ->when($this->teamFilter !== null, fn ($query) => $query->where('team_id', $this->teamFilter))
-            ->when($this->assigneeFilter === 'mine', fn ($query) => $query->where('assigned_to', auth()->id()))
+            ->when($assignee === 'mine', fn ($query) => $query->where('assigned_to', auth()->id()))
             ->when($this->statusFilter === 'unresolved', fn ($query) => $query->where('status', '!=', 'closed'))
             ->when(in_array($this->statusFilter, Ticket::STATUSES, true), fn ($query) => $query->where('status', $this->statusFilter))
             ->when($this->unreadOnly, fn ($query) => $query->unreadFor(auth()->user()))
@@ -472,6 +477,7 @@ class TicketWorkspace extends Component
             'ticket' => $ticket,
             'filterTeam' => $this->teamFilter !== null ? Team::query()->find($this->teamFilter) : null,
             'unreadCount' => $this->filteredTickets()->unreadFor(auth()->user())->count(),
+            'assigneeCounts' => array_map(fn (string $assignee) => $this->filteredTickets($assignee)->count(), array_combine(self::ASSIGNEE_FILTERS, self::ASSIGNEE_FILTERS)),
             'cannedResponses' => $ticket
                 ? CannedResponse::query()->where('team_id', $ticket->team_id)->orderBy('title')->get()
                 : collect(),

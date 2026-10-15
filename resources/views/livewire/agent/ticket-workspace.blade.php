@@ -21,7 +21,7 @@
                         wire:click="setAssigneeFilter('{{ $value }}')"
                         aria-pressed="{{ $assigneeFilter === $value ? 'true' : 'false' }}"
                         class="px-3 py-1 rounded-lg font-medium shrink-0 transition {{ $assigneeFilter === $value ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200' }}"
-                    >{{ $label }}</button>
+                    >{{ $label }} ({{ $assigneeCounts[$value] }})</button>
                 @endforeach
             </div>
 

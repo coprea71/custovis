@@ -153,7 +153,9 @@ class TicketHandlingTest extends TestCase
 
         Livewire::actingAs($this->agent)->test(TicketWorkspace::class)
             ->call('setAssigneeFilter', 'mine')->call('setStatusFilter', 'in_progress')
-            ->assertSee('Meins in Arbeit')->assertDontSee('Meins offen')->assertDontSee('Fremd in Arbeit');
+            ->assertSee('Meins in Arbeit')->assertDontSee('Meins offen')->assertDontSee('Fremd in Arbeit')
+            ->assertViewHas('assigneeCounts', ['all' => 2, 'mine' => 1])
+            ->assertSeeHtml('Alle (2)')->assertSeeHtml('Mir zugewiesen (1)');
 
         $this->assertSame(['mine', 'in_progress'], [$this->agent->fresh()->ticket_filters['assignee'], $this->agent->fresh()->ticket_filters['status']]);
     }
