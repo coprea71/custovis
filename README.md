@@ -244,6 +244,8 @@ php artisan custovis:install  # optional: --demo
   Ohne dauerhaften Prozess geht auch ein Cronjob mit `queue:work --stop-when-empty`.
 - **Nur Web-Cron möglich (kein Shell-Cronjob):** Unter **Administration → System → Web-Cron**
   eine geheime URL erzeugen und minütlich aufrufen lassen. Sie ersetzt Cronjob und Queue-Worker.
+  Läuft der Cron seltener, ruft das Öffnen der Ticketliste Postfächer ab, die seit mehr als
+  5 Minuten nicht abgerufen wurden (höchstens alle 5 Minuten je Postfach).
 - **Zeitzone:** `APP_TIMEZONE` in der `.env` (Standard `Europe/Berlin`). Geschäftszeiten,
   SLA-Fristen und Einsatztermine gelten in dieser Zeitzone.
 - **Zwei-Faktor-Authentifizierung** ist für Agenten und Admins in Produktion Pflicht.

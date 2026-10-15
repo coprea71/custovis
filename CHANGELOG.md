@@ -8,6 +8,14 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.9.7] - 2026-10-15
+
+### Hinzugefügt
+
+- Wurde ein Postfach länger als 5 Minuten nicht abgerufen (etwa weil der Cron
+  ausbleibt), ruft das Öffnen der Ticketliste es im Hintergrund ab – höchstens
+  alle 5 Minuten je Postfach.
+
 ## [0.9.6] - 2026-10-15
 
 ### Hinzugefügt
