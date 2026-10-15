@@ -8,6 +8,19 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.9.4] - 2026-10-15
+
+### Hinzugefügt
+
+- Neuer Ticketstatus „In Bearbeitung“ zwischen „Offen“ und „Wartend“, auch als
+  Filter in der Ticketliste. WhatsApp-Nachrichten werden solchen Tickets weiter
+  zugeordnet.
+
+### Geändert
+
+- Kontaktdaten des Kunden werden im Ticket in einem Dialog mit „Speichern“ und
+  „Abbrechen“ bearbeitet statt direkt in der Seitenleiste.
+
 ## [0.9.3] - 2026-10-06
 
 ### Geändert

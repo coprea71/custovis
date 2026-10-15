@@ -84,11 +84,12 @@ nebeneinander:
 - E-Mail-Layout je Team: Team-Admins legen Farbe, Schrift, Logo, Signatur mit
   Platzhaltern und Fußzeile fest, mit Live-Vorschau; Versand mit Nur-Text-Fassung
 - Kontaktdaten und interne Notizen des Kunden per Info-Knopf in der Seitenleiste;
-  fehlende Angaben lassen sich dort direkt hinterlegen
+  fehlende Angaben lassen sich dort in einem Dialog hinterlegen
 - Tickets derselben E-Mail-Adresse landen automatisch beim selben Kunden – über alle
   Kanäle, unabhängig von Groß-/Kleinschreibung, auch rückwirkend beim Anlegen des Kunden
   oder Ändern seiner Adresse
-- Status, Priorität, Team und Bearbeiter direkt in der Seitenleiste ändern (wird sofort gespeichert)
+- Status (Offen, In Bearbeitung, Wartend, Geschlossen), Priorität, Team und Bearbeiter
+  direkt in der Seitenleiste ändern (wird sofort gespeichert)
 - optional je Team (vom Team-Admin eingeschaltet): unzugewiesene Tickets gehen beim
   Öffnen automatisch an das Teammitglied, das sie ansieht
 - als wichtig oder dringend markierte E-Mails (X-Priority, Importance) setzen die
