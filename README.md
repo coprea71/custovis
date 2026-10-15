@@ -52,7 +52,7 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 | **Außendienst** | Technikerverwaltung (Skills, Schichten, Abwesenheiten), Dispatcher-Board mit Drag & Drop und Zuweisungsvorschlag, Routing über selbst gehostetes OSRM/Nominatim, Offline-PWA mit Checklisten, Unterschrift und Lieferschein-PDF |
 | **ERP-Anbindung** | Kundendaten aus Odoo oder Shopware 6 live in der Ticket-Sidebar, ohne Datenimport |
 | **Zeiterfassung & Rechnungen** | Zeit am Ticket buchen (Timer), Einzel- und Sammelrechnungen, E-Rechnung als ZUGFeRD-PDF und XRechnung-XML, GoBD-konforme Nummern und Storno |
-| **Administration** | Nutzer, Teams, Rollen und Berechtigungen, Kundenverwaltung, Modulverwaltung je Rolle/Nutzer, Themes, Schema-Updates ohne Shell |
+| **Administration** | Nutzer, Teams, Rollen und Berechtigungen, Kundenverwaltung, Modulverwaltung je Rolle/Nutzer, Themes, Schema-Updates ohne Shell, verschlüsselte Datensicherung (Download, Rücksicherung, täglich per Cron) |
 | **Compliance** | 2FA-Pflicht, Passkeys, Audit-Log, verschlüsselte Zugangsdaten, DSGVO-Auskunft und -Anonymisierung, Aufbewahrungsfristen |
 
 ## Screenshots

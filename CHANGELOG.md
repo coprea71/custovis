@@ -8,6 +8,18 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-10-15
+
+### Hinzugefügt
+
+- Neue Seite **Administration → Datensicherung**: Datenbank als AES-256-
+  verschlüsselte ZIP-Datei mit separater Passwort-Datei herunterladen und aus
+  beiden Dateien wieder zurückspielen (ohne Shell, ohne mysqldump).
+- Zeitstempel der letzten Sicherung; Administratoren sehen oben auf jeder Seite
+  einen Hinweis, wenn die letzte Sicherung älter als 7 Tage ist oder fehlt.
+- Optionale tägliche Sicherung per Cron oder Web-Cron in ein einstellbares
+  Server-Verzeichnis, ältere Sicherungen werden nach einstellbarer Anzahl gelöscht.
+
 ## [0.9.7] - 2026-10-15
 
 ### Hinzugefügt
