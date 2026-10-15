@@ -15,10 +15,22 @@
             >
 
             <div class="flex flex-wrap items-center gap-1.5 text-xs">
-                @foreach (['all' => 'Alle', 'mine' => 'Mir zugewiesen', 'unresolved' => 'Unerledigt', ...\App\Models\Ticket::STATUS_LABELS] as $value => $label)
+                @foreach (['all' => 'Alle', 'mine' => 'Mir zugewiesen'] as $value => $label)
+                    <button
+                        type="button"
+                        wire:click="setAssigneeFilter('{{ $value }}')"
+                        aria-pressed="{{ $assigneeFilter === $value ? 'true' : 'false' }}"
+                        class="px-3 py-1 rounded-lg font-medium shrink-0 transition {{ $assigneeFilter === $value ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200' }}"
+                    >{{ $label }}</button>
+                @endforeach
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                @foreach (['unresolved' => 'Unerledigt', ...\App\Models\Ticket::STATUS_LABELS] as $value => $label)
                     <button
                         type="button"
                         wire:click="setStatusFilter('{{ $value }}')"
+                        aria-pressed="{{ $statusFilter === $value ? 'true' : 'false' }}"
                         class="px-3 py-1 rounded-lg font-medium shrink-0 transition {{ $statusFilter === $value ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200' }}"
                     >{{ $label }}</button>
                 @endforeach

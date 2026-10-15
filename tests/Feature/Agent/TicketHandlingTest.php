@@ -141,8 +141,21 @@ class TicketHandlingTest extends TestCase
         $this->ticket(['subject' => 'Fremd zugewiesen', 'assigned_to' => $this->colleague->id]);
 
         Livewire::actingAs($this->agent)->test(TicketWorkspace::class)
-            ->call('setStatusFilter', 'mine')
+            ->call('setAssigneeFilter', 'mine')
             ->assertSee('Meins')->assertDontSee('Fremd zugewiesen');
+    }
+
+    public function test_mine_filter_combines_with_status_filter(): void
+    {
+        $this->ticket(['subject' => 'Meins offen', 'assigned_to' => $this->agent->id]);
+        $this->ticket(['subject' => 'Meins in Arbeit', 'assigned_to' => $this->agent->id, 'status' => 'in_progress']);
+        $this->ticket(['subject' => 'Fremd in Arbeit', 'assigned_to' => $this->colleague->id, 'status' => 'in_progress']);
+
+        Livewire::actingAs($this->agent)->test(TicketWorkspace::class)
+            ->call('setAssigneeFilter', 'mine')->call('setStatusFilter', 'in_progress')
+            ->assertSee('Meins in Arbeit')->assertDontSee('Meins offen')->assertDontSee('Fremd in Arbeit');
+
+        $this->assertSame(['mine', 'in_progress'], [$this->agent->fresh()->ticket_filters['assignee'], $this->agent->fresh()->ticket_filters['status']]);
     }
 
     public function test_team_admin_manages_canned_responses_members_only_read(): void

@@ -32,11 +32,15 @@ class TicketWorkspace extends Component
     public const SORT_FIELDS = ['id', 'created_at', 'priority'];
 
     /** "unresolved" = everything but closed, matching the dashboards' "Offene Tickets" count. */
-    public const LIST_FILTERS = ['all', 'mine', 'unresolved', ...Ticket::STATUSES];
+    public const LIST_FILTERS = ['unresolved', ...Ticket::STATUSES];
+
+    public const ASSIGNEE_FILTERS = ['all', 'mine'];
 
     public ?int $ticketId = null;
 
     public string $statusFilter = 'open';
+
+    public string $assigneeFilter = 'all';
 
     /** Set by dashboard links (?team=ID); locked so it is only ever validated in mount. */
     #[Locked]
@@ -121,6 +125,9 @@ class TicketWorkspace extends Component
         if (in_array($filters['status'] ?? null, self::LIST_FILTERS, true)) {
             $this->statusFilter = $filters['status'];
         }
+        if (in_array($filters['assignee'] ?? null, self::ASSIGNEE_FILTERS, true)) {
+            $this->assigneeFilter = $filters['assignee'];
+        }
         if (in_array($filters['sort_field'] ?? null, self::SORT_FIELDS, true)) {
             $this->sortField = $filters['sort_field'];
         }
@@ -134,6 +141,7 @@ class TicketWorkspace extends Component
     {
         auth()->user()->forceFill(['ticket_filters' => [
             'status' => $this->statusFilter,
+            'assignee' => $this->assigneeFilter,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
             'unread_only' => $this->unreadOnly,
@@ -216,6 +224,19 @@ class TicketWorkspace extends Component
         abort_unless(in_array($status, self::LIST_FILTERS, true), 422);
 
         $this->statusFilter = $status;
+        $this->applyFilterChange();
+    }
+
+    public function setAssigneeFilter(string $assignee): void
+    {
+        abort_unless(in_array($assignee, self::ASSIGNEE_FILTERS, true), 422);
+
+        $this->assigneeFilter = $assignee;
+        $this->applyFilterChange();
+    }
+
+    private function applyFilterChange(): void
+    {
         $this->saveFilters();
         $this->resetPage();
         $this->deselectTicketHiddenByFilter();
@@ -398,7 +419,7 @@ class TicketWorkspace extends Component
         return Ticket::query()
             ->visibleTo(auth()->user())
             ->when($this->teamFilter !== null, fn ($query) => $query->where('team_id', $this->teamFilter))
-            ->when($this->statusFilter === 'mine', fn ($query) => $query->where('assigned_to', auth()->id())->where('status', '!=', 'closed'))
+            ->when($this->assigneeFilter === 'mine', fn ($query) => $query->where('assigned_to', auth()->id()))
             ->when($this->statusFilter === 'unresolved', fn ($query) => $query->where('status', '!=', 'closed'))
             ->when(in_array($this->statusFilter, Ticket::STATUSES, true), fn ($query) => $query->where('status', $this->statusFilter))
             ->when($this->unreadOnly, fn ($query) => $query->unreadFor(auth()->user()))
