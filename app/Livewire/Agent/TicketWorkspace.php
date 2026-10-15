@@ -13,6 +13,7 @@ use App\Models\TicketMessage;
 use App\Models\TicketReadState;
 use App\Models\WhatsappTemplate;
 use App\Services\SpamFilterService;
+use App\Services\StaleMailboxFetcher;
 use App\Services\WhatsappMessageSender;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
@@ -77,6 +78,7 @@ class TicketWorkspace extends Component
         $this->restoreFilters();
         $this->applyLinkFilters();
         $this->rememberReadPosition();
+        app(StaleMailboxFetcher::class)->fetchStale($this->visibleTeams());
     }
 
     /**
