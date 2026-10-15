@@ -137,7 +137,7 @@ können vor dem Versand geschwärzt werden.
 
 Hilfe-Artikel werden in Markdown geschrieben, versioniert (mit Diff und Rollback)
 und als intern oder öffentlich markiert. Agenten fügen Artikel direkt in Antworten
-ein. Kunden melden sich im Portal unter `/portal` an, sehen nur ihre eigenen Tickets
+ein oder legen neue Artikel per Dialog direkt aus dem Ticket an. Kunden melden sich im Portal unter `/portal` an, sehen nur ihre eigenen Tickets
 mit Status-Verlauf, stellen neue Anfragen aus dem Service-Katalog und durchsuchen die
 öffentlichen Hilfe-Artikel.
 

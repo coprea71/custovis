@@ -8,6 +8,21 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.9.6] - 2026-10-15
+
+### Hinzugefügt
+
+- Mitarbeiter legen Wissensartikel direkt aus dem Ticket an („+ Artikel“ in der
+  Seitenleiste, Dialog mit „Speichern“ und „Abbrechen“). Neues Recht
+  `kb.articles.create`, für die Rolle „agent“ voreingestellt; ohne
+  `kb.articles.manage` werden Artikel intern angelegt. Nach dem Update unter
+  Administration → System die ausstehende Migration ausführen.
+
+### Geändert
+
+- Der Bereich „KI-Assistent“ im Ticket wird ausgeblendet, solange kein
+  KI-Provider eingerichtet oder das Monatsbudget aufgebraucht ist.
+
 ## [0.9.5] - 2026-10-15
 
 ### Geändert
