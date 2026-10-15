@@ -8,6 +8,14 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.10.1] - 2026-10-15
+
+### Behoben
+
+- Der Hinweis „Datensicherung fällig“ erscheint nach einer erstellten Sicherung
+  erst im nächsten 7-Tage-Intervall wieder, auch wenn die Sicherung danach vom
+  Server gelöscht wurde.
+
 ## [0.10.0] - 2026-10-15
 
 ### Hinzugefügt
