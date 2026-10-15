@@ -8,6 +8,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.10.2] - 2026-10-15
+
+### Geändert
+
+- In der Ticketliste steht hinter „Alle“ und „Mir zugewiesen“ die Anzahl der
+  Tickets, passend zum gewählten Status- und Teamfilter.
+
 ## [0.10.1] - 2026-10-15
 
 ### Behoben
