@@ -4,6 +4,7 @@ namespace Tests\Feature\KnowledgeBase;
 
 use App\Livewire\Admin\KnowledgeBase\ArticleEditor;
 use App\Livewire\Agent\KnowledgeBase\ArticleBrowser;
+use App\Livewire\Agent\TicketKnowledgeCreate;
 use App\Livewire\Agent\TicketKnowledgePanel;
 use App\Livewire\Agent\TicketWorkspace;
 use App\Livewire\KnowledgeBase\FeedbackWidget;
@@ -125,6 +126,37 @@ class KnowledgeBaseTest extends TestCase
         Livewire::actingAs(User::factory()->create())
             ->test(ArticleBrowser::class)
             ->assertForbidden();
+    }
+
+    public function test_agent_creates_internal_article_from_ticket(): void
+    {
+        $team = Team::query()->create(['name' => 'Support', 'slug' => 'support']);
+        $ticket = Ticket::query()->create(['team_id' => $team->id, 'source' => 'api', 'subject' => 'VPN bricht ab']);
+        $agent = User::factory()->create();
+        $agent->assignRole('agent');
+        $team->users()->attach($agent);
+
+        Livewire::actingAs($agent)->test(TicketKnowledgeCreate::class, ['ticketId' => $ticket->id])
+            ->call('openModal')->assertSet('title', 'VPN bricht ab')
+            ->set('category_id', $this->category->id)->set('body', 'Client neu verbinden')->set('visibility', 'public')
+            ->call('save')->assertHasNoErrors()->assertSet('open', false);
+
+        $article = KnowledgeBaseArticle::query()->sole();
+        $this->assertSame(['VPN bricht ab', 'internal', $agent->id], [$article->title, $article->visibility, $article->updated_by]);
+    }
+
+    public function test_article_create_from_ticket_requires_permission_and_ticket_access(): void
+    {
+        $team = Team::query()->create(['name' => 'Support', 'slug' => 'support']);
+        $ticket = Ticket::query()->create(['team_id' => $team->id, 'source' => 'api', 'subject' => 'Fremd']);
+
+        Livewire::actingAs(User::factory()->create())
+            ->test(TicketKnowledgeCreate::class, ['ticketId' => $ticket->id])->assertForbidden();
+
+        $outsider = User::factory()->create();
+        $outsider->assignRole('agent');
+        Livewire::actingAs($outsider)->test(TicketKnowledgeCreate::class, ['ticketId' => $ticket->id])
+            ->call('openModal')->assertNotFound();
     }
 
     private function admin(): User

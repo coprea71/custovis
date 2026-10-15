@@ -1,5 +1,10 @@
 <div>
-    <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Wissensdatenbank</h3>
+    <div class="flex items-center justify-between mb-2">
+        <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Wissensdatenbank</h3>
+        @can('kb.articles.create')
+            <livewire:agent.ticket-knowledge-create :ticket-id="$ticket->id" :key="'kb-create-'.$ticket->id" />
+        @endcan
+    </div>
 
     @if ($ticket->resolvedWithArticle)
         <div class="mb-3 text-xs bg-calm-50 border border-calm-200 rounded-lg p-2">

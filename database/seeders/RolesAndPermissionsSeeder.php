@@ -16,6 +16,7 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     private const AGENT_DEFAULTS = [
         'kb.articles.view',
+        'kb.articles.create',
         'chat.channels.view',
         'chat.global.post',
         'chat.direct.create',
@@ -45,6 +46,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'system.settings.manage',
             'dashboard.management.view',
             'kb.articles.view',
+            'kb.articles.create',
             'kb.articles.manage',
             'kb.categories.manage',
             'chat.channels.view',

@@ -18,6 +18,7 @@ Rollen bündeln Berechtigungen. Jeder Nutzer kann mehrere Rollen haben. Mitgelie
 - `changes.approve`: CAB-Freigaben erteilen
 - `dispatch.manage`: Einsatzplanung
 - `appointments.view.own`: Techniker-App
+- `kb.articles.create`: neue Artikel direkt aus dem Ticket anlegen
 - `kb.articles.manage` / `kb.categories.manage`: Wissensdatenbank pflegen
 - `customers.manage`: Kunden anlegen und einladen
 - `tickets.view.all`: Tickets aller Teams sehen
