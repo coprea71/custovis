@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Jobs\FetchMailboxJob;
 use App\Models\Mailbox;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,7 +17,7 @@ class StaleMailboxFetcher
     public const INTERVAL_MINUTES = 5;
 
     /**
-     * @param  Builder<\App\Models\Team>  $teams
+     * @param  Builder<Team>  $teams
      */
     public function fetchStale(Builder $teams): void
     {
