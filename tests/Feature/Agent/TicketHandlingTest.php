@@ -55,6 +55,17 @@ class TicketHandlingTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['action' => 'ticket.updated', 'user_id' => $this->agent->id]);
     }
 
+    public function test_agent_sets_ticket_in_progress(): void
+    {
+        $ticket = $this->ticket();
+
+        Livewire::actingAs($this->agent)->test(TicketPropertiesPanel::class, ['ticketId' => $ticket->id])
+            ->set('status', 'in_progress')->call('save')->assertHasNoErrors();
+
+        $this->assertSame('in_progress', $ticket->refresh()->status);
+        $this->assertNull($ticket->closed_at);
+    }
+
     public function test_changes_are_saved_immediately_without_submit(): void
     {
         $ticket = $this->ticket();

@@ -18,7 +18,7 @@ class Ticket extends Model
 {
     use Auditable, HasFactory;
 
-    public const STATUSES = ['open', 'pending', 'closed'];
+    public const STATUSES = ['open', 'in_progress', 'pending', 'closed'];
 
     public const PRIORITIES = ['low', 'normal', 'high', 'urgent', 'emergency'];
 
@@ -28,7 +28,7 @@ class Ticket extends Model
      */
     public const AUTOMATIC_PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
-    public const STATUS_LABELS = ['open' => 'Offen', 'pending' => 'Wartend', 'closed' => 'Geschlossen'];
+    public const STATUS_LABELS = ['open' => 'Offen', 'in_progress' => 'In Bearbeitung', 'pending' => 'Wartend', 'closed' => 'Geschlossen'];
 
     public const PRIORITY_LABELS = ['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend', 'emergency' => 'Notfall'];
 
