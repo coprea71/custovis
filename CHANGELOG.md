@@ -8,6 +8,15 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.9.5] - 2026-10-15
+
+### Geändert
+
+- Die Ticketliste lässt sich nach Zuweisung („Alle“, „Mir zugewiesen“) und
+  zusätzlich nach Status („Unerledigt“, „Offen“, „In Bearbeitung“, „Wartend“,
+  „Geschlossen“) filtern; beide Filter sind kombinierbar und werden pro Nutzer
+  gespeichert.
+
 ## [0.9.4] - 2026-10-15
 
 ### Hinzugefügt
