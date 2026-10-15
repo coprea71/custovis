@@ -135,6 +135,7 @@ class AiTicketAssistantTest extends TestCase
         Livewire::actingAs($user)
             ->test(TicketAiPanel::class, ['ticketId' => $ticket->id])
             ->assertDontSee('Zusammenfassen')
+            ->assertDontSee('KI-Assistent')
             ->call('request', 'summarize')
             ->call('request', 'classify')
             ->assertSee('Nicht verfügbar');
