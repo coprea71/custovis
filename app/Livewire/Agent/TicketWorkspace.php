@@ -8,6 +8,7 @@ use App\Models\CannedResponse;
 use App\Models\KnowledgeBaseArticle;
 use App\Models\SpamRule;
 use App\Models\Team;
+use App\Models\TeamMailLayout;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Models\TicketReadState;
@@ -293,12 +294,14 @@ class TicketWorkspace extends Component
 
         abort_unless($ticket, 404);
 
+        // Resolved before storing so the history shows exactly what the customer received.
+        $body = strtr($this->replyBody, TeamMailLayout::placeholderValues($ticket, auth()->user()));
         $message = $ticket->messages()->create([
             'visibility' => $this->replyVisibility,
             'direction' => 'outgoing',
             'author_user_id' => auth()->id(),
-            'body_html' => nl2br(e($this->replyBody)),
-            'body_text' => $this->replyBody,
+            'body_html' => nl2br(e($body)),
+            'body_text' => $body,
             'message_id' => 'custovis-'.uniqid('', true).'@'.parse_url(config('app.url'), PHP_URL_HOST),
         ]);
 

@@ -46,6 +46,19 @@ class TeamMailLayout extends Model
         return $this->belongsTo(Team::class);
     }
 
+    /**
+     * @return array<string, string> placeholder => value
+     */
+    public static function placeholderValues(Ticket $ticket, ?User $agent): array
+    {
+        return [
+            '{agent_name}' => (string) $agent?->name,
+            '{team_name}' => (string) $ticket->team?->name,
+            '{mailbox_email}' => (string) $ticket->mailbox?->email_address,
+            '{ticket_id}' => (string) $ticket->id,
+        ];
+    }
+
     public static function forTeam(Team $team): self
     {
         return self::query()->firstOrNew(['team_id' => $team->id]);

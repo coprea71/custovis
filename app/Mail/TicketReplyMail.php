@@ -61,12 +61,7 @@ class TicketReplyMail extends Mailable
                 'body' => $this->message->body_html ?? nl2br(e($this->message->body_text)),
                 'bodyText' => $this->message->body_text ?? strip_tags((string) $this->message->body_html),
                 'layout' => $layout,
-                ...$layout->renderTexts([
-                    '{agent_name}' => (string) $this->message->authorUser?->name,
-                    '{team_name}' => $ticket->team->name,
-                    '{mailbox_email}' => (string) $ticket->mailbox?->email_address,
-                    '{ticket_id}' => (string) $ticket->id,
-                ]),
+                ...$layout->renderTexts(TeamMailLayout::placeholderValues($ticket, $this->message->authorUser)),
             ],
         );
     }

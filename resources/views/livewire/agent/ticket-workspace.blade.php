@@ -257,6 +257,7 @@
                                 class="w-full border border-slatecalm-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-calm-400"
                             ></textarea>
                             @error('replyBody') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                            <p class="text-xs text-slate-400 mt-1">Platzhalter: @foreach (\App\Models\TeamMailLayout::PLACEHOLDERS as $placeholder => $description)<code class="bg-slatecalm-100 rounded px-1" title="{{ $description }}">{{ $placeholder }}</code> @endforeach</p>
 
                             <div class="flex justify-end mt-2">
                                 <button

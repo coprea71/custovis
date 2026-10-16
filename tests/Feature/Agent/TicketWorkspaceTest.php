@@ -182,6 +182,23 @@ class TicketWorkspaceTest extends TestCase
         ]);
     }
 
+    public function test_reply_placeholders_are_resolved_before_storing(): void
+    {
+        $user = User::factory()->create(['name' => 'Anna']);
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class, ['ticket' => $ticket])
+            ->assertSee('{agent_name}')
+            ->set('replyBody', 'Ticket {ticket_id}, Gruß {agent_name} vom {team_name}')
+            ->call('sendReply');
+
+        $this->assertDatabaseHas('ticket_messages', [
+            'ticket_id' => $ticket->id,
+            'body_text' => "Ticket {$ticket->id}, Gruß Anna vom {$this->team->name}",
+        ]);
+    }
+
     public function test_status_filter_defaults_to_open(): void
     {
         $user = User::factory()->create();
