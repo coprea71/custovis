@@ -53,6 +53,16 @@ class MailLayoutManagerTest extends TestCase
         $this->assertTrue(AuditLog::query()->where('action', 'team.mail_layout_updated')->exists());
     }
 
+    public function test_preview_modal_shows_live_layout(): void
+    {
+        Livewire::actingAs($this->member('team_admin'))->test(MailLayoutManager::class, ['team' => $this->team])
+            ->set('accent_color', '#AA3300')
+            ->assertSee('Mailvorschau öffnen')
+            ->assertSee('Mailvorschau im Vollbild')
+            ->assertSee('[Ticket #1234] Ihre Anfrage')
+            ->assertSee('#AA3300');
+    }
+
     public function test_inputs_are_whitelist_validated(): void
     {
         Livewire::actingAs($this->member('team_admin'))->test(MailLayoutManager::class, ['team' => $this->team])

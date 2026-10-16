@@ -69,10 +69,38 @@
             @endunless
         </form>
 
-        <div class="space-y-2">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Vorschau</p>
+        <div class="space-y-2" x-data="{ open: false, mobile: false }">
+            <div class="flex items-center justify-between">
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Vorschau</p>
+                <button type="button" x-on:click="open = true" class="text-xs px-3 py-1.5 rounded-lg bg-calm-50 text-calm-800 hover:bg-calm-100 font-medium">Mailvorschau öffnen</button>
+            </div>
             {{-- Empty sandbox: the preview is inert, no script or navigation from mail markup. --}}
             <iframe sandbox="" srcdoc="{{ $preview }}" title="Vorschau der E-Mail" class="w-full h-[640px] border border-slatecalm-200 rounded-2xl bg-white"></iframe>
+
+            <div x-show="open" x-cloak x-transition.opacity x-on:keydown.escape.window="open = false" x-on:click.self="open = false"
+                 class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+                <div class="w-full max-w-4xl h-full max-h-[90vh] flex flex-col bg-white rounded-2xl shadow-xl overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="mail-preview-title">
+                    <div class="flex items-center justify-between gap-4 px-6 py-4 border-b border-slatecalm-200">
+                        <h2 id="mail-preview-title" class="font-semibold text-slatecalm-900">Mailvorschau</h2>
+                        <div class="flex items-center gap-2 text-xs">
+                            <button type="button" x-on:click="mobile = false" x-bind:class="mobile ? 'bg-slatecalm-100 text-slate-600' : 'bg-calm-600 text-white'" class="px-3 py-1.5 rounded-lg">Desktop</button>
+                            <button type="button" x-on:click="mobile = true" x-bind:class="mobile ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600'" class="px-3 py-1.5 rounded-lg">Mobil</button>
+                            <button type="button" x-on:click="open = false" class="ml-2 px-3 py-1.5 rounded-lg bg-slatecalm-100 text-slate-700 hover:bg-slatecalm-200" aria-label="Vorschau schließen">Schließen</button>
+                        </div>
+                    </div>
+                    <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 px-6 py-3 text-xs border-b border-slatecalm-200 bg-slatecalm-50">
+                        <dt class="text-slate-500">Von</dt><dd class="text-slatecalm-900">{{ $team->name }} &lt;support@example.com&gt;</dd>
+                        <dt class="text-slate-500">An</dt><dd class="text-slatecalm-900">Frau Muster &lt;kunde@example.com&gt;</dd>
+                        <dt class="text-slate-500">Betreff</dt><dd class="text-slatecalm-900">[Ticket #1234] Ihre Anfrage</dd>
+                    </dl>
+                    <div class="flex-1 overflow-auto bg-slatecalm-100 p-4 flex justify-center">
+                        <iframe sandbox="" srcdoc="{{ $preview }}" title="Mailvorschau im Vollbild" x-bind:class="mobile ? 'w-[375px]' : 'w-full'" class="h-full min-h-[480px] border border-slatecalm-200 rounded-xl bg-white"></iframe>
+                    </div>
+                    @if ($logo)
+                        <p class="px-6 py-2 text-xs text-slate-500 border-t border-slatecalm-200">Das neu ausgewählte Logo erscheint nach dem Speichern in der Vorschau.</p>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>
