@@ -81,8 +81,11 @@ und landen im selben Verlauf. Der Arbeitsplatz unter `/agent` zeigt Ticketliste 
 nebeneinander:
 
 - öffentliche Antwort oder interne Notiz, Textbausteine je Team, Tags
-- E-Mail-Layout je Team: Team-Admins legen Farbe, Schrift, Logo, Signatur mit
-  Platzhaltern und Fußzeile fest, mit Live-Vorschau; Versand mit Nur-Text-Fassung
+- E-Mail-Layout je Team: Team-Admins legen Farbe, Schrift, Logo, Kopfzeile,
+  Signatur und Fußzeile mit Platzhaltern fest, mit Live-Vorschau und
+  Mailvorschau im Modal (Desktop/Mobil); Versand mit Nur-Text-Fassung
+- Platzhalter wie `{agent_name}` oder `{ticket_id}` auch im Text einzelner
+  Antworten; sie werden beim Senden ersetzt
 - Kontaktdaten und interne Notizen des Kunden per Info-Knopf in der Seitenleiste;
   fehlende Angaben lassen sich dort in einem Dialog hinterlegen
 - Tickets derselben E-Mail-Adresse landen automatisch beim selben Kunden – über alle

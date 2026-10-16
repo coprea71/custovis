@@ -8,6 +8,22 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-10-16
+
+### Hinzugefügt
+
+- **E-Mail-Layout:** Mailvorschau als Modal mit Absender, Empfänger und Betreff
+  sowie Umschalter zwischen Desktop- und Mobilansicht.
+- Platzhalter (`{agent_name}`, `{team_name}`, `{mailbox_email}`, `{ticket_id}`)
+  funktionieren jetzt auch in Kopf- und Fußzeile des E-Mail-Layouts.
+- Platzhalter lassen sich auch im Text einzelner Antworten verwenden; sie werden
+  beim Senden ersetzt und so gespeichert, wie der Kunde sie erhält.
+
+### Behoben
+
+- Das Dashboard zeigt geschlossene Tickets nicht mehr bis zum nächsten
+  stündlichen Lauf als offen an.
+
 ## [0.10.2] - 2026-10-15
 
 ### Geändert
