@@ -4,7 +4,7 @@
 -- 
 {!! $signature !!}
 @endif
-@if ($layout->footer_text)
+@if ($footer !== '')
 
-{!! $layout->footer_text !!}
+{!! $footer !!}
 @endif

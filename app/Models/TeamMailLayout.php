@@ -59,9 +59,22 @@ class TeamMailLayout extends Model
     /**
      * @param  array<string, string>  $values  placeholder => value
      */
-    public function renderSignature(array $values): string
+    private function renderField(string $field, array $values): string
     {
-        return strtr((string) $this->signature, $values);
+        return strtr((string) $this->{$field}, $values);
+    }
+
+    /**
+     * @param  array<string, string>  $values  placeholder => value
+     * @return array{header: string, signature: string, footer: string}
+     */
+    public function renderTexts(array $values): array
+    {
+        return [
+            'header' => $this->renderField('header_text', $values),
+            'signature' => $this->renderField('signature', $values),
+            'footer' => $this->renderField('footer_text', $values),
+        ];
     }
 
     /**

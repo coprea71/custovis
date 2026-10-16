@@ -88,7 +88,7 @@ class MailLayoutManagerTest extends TestCase
         config(['mail.default' => 'array']);
         Storage::disk('local')->put('mail-logos/logo.png', UploadedFile::fake()->image('logo.png', 10, 10)->getContent());
         TeamMailLayout::query()->create(['team_id' => $this->team->id, 'accent_color' => '#AA3300', 'logo_path' => 'mail-logos/logo.png',
-            'signature' => "{agent_name}\n{team_name} <b>fett</b>", 'footer_text' => 'Muster GmbH']);
+            'header_text' => 'Team {team_name}', 'signature' => "{agent_name}\n{team_name} <b>fett</b>", 'footer_text' => 'Muster GmbH, Ticket {ticket_id}']);
         $message = $this->reply();
 
         Mail::to('kunde@example.com')->send(new TicketReplyMail($message));
@@ -100,7 +100,9 @@ class MailLayoutManagerTest extends TestCase
         $this->assertStringContainsString('Support &lt;b&gt;fett&lt;/b&gt;', $html);
         $this->assertStringContainsString('src="cid:', $html);
         $this->assertStringContainsString("-- \nAnna\nSupport <b>fett</b>", $sent->getTextBody());
-        $this->assertStringContainsString('Muster GmbH', $sent->getTextBody());
+        $this->assertStringContainsString('alt="Team Support"', $html);
+        $this->assertStringContainsString('Muster GmbH, Ticket '.$message->ticket_id, $html);
+        $this->assertStringContainsString('Muster GmbH, Ticket '.$message->ticket_id, $sent->getTextBody());
     }
 
     public function test_reply_mail_without_layout_has_no_signature_block(): void

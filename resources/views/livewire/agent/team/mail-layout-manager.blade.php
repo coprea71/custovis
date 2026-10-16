@@ -47,19 +47,20 @@
                     <textarea wire:model.live.debounce.400ms="signature" rows="5" maxlength="2000" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2"></textarea>
                 </label>
                 @error('signature') <p class="text-xs text-red-600">{{ $message }}</p> @enderror
+
+                <label class="block">Fußzeile <span class="text-slate-400">(z. B. Impressum, Anschrift)</span>
+                    <textarea wire:model.live.debounce.400ms="footer_text" rows="4" maxlength="2000" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2"></textarea>
+                </label>
+                @error('footer_text') <p class="text-xs text-red-600">{{ $message }}</p> @enderror
+
                 <div class="text-xs text-slate-500">
-                    <p class="mb-1">Platzhalter:</p>
+                    <p class="mb-1">Platzhalter für Kopfzeile, Signatur und Fußzeile:</p>
                     <ul class="space-y-0.5">
                         @foreach (\App\Models\TeamMailLayout::PLACEHOLDERS as $placeholder => $description)
                             <li><code class="bg-slatecalm-100 rounded px-1">{{ $placeholder }}</code> {{ $description }}</li>
                         @endforeach
                     </ul>
                 </div>
-
-                <label class="block">Fußzeile <span class="text-slate-400">(z. B. Impressum, Anschrift)</span>
-                    <textarea wire:model.live.debounce.400ms="footer_text" rows="4" maxlength="2000" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2"></textarea>
-                </label>
-                @error('footer_text') <p class="text-xs text-red-600">{{ $message }}</p> @enderror
             </fieldset>
 
             @unless ($readOnly)

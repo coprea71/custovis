@@ -132,7 +132,7 @@ class MailLayoutManager extends Component
             'layout' => $layout,
             'logoSrc' => $layout->logoDataUri(),
             'body' => '<p>Guten Tag Frau Muster,</p><p>vielen Dank für Ihre Nachricht. Wir haben das Problem behoben.</p>',
-            'signature' => $layout->renderSignature([
+            ...$layout->renderTexts([
                 '{agent_name}' => Auth::user()->name,
                 '{team_name}' => $this->team->name,
                 '{mailbox_email}' => 'support@example.com',
