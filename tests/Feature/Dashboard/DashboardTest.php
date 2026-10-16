@@ -173,6 +173,17 @@ class DashboardTest extends TestCase
             ->assertSee(route('admin.mailboxes.index'));
     }
 
+    public function test_snapshot_is_recomputed_when_a_ticket_changed_since(): void
+    {
+        $snapshots = app(DashboardSnapshotService::class);
+        $snapshots->refresh($this->ops)->forceFill(['generated_at' => now()->subHour()])->save();
+        $this->travel(1)->minutes();
+
+        Ticket::query()->where('team_id', $this->ops->id)->first()->update(['status' => 'closed']);
+
+        $this->assertSame([], $snapshots->forScope($this->ops)->data['open_by_type']);
+    }
+
     public function test_refresh_command_is_scheduled_hourly_and_writes_all_scopes(): void
     {
         $event = collect(app(Schedule::class)->events())
