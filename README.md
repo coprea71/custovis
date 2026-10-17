@@ -87,6 +87,8 @@ nebeneinander:
 - Platzhalter wie `{agent_name}` oder `{ticket_id}` auch im Text einzelner
   Antworten; sie werden beim Senden ersetzt
 - Kurzer Hinweis „Daten gespeichert“ bzw. Fehlermeldung nach jedem Speichern
+- REST-API zum Anlegen von Tickets und Abfragen ihres Status; Kundenmails zu
+  API-Tickets über eine je API-Key wählbare Mailbox
 - Automatische Kundenmails mit anpassbaren Texten je Team: Eingangsbestätigung
   bei neuen Mail-Tickets, „Problem behoben“ beim Schließen und optional eine
   Mail bei jedem Statuswechsel; abschaltbar je Kunde und je Ticket; zentral

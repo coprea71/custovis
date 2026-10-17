@@ -2,7 +2,7 @@
 
 return [
 
-    'version' => '0.13.1',
+    'version' => '0.14.0',
 
     /*
     | Update check (28.md): GitHub repository whose releases carry the

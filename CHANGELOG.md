@@ -8,6 +8,22 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-10-17
+
+### Hinzugefügt
+
+- **Kundenmails für API-Tickets:** Je API-Key lässt sich eine Mailbox des Teams
+  wählen (Standard: erste aktive Mailbox). Per REST-API angelegte Tickets
+  erhalten darüber Eingangsbestätigung, „Problem behoben“, Statusmails und die
+  Antworten der Agenten; Kundenantworten landen im Ticket.
+- **Statusabfrage per REST-API:** `GET /api/v1/tickets/{id}` liefert Status,
+  Statustext und Zeitstempel eines Tickets des eigenen Teams.
+
+### Geändert
+
+- Bestehende API-Keys erhalten per Migration die erste aktive Mailbox ihres
+  Teams und – bei freigeschalteter REST-API – das Recht zur Statusabfrage.
+
 ## [0.13.1] - 2026-10-17
 
 ### Behoben
