@@ -196,7 +196,12 @@
                                         {{ $message->created_at->format('d.m.Y H:i') }}
                                     </span>
                                 </div>
-                                <div class="text-sm text-slate-700 whitespace-pre-line break-words [overflow-wrap:anywhere]">{!! $message->body_html ?? nl2br(e($message->body_text)) !!}</div>
+                                {{-- HTML carries its own line breaks; whitespace-pre-line on top would double them. --}}
+                                @if ($message->body_html !== null)
+                                    <div class="text-sm text-slate-700 break-words [overflow-wrap:anywhere] [&_p]:my-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_a]:underline">{!! \App\Support\SafeHtml::sanitize($message->body_html) !!}</div>
+                                @else
+                                    <div class="text-sm text-slate-700 whitespace-pre-line break-words [overflow-wrap:anywhere]">{{ $message->body_text }}</div>
+                                @endif
 
                                 @if ($message->attachments->isNotEmpty())
                                     <div class="mt-3 flex flex-wrap gap-2">

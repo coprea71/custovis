@@ -26,6 +26,7 @@
         "livewire/volt": "^1.11",
         "spatie/laravel-model-states": "^2.12",
         "spatie/laravel-permission": "^6.25",
+        "symfony/html-sanitizer": "^7.4",
         "webklex/laravel-imap": "^6.2"
     },
     "require-dev": {

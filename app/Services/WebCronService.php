@@ -79,7 +79,7 @@ class WebCronService
      * queue:work's 128 MB default (e.g. after PDF generation) — then it would
      * stop before the first job. Stay just below PHP's own limit instead.
      */
-    private static function workerMemoryLimitMb(): int
+    public static function workerMemoryLimitMb(): int
     {
         $limit = trim((string) ini_get('memory_limit'));
 

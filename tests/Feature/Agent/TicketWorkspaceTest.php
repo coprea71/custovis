@@ -309,6 +309,34 @@ class TicketWorkspaceTest extends TestCase
             ->assertSet('ticketId', null);
     }
 
+    public function test_plain_text_message_keeps_single_line_breaks(): void
+    {
+        $user = User::factory()->create();
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+        $ticket->messages()->create(['visibility' => 'public', 'direction' => 'incoming', 'body_text' => "Zeile eins\nZeile zwei"]);
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class, ['ticket' => $ticket])
+            ->assertSeeHtml("Zeile eins\nZeile zwei")
+            ->assertDontSeeHtml('Zeile eins<br');
+    }
+
+    public function test_incoming_mail_html_is_sanitized(): void
+    {
+        $user = User::factory()->create();
+        $ticket = $this->makeTicket();
+        $this->team->users()->attach($user);
+        $ticket->messages()->create(['visibility' => 'public', 'direction' => 'incoming', 'body_text' => 'x',
+            'body_html' => '<p><b>Fett</b> <a href="javascript:alert(1)">Link</a></p><img src="https://tracker.example/x.gif" onerror="alert(1)"><script>alert(1)</script>']);
+
+        Livewire::actingAs($user)->test(TicketWorkspace::class, ['ticket' => $ticket])
+            ->assertSeeHtml('<b>Fett</b>')
+            ->assertDontSeeHtml('<script>alert(1)</script>')
+            ->assertDontSeeHtml('onerror')
+            ->assertDontSeeHtml('tracker.example')
+            ->assertDontSeeHtml('javascript:alert');
+    }
+
     public function test_selecting_ticket_focuses_reply_field(): void
     {
         $user = User::factory()->create();
