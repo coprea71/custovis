@@ -41,7 +41,7 @@ Außendienst als Zusatzmodule. Custovis enthält all das von Anfang an:
 
 | Bereich | Funktionen |
 |---|---|
-| **Ticket-Kern** | IMAP-Import je Mailbox, Antworten per SMTP über die Mailbox des Teams, E-Mail-Layout und Signatur je Team, interne Notizen, Textbausteine, Tags, Spamfilter je Team, Collision Detection in Echtzeit |
+| **Ticket-Kern** | IMAP-Import je Mailbox, Antworten per SMTP über die Mailbox des Teams, E-Mail-Layout und Signatur je Team, automatische Kundenmails (Eingangsbestätigung, Problem behoben, Statuswechsel), interne Notizen, Textbausteine, Tags, Spamfilter je Team, Collision Detection in Echtzeit |
 | **Kanäle** | E-Mail, WhatsApp Business (Meta Cloud API), REST-API mit teamverwalteten API-Keys, GitHub-/GitLab-Issues, Telefon über MCP |
 | **ITIL** | Incident, Problem, Change mit CAB-Freigabe, Service Requests aus dem Service-Katalog, SLA-Engine mit Geschäftszeiten und Kunden-SLAs, CMDB |
 | **KI-Layer** | Austauschbare Provider (OpenAI, Anthropic, Ollama, eigener Endpunkt), Zusammenfassung, Antwortvorschlag, Triage, ähnliche Tickets, Budgets je Team, optionale PII-Schwärzung |
@@ -86,6 +86,9 @@ nebeneinander:
   Mailvorschau im Modal (Desktop/Mobil); Versand mit Nur-Text-Fassung
 - Platzhalter wie `{agent_name}` oder `{ticket_id}` auch im Text einzelner
   Antworten; sie werden beim Senden ersetzt
+- Automatische Kundenmails mit anpassbaren Texten je Team: Eingangsbestätigung
+  bei neuen Mail-Tickets, „Problem behoben“ beim Schließen und optional eine
+  Mail bei jedem Statuswechsel; abschaltbar je Kunde und je Ticket
 - Kontaktdaten und interne Notizen des Kunden per Info-Knopf in der Seitenleiste;
   fehlende Angaben lassen sich dort in einem Dialog hinterlegen
 - Tickets derselben E-Mail-Adresse landen automatisch beim selben Kunden – über alle

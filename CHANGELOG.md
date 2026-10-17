@@ -8,6 +8,28 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-10-17
+
+### Hinzugefügt
+
+- **Automatische Kundenmails** für E-Mail-Tickets, Texte je Team unter
+  Einstellungen → Automatische E-Mails anpassbar:
+  - Eingangsbestätigung, sobald aus einer Kundenmail ein neues Ticket entsteht
+    (standardmäßig an),
+  - „Problem behoben“, sobald ein Ticket geschlossen wird (standardmäßig an),
+  - Mail bei jedem Statuswechsel – nur wenn Team und Kunde sie aktiviert haben
+    (standardmäßig aus).
+- Je Kunde lassen sich die automatischen Mails in der Kundenverwaltung einzeln
+  an- und abhaken, je Ticket in der Seitenleiste ganz abschalten.
+- Neue Platzhalter `{requester_name}`, `{ticket_subject}` und `{ticket_status}`.
+
+### Geändert
+
+- Automatische Mails erscheinen im Ticketverlauf und sind gegen
+  Abwesenheitsnotizen gekennzeichnet (`Auto-Submitted`); Absender wie
+  `noreply@` erhalten keine Eingangsbestätigung.
+- Die DSGVO-Anonymisierung entfernt auch die automatischen Mails eines Tickets.
+
 ## [0.11.0] - 2026-10-16
 
 ### Hinzugefügt
