@@ -8,6 +8,20 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.13.1] - 2026-10-17
+
+### Behoben
+
+- In der Ticketansicht erschienen Zeilenumbrüche doppelt (besonders bei
+  API-Tickets, aber auch bei Antworten und E-Mails).
+
+### Sicherheit
+
+- Das HTML eingehender E-Mails wird vor der Anzeige gefiltert: Skripte,
+  Event-Handler, `javascript:`-Links und externe Bilder werden entfernt.
+  Zuvor konnte eine präparierte E-Mail Skriptcode im Browser von Agenten
+  ausführen. Bitte zeitnah aktualisieren.
+
 ## [0.13.0] - 2026-10-17
 
 ### Hinzugefügt
