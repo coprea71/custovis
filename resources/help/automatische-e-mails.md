@@ -1,4 +1,4 @@
-Unter **Automatische E-Mails** legen Team-Admins fest, welche Mails Kunden ohne Zutun eines Agenten erhalten und wie sie formuliert sind. Die Mails gelten für Tickets, die per E-Mail eingehen. Sie nutzen das E-Mail-Layout des Teams und erscheinen im Ticketverlauf mit dem Hinweis „Automatische E-Mail“.
+Unter **Automatische E-Mails** legen Administratoren und – sofern freigegeben – Team-Admins fest, welche Mails Kunden ohne Zutun eines Agenten erhalten und wie sie formuliert sind. Die Mails gelten für Tickets, die per E-Mail eingehen. Sie nutzen das E-Mail-Layout des Teams und erscheinen im Ticketverlauf mit dem Hinweis „Automatische E-Mail“.
 
 ## Die drei Mails
 
@@ -25,6 +25,7 @@ Unter **Automatische E-Mails** legen Team-Admins fest, welche Mails Kunden ohne 
 
 ## Gut zu wissen
 
-- Nur Team-Admins können die Einstellungen ändern. Nutzer mit dem Recht zur Teamverwaltung sehen sie nur zur Ansicht.
+- Nutzer mit dem Recht `team.auto_mails.manage` (z. B. Systemadministratoren) bearbeiten die automatischen E-Mails jedes Teams.
+- Team-Admins sehen und bearbeiten die Seite ihres Teams nur, solange dort **Team-Admins dürfen diese Seite sehen und bearbeiten** eingeschaltet ist (Standard). Diesen Schalter sehen und ändern nur Nutzer mit dem Recht `team.auto_mails.manage`. Ausgeschaltet verschwindet die Seite für Team-Admins auch aus den Team-Einstellungen.
 - Ist **Problem behoben** abgeschaltet, erhalten Kunden mit aktivierter Statusmail beim Schließen stattdessen die Statuswechsel-Mail.
 - Absender wie `noreply@…` oder `mailer-daemon@…` erhalten keine Eingangsbestätigung. Jede automatische Mail ist außerdem als automatisch gekennzeichnet, damit Abwesenheitsnotizen des Kunden nicht darauf antworten.

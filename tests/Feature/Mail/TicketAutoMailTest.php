@@ -6,6 +6,7 @@ use App\DataTransferObjects\IncomingMailMessageData;
 use App\Jobs\SendTicketReplyJob;
 use App\Livewire\Admin\CustomerManager;
 use App\Livewire\Agent\Team\AutoMailManager;
+use App\Livewire\Agent\Team\TeamSettings;
 use App\Livewire\Agent\TicketPropertiesPanel;
 use App\Mail\TicketReplyMail;
 use App\Models\Customer;
@@ -169,6 +170,35 @@ class TicketAutoMailTest extends TestCase
         $this->assertTrue($layout->status_change_enabled);
         $this->assertSame('Erledigt: {ticket_subject}', $layout->resolved_text);
         $this->assertNull($layout->acknowledgement_text);
+    }
+
+    public function test_central_admin_configures_any_team_and_can_lock_out_team_admins(): void
+    {
+        $this->seed(RolesAndPermissionsSeeder::class);
+        $admin = User::factory()->create();
+        $admin->assignRole('system_admin');
+        $teamAdmin = $this->member('team_admin');
+
+        Livewire::actingAs($admin)->test(AutoMailManager::class, ['team' => $this->team])
+            ->assertSee('Team-Admins dürfen diese Seite sehen und bearbeiten')
+            ->set('texts.acknowledgement', 'Zentral vorgegeben')->call('save')->assertHasNoErrors()
+            ->call('toggleTeamAdminAccess');
+
+        $this->assertSame('Zentral vorgegeben', TeamMailLayout::forTeam($this->team)->acknowledgement_text);
+        $this->assertFalse($this->team->fresh()->auto_mails_team_admin_access);
+        Livewire::actingAs($teamAdmin)->test(AutoMailManager::class, ['team' => $this->team->fresh()])->assertForbidden();
+        Livewire::actingAs($teamAdmin)->test(TeamSettings::class, ['team' => $this->team->fresh()])->assertDontSee('Automatische E-Mails');
+    }
+
+    public function test_team_admin_cannot_change_team_admin_access(): void
+    {
+        $this->seed(RolesAndPermissionsSeeder::class);
+
+        Livewire::actingAs($this->member('team_admin'))->test(AutoMailManager::class, ['team' => $this->team])
+            ->assertDontSee('Team-Admins dürfen diese Seite sehen und bearbeiten')
+            ->call('toggleTeamAdminAccess')->assertForbidden();
+
+        $this->assertTrue($this->team->fresh()->auto_mails_team_admin_access);
     }
 
     public function test_team_members_without_admin_role_cannot_change_auto_mails(): void

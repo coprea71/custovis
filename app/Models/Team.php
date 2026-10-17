@@ -18,6 +18,10 @@ class Team extends Model
         'description',
     ];
 
+    protected $attributes = [
+        'auto_mails_team_admin_access' => true,
+    ];
+
     /**
      * @return array<string, string>
      */
@@ -25,7 +29,18 @@ class Team extends Model
     {
         return [
             'auto_assign_on_view' => 'boolean',
+            'auto_mails_team_admin_access' => 'boolean',
         ];
+    }
+
+    /**
+     * Holders of team.auto_mails.manage configure every team; team admins
+     * only while that holder leaves the page open to them.
+     */
+    public function allowsAutoMailsFor(User $user): bool
+    {
+        return $user->can('team.auto_mails.manage')
+            || ($this->auto_mails_team_admin_access && $user->isTeamAdminOf($this));
     }
 
     /**

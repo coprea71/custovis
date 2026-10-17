@@ -43,6 +43,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'team.whatsapp.manage',
             'service_catalog.manage',
             'team.ai.manage',
+            'team.auto_mails.manage',
             'system.settings.manage',
             'dashboard.management.view',
             'kb.articles.view',

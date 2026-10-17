@@ -23,7 +23,7 @@ class TeamSettings extends Component
         'agent.team.canned-responses' => ['Textbausteine', 'Vorlagen für Antworten im Ticket', 'team.manage'],
         'agent.team.invoices' => ['Rechnungen', 'Leistungen abrechnen, Sammelrechnungen und E-Rechnungen', 'invoices.manage', 'invoicing'],
         'agent.team.mail-layout' => ['E-Mail-Layout', 'Design, Logo und Signatur ausgehender Mails', 'team.manage'],
-        'agent.team.auto-mails' => ['Automatische E-Mails', 'Eingangsbestätigung, Problem behoben, Statuswechsel', 'team.manage'],
+        'agent.team.auto-mails' => ['Automatische E-Mails', 'Eingangsbestätigung, Problem behoben, Statuswechsel', 'team.auto_mails.manage'],
         'agent.team.api-keys' => ['API-Keys', 'Ticket-API und MCP-Zugänge für Telefonassistenten', 'team.api_keys.manage'],
         'agent.team.whatsapp' => ['WhatsApp', 'WhatsApp-Business-Konten und Vorlagen', 'team.whatsapp.manage', 'whatsapp'],
         'agent.team.git-issues' => ['Git-Issues', 'GitHub-/GitLab-Issue-Import', 'team.git_issues.manage'],
@@ -70,7 +70,10 @@ class TeamSettings extends Component
 
         $modules = app(ModuleAccess::class);
 
-        return array_filter(self::PAGES, fn (array $page) => ($isTeamAdmin || $user->can($page[2]))
-            && (! isset($page[3]) || $modules->allows($user, $page[3])));
+        return array_filter(self::PAGES, fn (array $page, string $route) => match ($route) {
+            // Team admin access here is a per-team switch of the central admin.
+            'agent.team.auto-mails' => $team->allowsAutoMailsFor($user),
+            default => ($isTeamAdmin || $user->can($page[2])) && (! isset($page[3]) || $modules->allows($user, $page[3])),
+        }, ARRAY_FILTER_USE_BOTH);
     }
 }

@@ -11,8 +11,8 @@ use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 /**
- * Team admins switch and word the automatic customer mails; holders of
- * team.manage see them read-only — same pattern as the mail layout.
+ * Holders of team.auto_mails.manage configure the automatic customer mails of
+ * every team and decide per team whether its team admins may do so too.
  */
 #[Layout('layouts.agent')]
 class AutoMailManager extends Component
@@ -21,7 +21,7 @@ class AutoMailManager extends Component
     public Team $team;
 
     #[Locked]
-    public bool $readOnly = true;
+    public bool $isCentralAdmin = false;
 
     /** @var array<string, bool> type => enabled */
     public array $enabled = [];
@@ -33,11 +33,10 @@ class AutoMailManager extends Component
 
     public function mount(Team $team): void
     {
-        $user = Auth::user();
-        abort_unless($user->isTeamAdminOf($team) || $user->can('team.manage'), 403);
+        abort_unless($team->allowsAutoMailsFor(Auth::user()), 403);
 
         $this->team = $team;
-        $this->readOnly = ! $user->isTeamAdminOf($team);
+        $this->isCentralAdmin = Auth::user()->can('team.auto_mails.manage');
         $layout = TeamMailLayout::forTeam($team);
         foreach (array_keys(TeamMailLayout::AUTO_MAILS) as $type) {
             $this->enabled[$type] = $layout->autoMailEnabled($type);
@@ -47,7 +46,7 @@ class AutoMailManager extends Component
 
     public function save(): void
     {
-        abort_if($this->readOnly, 403);
+        abort_unless($this->team->allowsAutoMailsFor(Auth::user()), 403);
         $this->validate($this->rules());
         $layout = TeamMailLayout::forTeam($this->team);
 
@@ -64,9 +63,16 @@ class AutoMailManager extends Component
         $this->status = 'Automatische E-Mails gespeichert.';
     }
 
+    public function toggleTeamAdminAccess(): void
+    {
+        abort_unless(Auth::user()->can('team.auto_mails.manage'), 403);
+
+        $this->team->forceFill(['auto_mails_team_admin_access' => ! $this->team->auto_mails_team_admin_access])->save();
+        AuditLog::record('team.auto_mails_access_changed', Auth::user(), $this->team, null, ['team_admin_access' => $this->team->auto_mails_team_admin_access]);
+    }
+
     public function resetText(string $type): void
     {
-        abort_if($this->readOnly, 403);
         abort_unless(isset(TeamMailLayout::AUTO_MAILS[$type]), 404);
 
         $this->texts[$type] = TeamMailLayout::AUTO_MAILS[$type][1];
