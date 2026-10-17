@@ -8,6 +8,20 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-10-17
+
+### Hinzugefügt
+
+- Neues Recht `team.auto_mails.manage`: Administratoren bearbeiten die
+  automatischen E-Mails jedes Teams zentral und legen je Team fest, ob dessen
+  Team-Admins die Seite sehen und bearbeiten dürfen (Standard: ja).
+
+### Geändert
+
+- Ist der Zugriff für Team-Admins abgeschaltet, verschwindet die Seite
+  „Automatische E-Mails“ aus ihren Team-Einstellungen. Die bisherige
+  Nur-Lese-Ansicht über `team.manage` entfällt.
+
 ## [0.12.1] - 2026-10-17
 
 ### Geändert

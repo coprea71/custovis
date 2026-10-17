@@ -89,7 +89,8 @@ nebeneinander:
 - Kurzer Hinweis „Daten gespeichert“ bzw. Fehlermeldung nach jedem Speichern
 - Automatische Kundenmails mit anpassbaren Texten je Team: Eingangsbestätigung
   bei neuen Mail-Tickets, „Problem behoben“ beim Schließen und optional eine
-  Mail bei jedem Statuswechsel; abschaltbar je Kunde und je Ticket
+  Mail bei jedem Statuswechsel; abschaltbar je Kunde und je Ticket; zentral
+  durch Administratoren verwaltbar, Zugriff für Team-Admins je Team schaltbar
 - Kontaktdaten und interne Notizen des Kunden per Info-Knopf in der Seitenleiste;
   fehlende Angaben lassen sich dort in einem Dialog hinterlegen
 - Tickets derselben E-Mail-Adresse landen automatisch beim selben Kunden – über alle
