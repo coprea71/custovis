@@ -8,6 +8,15 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-10-17
+
+### Geändert
+
+- Nach jedem Speichern, Anlegen oder Hinzufügen erscheint oben kurz der Hinweis
+  „Daten gespeichert“ bzw. bei Eingabe-, Rechte- oder Serverfehlern ein roter
+  Hinweis „Nicht gespeichert“. Der Hinweis nimmt keinen Fokus, man kann
+  weitertippen.
+
 ## [0.12.0] - 2026-10-17
 
 ### Hinzugefügt

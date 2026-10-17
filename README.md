@@ -86,6 +86,7 @@ nebeneinander:
   Mailvorschau im Modal (Desktop/Mobil); Versand mit Nur-Text-Fassung
 - Platzhalter wie `{agent_name}` oder `{ticket_id}` auch im Text einzelner
   Antworten; sie werden beim Senden ersetzt
+- Kurzer Hinweis „Daten gespeichert“ bzw. Fehlermeldung nach jedem Speichern
 - Automatische Kundenmails mit anpassbaren Texten je Team: Eingangsbestätigung
   bei neuen Mail-Tickets, „Problem behoben“ beim Schließen und optional eine
   Mail bei jedem Statuswechsel; abschaltbar je Kunde und je Ticket
