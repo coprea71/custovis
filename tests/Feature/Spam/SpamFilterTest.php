@@ -14,6 +14,7 @@ use App\Notifications\NewTicketNotification;
 use App\Services\MailToTicketService;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -32,6 +33,7 @@ class SpamFilterTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
+        Mail::fake();
         $this->seed(RolesAndPermissionsSeeder::class);
         $this->team = Team::query()->create(['name' => 'Support', 'slug' => 'support']);
         $this->agent = User::factory()->create(['notify_new_tickets' => true]);

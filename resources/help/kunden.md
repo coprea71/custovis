@@ -44,3 +44,4 @@ Für Rechnungen und E-Rechnungen braucht Custovis die vollständige Anschrift de
 - Ist ein Ticket einem Kunden zugeordnet, zeigt der **i**-Knopf neben **Kunde** in der Ticket-Seitenleiste Telefon, Mobil, Adresse und Notizen an. Fehlen die Angaben, tragen Sie sie dort über **Kontaktdaten hinterlegen** direkt ein (Recht zur Kundenverwaltung nötig).
 - Im Portal finden Kunden unter **Anleitungen** eine eigene Schritt-für-Schritt-Hilfe zur Bedienung. Verweisen Sie bei Fragen gern auf `/portal/help`.
 - Anträge auf Auskunft oder Löschung nach DSGVO bearbeiten Sie über **DSGVO-Werkzeuge** (siehe Hilfethema „Datenschutz (DSGVO)“).
+- Unter **Automatische E-Mails** legen Sie je Kunde fest, ob er Eingangsbestätigung, „Problem behoben“ und Statuswechsel-Mails erhält. Die Haken wirken nur, wenn das Team die jeweilige Mail unter **Einstellungen → Automatische E-Mails** eingeschaltet hat (siehe Hilfethema „Automatische E-Mails“).

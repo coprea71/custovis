@@ -6,14 +6,22 @@ use App\DataTransferObjects\IncomingMailMessageData;
 use App\Models\Mailbox;
 use App\Models\Team;
 use App\Models\Ticket;
-use App\Services\AttachmentService;
 use App\Services\MailToTicketService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class MailToTicketServiceTest extends TestCase
 {
     use RefreshDatabase;
+
+    // Imports send the automatic acknowledgement; keep it off the network.
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Mail::fake();
+    }
 
     private function makeMailbox(): Mailbox
     {
@@ -35,7 +43,7 @@ class MailToTicketServiceTest extends TestCase
     public function test_first_message_creates_a_new_ticket(): void
     {
         $mailbox = $this->makeMailbox();
-        $service = new MailToTicketService(app(AttachmentService::class));
+        $service = app(MailToTicketService::class);
 
         $message = $service->import($mailbox, new IncomingMailMessageData(
             messageId: 'msg-1@customer.example',
@@ -58,7 +66,7 @@ class MailToTicketServiceTest extends TestCase
     public function test_reply_referencing_message_id_is_appended_to_existing_ticket(): void
     {
         $mailbox = $this->makeMailbox();
-        $service = new MailToTicketService(app(AttachmentService::class));
+        $service = app(MailToTicketService::class);
 
         $first = $service->import($mailbox, new IncomingMailMessageData(
             messageId: 'msg-1@customer.example',
@@ -91,7 +99,7 @@ class MailToTicketServiceTest extends TestCase
     public function test_reimporting_the_same_message_id_is_idempotent(): void
     {
         $mailbox = $this->makeMailbox();
-        $service = new MailToTicketService(app(AttachmentService::class));
+        $service = app(MailToTicketService::class);
 
         $data = new IncomingMailMessageData(
             messageId: 'msg-1@customer.example',
@@ -109,13 +117,13 @@ class MailToTicketServiceTest extends TestCase
         $service->import($mailbox, $data);
 
         $this->assertDatabaseCount('tickets', 1);
-        $this->assertDatabaseCount('ticket_messages', 1);
+        $this->assertDatabaseCount('ticket_messages', 2); // the mail plus one acknowledgement, not one per import
     }
 
     public function test_unrelated_message_creates_a_separate_ticket(): void
     {
         $mailbox = $this->makeMailbox();
-        $service = new MailToTicketService(app(AttachmentService::class));
+        $service = app(MailToTicketService::class);
 
         $service->import($mailbox, new IncomingMailMessageData(
             messageId: 'msg-1@customer.example',
@@ -147,7 +155,7 @@ class MailToTicketServiceTest extends TestCase
     public function test_reply_without_headers_is_matched_by_subject_tag_of_the_requester(): void
     {
         $mailbox = $this->makeMailbox();
-        $service = new MailToTicketService(app(AttachmentService::class));
+        $service = app(MailToTicketService::class);
         $first = $service->import($mailbox, $this->mail('msg-1@customer.example', 'sql error', 'kunde@example.com'));
 
         $reply = $service->import($mailbox, $this->mail('msg-2@customer.example', 'RE: [Ticket #'.$first->ticket_id.'] sql error', 'Kunde@Example.com'));
@@ -159,7 +167,7 @@ class MailToTicketServiceTest extends TestCase
     public function test_subject_tag_of_a_foreign_ticket_opens_a_new_ticket_without_the_tag(): void
     {
         $mailbox = $this->makeMailbox();
-        $service = new MailToTicketService(app(AttachmentService::class));
+        $service = app(MailToTicketService::class);
         $first = $service->import($mailbox, $this->mail('msg-1@customer.example', 'sql error', 'kunde@example.com'));
 
         $other = $service->import($mailbox, $this->mail('msg-2@other.example', 'RE: [Ticket #'.$first->ticket_id.'] sql error', 'fremder@example.com'));

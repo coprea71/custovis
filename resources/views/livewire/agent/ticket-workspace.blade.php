@@ -190,6 +190,9 @@
                                         @if ($message->isInternalNote())
                                             <span class="text-ocean-700 font-semibold">Interne Notiz</span> ·
                                         @endif
+                                        @if ($message->automatic)
+                                            <span class="text-slate-600 font-semibold">Automatische E-Mail</span> ·
+                                        @endif
                                         {{ $message->created_at->format('d.m.Y H:i') }}
                                     </span>
                                 </div>

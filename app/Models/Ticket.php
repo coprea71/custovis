@@ -53,6 +53,7 @@ class Ticket extends Model
         'type' => 'support_ticket',
         'status' => 'open',
         'priority' => 'normal',
+        'auto_mails_muted' => false,
     ];
 
     protected array $auditFields = [
@@ -63,6 +64,7 @@ class Ticket extends Model
         'assigned_to',
         'resolved_with_article_id',
         'spam_at',
+        'auto_mails_muted',
     ];
 
     protected $fillable = [
@@ -88,6 +90,7 @@ class Ticket extends Model
         'sla_breached_at',
         'closed_at',
         'spam_at',
+        'auto_mails_muted',
     ];
 
     protected function casts(): array
@@ -99,6 +102,7 @@ class Ticket extends Model
             'sla_resolution_due_at' => 'datetime',
             'sla_breached_at' => 'datetime',
             'spam_at' => 'datetime',
+            'auto_mails_muted' => 'boolean',
         ];
     }
 

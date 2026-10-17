@@ -100,7 +100,8 @@ class GdprService
     {
         $ticket->forceFill(['requester_name' => self::PLACEHOLDER, 'requester_email' => null, 'requester_phone' => null, 'customer_id' => null])->saveQuietly();
 
-        $ticket->messages()->where('direction', 'incoming')->with('attachments')->get()->each(function (TicketMessage $message) {
+        // Automatic mails are filled in with the customer's name and subject, so they go too.
+        $ticket->messages()->where(fn ($q) => $q->where('direction', 'incoming')->orWhere('automatic', true))->with('attachments')->get()->each(function (TicketMessage $message) {
             $message->attachments->each(function ($attachment) {
                 Storage::disk($attachment->disk)->delete($attachment->path);
                 $attachment->delete();

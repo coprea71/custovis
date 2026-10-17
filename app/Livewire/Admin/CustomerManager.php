@@ -51,7 +51,15 @@ class CustomerManager extends Component
 
     public string $buyer_reference = '';
 
+    public bool $notify_acknowledgement = true;
+
+    public bool $notify_resolved = true;
+
+    public bool $notify_status_changes = false;
+
     public ?string $status = null;
+
+    private const MAIL_SWITCHES = ['notify_acknowledgement', 'notify_resolved', 'notify_status_changes'];
 
     private const CONTACT_FIELDS = ['company', 'phone', 'mobile', 'street', 'postal_code', 'city', 'country', 'vat_id', 'buyer_reference', 'notes'];
 
@@ -76,12 +84,15 @@ class CustomerManager extends Component
         foreach (self::CONTACT_FIELDS as $field) {
             $this->{$field} = (string) $customer->{$field};
         }
+        foreach (self::MAIL_SWITCHES as $field) {
+            $this->{$field} = $customer->{$field};
+        }
         $this->resetValidation();
     }
 
     public function cancelEdit(): void
     {
-        $this->reset('editingId', 'name', 'email', ...self::CONTACT_FIELDS);
+        $this->reset('editingId', 'name', 'email', ...self::MAIL_SWITCHES, ...self::CONTACT_FIELDS);
         $this->resetValidation();
     }
 
@@ -100,6 +111,9 @@ class CustomerManager extends Component
             'buyer_reference' => ['nullable', 'string', 'max:100'],
         ]);
         $data = array_map(fn (string $value) => trim($value) === '' ? null : trim($value), $data);
+        foreach (self::MAIL_SWITCHES as $field) {
+            $data[$field] = $this->{$field};
+        }
 
         $this->editingId ? $this->updateCustomer($data) : $this->createCustomer($data);
         $this->cancelEdit();

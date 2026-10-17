@@ -25,5 +25,11 @@
             @foreach ($agents as $agent)<option value="{{ $agent->id }}">{{ $agent->name }}</option>@endforeach
         </select>
     </label>
+    @if ($isMailTicket)
+        <label class="flex items-center gap-2 text-slate-600 pt-1">
+            <input type="checkbox" wire:model.live="auto_mails_muted" class="rounded border-slatecalm-300">
+            Keine automatischen Mails zu diesem Ticket
+        </label>
+    @endif
     @if ($errors->any()) <p class="text-red-600">{{ $errors->first() }}</p> @endif
 </div>

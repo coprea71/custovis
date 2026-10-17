@@ -8,6 +8,7 @@ use App\Models\SlaPolicy;
 use App\Services\MailToTicketService;
 use App\Support\MailPriority;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 use Webklex\PHPIMAP\Message;
@@ -15,6 +16,14 @@ use Webklex\PHPIMAP\Message;
 class MailPriorityTest extends TestCase
 {
     use RefreshDatabase;
+
+    // Imports send the automatic acknowledgement; keep it off the network.
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Mail::fake();
+    }
 
     /**
      * @return array<string, array{0: string, 1: string|null}>

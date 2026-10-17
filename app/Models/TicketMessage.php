@@ -20,6 +20,7 @@ class TicketMessage extends Model
         'ticket_id',
         'visibility',
         'direction',
+        'automatic',
         'author_user_id',
         'author_customer_id',
         'external_author_name',
@@ -30,6 +31,11 @@ class TicketMessage extends Model
         'whatsapp_message_id',
         'whatsapp_message_type',
     ];
+
+    protected function casts(): array
+    {
+        return ['automatic' => 'boolean'];
+    }
 
     /**
      * @return BelongsTo<Ticket, $this>
@@ -71,6 +77,11 @@ class TicketMessage extends Model
     public function scopeNotAuthoredBy(Builder $query, User $user): void
     {
         $query->where(fn (Builder $q) => $q->whereNull('author_user_id')->orWhere('author_user_id', '!=', $user->id));
+    }
+
+    public static function newMessageId(): string
+    {
+        return 'custovis-'.uniqid('', true).'@'.parse_url(config('app.url'), PHP_URL_HOST);
     }
 
     public function isInternalNote(): bool

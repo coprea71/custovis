@@ -42,10 +42,17 @@ class TicketReplyMail extends Mailable
             ->pluck('message_id')
             ->all();
 
+        $text = $threadIds === [] ? [] : ['In-Reply-To' => '<'.end($threadIds).'>'];
+
+        // RFC 3834: tells the customer's autoresponder not to answer, which would loop.
+        if ($this->message->automatic) {
+            $text['Auto-Submitted'] = 'auto-generated';
+        }
+
         return new Headers(
             messageId: $this->message->message_id,
             references: $threadIds,
-            text: $threadIds === [] ? [] : ['In-Reply-To' => '<'.end($threadIds).'>'],
+            text: $text,
         );
     }
 

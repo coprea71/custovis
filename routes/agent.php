@@ -11,6 +11,7 @@ use App\Livewire\Agent\HelpCenter;
 use App\Livewire\Agent\KnowledgeBase\ArticleBrowser;
 use App\Livewire\Agent\Team\AiSettingsManager;
 use App\Livewire\Agent\Team\ApiKeyManager;
+use App\Livewire\Agent\Team\AutoMailManager;
 use App\Livewire\Agent\Team\CannedResponseManager;
 use App\Livewire\Agent\Team\ErpConnectionManager;
 use App\Livewire\Agent\Team\GitIssueConnectionManager;
@@ -47,6 +48,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/team/{team}/settings', TeamSettings::class)->name('team.settings');
     Route::get('/team/{team}/settings/canned-responses', CannedResponseManager::class)->name('team.canned-responses');
     Route::get('/team/{team}/settings/mail-layout', MailLayoutManager::class)->name('team.mail-layout');
+    Route::get('/team/{team}/settings/auto-mails', AutoMailManager::class)->name('team.auto-mails');
     Route::middleware('module:invoicing')->group(function () {
         Route::get('/team/{team}/invoices', InvoiceManager::class)->name('team.invoices');
         Route::get('/team/{team}/invoices/{invoice}', InvoiceEditor::class)->name('team.invoices.show');

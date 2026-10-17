@@ -17,7 +17,10 @@ use Illuminate\Support\Str;
  */
 class MailToTicketService
 {
-    public function __construct(private readonly AttachmentService $attachments) {}
+    public function __construct(
+        private readonly AttachmentService $attachments,
+        private readonly TicketAutoMailService $autoMails,
+    ) {}
 
     public function import(Mailbox $mailbox, IncomingMailMessageData $data): TicketMessage
     {
@@ -25,7 +28,9 @@ class MailToTicketService
             return TicketMessage::query()->where('message_id', $data->messageId)->firstOrFail();
         }
 
-        $ticket = $this->findExistingTicket($mailbox, $data) ?? $this->createTicket($mailbox, $data);
+        $ticket = $this->findExistingTicket($mailbox, $data);
+        $isNewTicket = $ticket === null;
+        $ticket ??= $this->createTicket($mailbox, $data);
         $ticket->raisePriority($data->priority);
 
         $message = $ticket->messages()->create([
@@ -40,6 +45,11 @@ class MailToTicketService
 
         foreach ($data->attachments as $attachment) {
             $this->attachments->storeRawContent($message, $attachment->content, $attachment->name, $attachment->mimeType);
+        }
+
+        // After the incoming message, so the acknowledgement references it as In-Reply-To.
+        if ($isNewTicket) {
+            $this->autoMails->acknowledge($ticket);
         }
 
         return $message;

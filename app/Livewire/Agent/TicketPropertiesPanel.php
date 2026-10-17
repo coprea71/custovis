@@ -28,10 +28,12 @@ class TicketPropertiesPanel extends Component
 
     public ?int $team_id = null;
 
+    public bool $auto_mails_muted = false;
+
     public function mount(): void
     {
         $ticket = $this->ticket();
-        $this->fill($ticket->only(['status', 'priority', 'assigned_to', 'team_id']));
+        $this->fill($ticket->only(['status', 'priority', 'assigned_to', 'team_id', 'auto_mails_muted']));
     }
 
     public function updated(string $property): void
@@ -54,6 +56,7 @@ class TicketPropertiesPanel extends Component
             'priority' => ['required', Rule::in(Ticket::PRIORITIES)],
             'team_id' => ['required', 'integer', Rule::in($this->allowedTeams($ticket)->pluck('id'))],
             'assigned_to' => ['nullable', 'integer', Rule::in($this->assignableUserIds((int) $this->team_id))],
+            'auto_mails_muted' => ['boolean'],
         ], ['assigned_to.in' => 'Bearbeiter muss Mitglied des gewählten Teams sein.']);
 
         $wasClosed = $ticket->status === 'closed';
@@ -71,6 +74,7 @@ class TicketPropertiesPanel extends Component
         $ticket = $this->ticket();
 
         return view('livewire.agent.ticket-properties-panel', [
+            'isMailTicket' => $ticket->source === 'mailbox',
             'teams' => $this->allowedTeams($ticket),
             'agents' => Team::query()->find($this->team_id)?->users()->where('active', true)->orderBy('name')->get() ?? collect(),
         ]);

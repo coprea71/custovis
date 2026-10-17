@@ -31,6 +31,9 @@ class Customer extends Authenticatable
         'notes',
         'password',
         'active',
+        'notify_acknowledgement',
+        'notify_resolved',
+        'notify_status_changes',
     ];
 
     /**
@@ -39,6 +42,9 @@ class Customer extends Authenticatable
     protected $attributes = [
         'active' => true,
         'country' => 'DE',
+        'notify_acknowledgement' => true,
+        'notify_resolved' => true,
+        'notify_status_changes' => false,
     ];
 
     /**
@@ -119,6 +125,9 @@ class Customer extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'active' => 'boolean',
+            'notify_acknowledgement' => 'boolean',
+            'notify_resolved' => 'boolean',
+            'notify_status_changes' => 'boolean',
         ];
     }
 }

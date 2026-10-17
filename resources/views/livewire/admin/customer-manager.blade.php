@@ -109,6 +109,18 @@
                 <textarea id="customer-notes" wire:model="notes" rows="4" maxlength="5000" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm"></textarea>
                 @error('notes') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
+            <fieldset class="md:col-span-2 space-y-1">
+                <legend class="text-xs font-medium text-slate-600 mb-1">Automatische E-Mails <span class="font-normal text-slate-400">(wirken nur, wenn das Team sie unter Automatische E-Mails aktiviert hat)</span></legend>
+                <label class="flex items-center gap-2 text-sm text-slate-700">
+                    <input type="checkbox" wire:model="notify_acknowledgement" class="rounded border-slatecalm-300"> Eingangsbestätigung
+                </label>
+                <label class="flex items-center gap-2 text-sm text-slate-700">
+                    <input type="checkbox" wire:model="notify_resolved" class="rounded border-slatecalm-300"> Mail „Problem behoben“
+                </label>
+                <label class="flex items-center gap-2 text-sm text-slate-700">
+                    <input type="checkbox" wire:model="notify_status_changes" class="rounded border-slatecalm-300"> Mail bei Statuswechsel
+                </label>
+            </fieldset>
         </div>
         <div class="flex justify-end gap-2 mt-4">
             @if ($editingId)

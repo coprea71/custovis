@@ -302,7 +302,7 @@ class TicketWorkspace extends Component
             'author_user_id' => auth()->id(),
             'body_html' => nl2br(e($body)),
             'body_text' => $body,
-            'message_id' => 'custovis-'.uniqid('', true).'@'.parse_url(config('app.url'), PHP_URL_HOST),
+            'message_id' => TicketMessage::newMessageId(),
         ]);
 
         if ($message->visibility === TicketMessage::VISIBILITY_PUBLIC) {
@@ -328,7 +328,7 @@ class TicketWorkspace extends Component
             'direction' => 'outgoing',
             'author_user_id' => auth()->id(),
             'body_text' => $template->approved_body,
-            'message_id' => 'custovis-'.uniqid('', true).'@'.parse_url(config('app.url'), PHP_URL_HOST),
+            'message_id' => TicketMessage::newMessageId(),
             'whatsapp_message_type' => 'template',
         ]);
 

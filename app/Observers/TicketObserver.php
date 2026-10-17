@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\NewTicketNotification;
 use App\Services\Itil\BusinessHoursCalendar;
+use App\Services\TicketAutoMailService;
 use Illuminate\Support\Facades\Notification;
 
 /**
@@ -20,6 +21,7 @@ class TicketObserver
     public function __construct(
         private readonly BusinessHoursCalendar $calendar,
         private readonly AiTicketAssistant $assistant,
+        private readonly TicketAutoMailService $autoMails,
     ) {}
 
     public function created(Ticket $ticket): void
@@ -32,6 +34,13 @@ class TicketObserver
         $this->applySlaPolicy($ticket);
         $this->notifyTeamMembers($ticket);
         $this->assistant->ticketCreated($ticket);
+    }
+
+    public function updated(Ticket $ticket): void
+    {
+        if ($ticket->wasChanged('status')) {
+            $this->autoMails->statusChanged($ticket);
+        }
     }
 
     private function applySlaPolicy(Ticket $ticket): void

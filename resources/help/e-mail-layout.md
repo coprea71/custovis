@@ -16,6 +16,9 @@ Unter **E-Mail-Layout** legen Team-Admins fest, wie die Antworten ihres Teams be
    - `{team_name}`: Name des Teams
    - `{mailbox_email}`: Absenderadresse der Mailbox
    - `{ticket_id}`: Ticketnummer
+   - `{ticket_subject}`: Betreff des Tickets
+   - `{ticket_status}`: aktueller Status des Tickets
+   - `{requester_name}`: Name des Kunden
 3. Tragen Sie unter **Fußzeile** z. B. Impressum und Anschrift ein.
 4. Klicken Sie auf **Speichern**.
 
