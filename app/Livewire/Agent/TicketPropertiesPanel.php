@@ -74,7 +74,7 @@ class TicketPropertiesPanel extends Component
         $ticket = $this->ticket();
 
         return view('livewire.agent.ticket-properties-panel', [
-            'isMailTicket' => $ticket->source === 'mailbox',
+            'isMailTicket' => $ticket->sendsMail(),
             'teams' => $this->allowedTeams($ticket),
             'agents' => Team::query()->find($this->team_id)?->users()->where('active', true)->orderBy('name')->get() ?? collect(),
         ]);

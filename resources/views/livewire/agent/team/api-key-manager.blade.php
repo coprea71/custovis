@@ -31,6 +31,18 @@
             </div>
             @error('allowRest') <p class="text-xs text-red-600">{{ $message }}</p> @enderror
 
+            @if ($allowRest)
+                <label class="block text-xs font-medium text-slate-600">Mailbox für Kundenmails (Eingangsbestätigung, Antworten, Statusmails)
+                    <select wire:model="mailboxId" class="w-full mt-1 border border-slatecalm-200 rounded-xl px-3 py-2 text-sm font-normal">
+                        <option value="">— keine Mails versenden —</option>
+                        @foreach ($mailboxes as $mailbox)
+                            <option value="{{ $mailbox->id }}">{{ $mailbox->name }} &lt;{{ $mailbox->email_address }}&gt;</option>
+                        @endforeach
+                    </select>
+                </label>
+                @error('mailboxId') <p class="text-xs text-red-600">{{ $message }}</p> @enderror
+            @endif
+
             @if ($allowMcp)
                 <div>
                     <label class="text-xs font-medium text-slate-600">Freigegebene Wissensdatenbank-Kategorien (inkl. Unterkategorien; keine Auswahl = kein KB-Zugriff)</label>
@@ -57,6 +69,20 @@
                             {{ $client->isRevoked() ? 'Widerrufen '.$client->revoked_at->diffForHumans() : 'Aktiv' }} ·
                             Letzte Nutzung: {{ optional($client->tokens->first())->last_used_at?->diffForHumans() ?? 'nie' }}
                         </p>
+                        @if (in_array('tickets.create', $abilities))
+                            @if (! $readOnly && ! $client->isRevoked())
+                                <label class="flex items-center gap-2 mt-1 text-xs text-slate-500">Mailbox:
+                                    <select wire:change="saveMailbox({{ $client->id }}, $event.target.value)" class="border border-slatecalm-200 rounded-lg px-2 py-1 text-xs">
+                                        <option value="" @selected($client->mailbox_id === null)>— keine Mails —</option>
+                                        @foreach ($mailboxes as $mailbox)
+                                            <option value="{{ $mailbox->id }}" @selected($client->mailbox_id === $mailbox->id)>{{ $mailbox->name }} &lt;{{ $mailbox->email_address }}&gt;</option>
+                                        @endforeach
+                                    </select>
+                                </label>
+                            @else
+                                <p class="text-xs text-slate-400">Mailbox: {{ $client->mailbox?->email_address ?? 'keine Mails' }}</p>
+                            @endif
+                        @endif
                         @if (in_array('mcp.tools.use', $abilities))
                             <p class="text-xs text-slate-400">KB-Freigabe: {{ $client->kbCategories->pluck('name')->join(', ') ?: 'keine' }}</p>
                         @endif

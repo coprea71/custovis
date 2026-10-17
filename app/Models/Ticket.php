@@ -28,6 +28,11 @@ class Ticket extends Model
      */
     public const AUTOMATIC_PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
+    /**
+     * Channels whose customer is reached by e-mail through the ticket's mailbox.
+     */
+    public const MAIL_SOURCES = ['mailbox', 'api'];
+
     public const STATUS_LABELS = ['open' => 'Offen', 'in_progress' => 'In Bearbeitung', 'pending' => 'Wartend', 'closed' => 'Geschlossen'];
 
     public const PRIORITY_LABELS = ['low' => 'Niedrig', 'normal' => 'Normal', 'high' => 'Hoch', 'urgent' => 'Dringend', 'emergency' => 'Notfall'];
@@ -203,6 +208,11 @@ class Ticket extends Model
      * A reopened ticket is a plain open ticket again so it shows up in the
      * default agent filter; who reopened it is kept in the history instead.
      */
+    public function sendsMail(): bool
+    {
+        return in_array($this->source, self::MAIL_SOURCES, true) && $this->mailbox_id !== null;
+    }
+
     public function reopen(string $actorName, ?int $authorUserId = null): void
     {
         $this->update(['status' => 'open', 'closed_at' => null]);

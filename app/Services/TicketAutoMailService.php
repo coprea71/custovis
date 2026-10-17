@@ -9,7 +9,8 @@ use App\Models\TicketMessage;
 use Illuminate\Support\Str;
 
 /**
- * Automatic customer mails of mailbox tickets. They are stored as ticket
+ * Automatic customer mails of tickets that reach their customer by e-mail
+ * (mailbox and API tickets with a sending mailbox). They are stored as ticket
  * messages, so agents see in the history what the customer received and a
  * customer reply threads into the ticket via the Message-ID.
  */
@@ -54,7 +55,7 @@ class TicketAutoMailService
 
     private function send(Ticket $ticket, string $type): bool
     {
-        if ($ticket->source !== 'mailbox' || $ticket->spam_at || ! $ticket->mailbox || ! $ticket->requester_email) {
+        if (! $ticket->sendsMail() || $ticket->spam_at || ! $ticket->requester_email) {
             return false;
         }
 

@@ -306,7 +306,7 @@ class TicketWorkspace extends Component
         ]);
 
         if ($message->visibility === TicketMessage::VISIBILITY_PUBLIC) {
-            if ($ticket->source === 'mailbox') {
+            if ($ticket->sendsMail()) {
                 SendTicketReplyJob::dispatch($message);
             } elseif ($ticket->source === 'whatsapp') {
                 SendWhatsappReplyJob::dispatch($message);

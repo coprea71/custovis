@@ -26,6 +26,7 @@ class ApiClient extends Model
 
     protected $fillable = [
         'team_id',
+        'mailbox_id',
         'name',
         'created_by',
         'revoked_at',
@@ -44,6 +45,16 @@ class ApiClient extends Model
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
+    }
+
+    /**
+     * Sender of the customer mails for this key's tickets; null = no mails.
+     *
+     * @return BelongsTo<Mailbox, $this>
+     */
+    public function mailbox(): BelongsTo
+    {
+        return $this->belongsTo(Mailbox::class);
     }
 
     /**

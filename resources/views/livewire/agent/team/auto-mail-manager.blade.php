@@ -1,7 +1,7 @@
 <div class="flex-1 overflow-y-auto p-6 space-y-6">
     <div>
         <h1 class="text-xl font-semibold text-slatecalm-900">Automatische E-Mails — {{ $team->name }}</h1>
-        <p class="text-sm text-slate-500">Gilt für Tickets, die per E-Mail eingehen. Die Mails nutzen das E-Mail-Layout des Teams und erscheinen im Ticketverlauf.</p>
+        <p class="text-sm text-slate-500">Gilt für Tickets, die per E-Mail eingehen, und für API-Tickets, deren API-Key eine Mailbox hat. Die Mails nutzen das E-Mail-Layout des Teams und erscheinen im Ticketverlauf.</p>
     </div>
 
     @if ($isCentralAdmin)

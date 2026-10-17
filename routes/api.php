@@ -8,7 +8,9 @@ use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 
 Route::prefix('v1')->group(function () {
     Route::middleware(['auth:sanctum', CheckAbilities::class.':tickets.create', 'throttle:api-tickets'])
-        ->post('/tickets', TicketApiController::class);
+        ->post('/tickets', [TicketApiController::class, 'store']);
+    Route::middleware(['auth:sanctum', CheckAbilities::class.':tickets.view', 'throttle:api-tickets'])
+        ->get('/tickets/{ticket}', [TicketApiController::class, 'show'])->whereNumber('ticket');
 
     // Signature/token-verified in the controller — no Sanctum guard, since
     // GitHub/GitLab authenticate the webhook via HMAC signature / shared

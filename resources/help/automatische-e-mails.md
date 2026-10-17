@@ -1,4 +1,4 @@
-Unter **Automatische E-Mails** legen Administratoren und – sofern freigegeben – Team-Admins fest, welche Mails Kunden ohne Zutun eines Agenten erhalten und wie sie formuliert sind. Die Mails gelten für Tickets, die per E-Mail eingehen. Sie nutzen das E-Mail-Layout des Teams und erscheinen im Ticketverlauf mit dem Hinweis „Automatische E-Mail“.
+Unter **Automatische E-Mails** legen Administratoren und – sofern freigegeben – Team-Admins fest, welche Mails Kunden ohne Zutun eines Agenten erhalten und wie sie formuliert sind. Die Mails gelten für Tickets, die per E-Mail eingehen, und für Tickets aus der REST-API, sofern dem API-Key eine Mailbox zugeordnet ist. Sie nutzen das E-Mail-Layout des Teams und erscheinen im Ticketverlauf mit dem Hinweis „Automatische E-Mail“.
 
 ## Die drei Mails
 
