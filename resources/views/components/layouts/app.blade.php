@@ -31,6 +31,7 @@
 
     @if ($scripts)
         <x-confirm-dialog />
+        <x-save-toast />
         @livewireScripts
     @endif
 </body>

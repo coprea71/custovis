@@ -38,6 +38,15 @@ class NavigationTest extends TestCase
         $this->actingAs(Customer::factory()->create(), 'customer')->get('/')->assertRedirect(route('portal.tickets.index'));
     }
 
+    public function test_agent_and_admin_pages_carry_the_save_notice(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('system_admin');
+
+        $this->actingAs($admin)->get('/agent/tickets')->assertOk()->assertSee('x-data="saveToast"', false);
+        $this->actingAs($admin)->get('/admin/dashboard')->assertOk()->assertSee('x-data="saveToast"', false);
+    }
+
     public function test_agent_can_log_out_and_only_admins_see_the_admin_link(): void
     {
         $agent = User::factory()->create();
