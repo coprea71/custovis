@@ -4,6 +4,7 @@ namespace App\Livewire\Agent;
 
 use App\Jobs\SendTicketReplyJob;
 use App\Jobs\SendWhatsappReplyJob;
+use App\Livewire\Agent\Concerns\MergesTickets;
 use App\Models\CannedResponse;
 use App\Models\KnowledgeBaseArticle;
 use App\Models\SpamRule;
@@ -29,6 +30,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.agent')]
 class TicketWorkspace extends Component
 {
+    use MergesTickets;
     use WithPagination;
 
     public const SORT_FIELDS = ['id', 'created_at', 'priority'];

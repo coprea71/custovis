@@ -70,6 +70,7 @@ class Ticket extends Model
         'resolved_with_article_id',
         'spam_at',
         'auto_mails_muted',
+        'merged_into_id',
     ];
 
     protected $fillable = [
@@ -97,6 +98,7 @@ class Ticket extends Model
         'spam_at',
         'auto_mails_muted',
         'error_mail_status',
+        'merged_into_id',
     ];
 
     protected function casts(): array
@@ -246,12 +248,17 @@ class Ticket extends Model
 
     public function recordReopening(string $actorName, ?int $authorUserId = null): void
     {
+        $this->recordInternalNote('Ticket am '.now()->format('d.m.Y H:i').' durch '.$actorName.' wiedereröffnet.', $authorUserId);
+    }
+
+    public function recordInternalNote(string $text, ?int $authorUserId = null): void
+    {
         $this->messages()->create([
             'visibility' => TicketMessage::VISIBILITY_INTERNAL_NOTE,
             'direction' => 'outgoing',
             'author_user_id' => $authorUserId,
             'external_author_name' => $authorUserId ? null : 'System',
-            'body_text' => 'Ticket am '.now()->format('d.m.Y H:i').' durch '.$actorName.' wiedereröffnet.',
+            'body_text' => $text,
         ]);
     }
 
@@ -286,6 +293,14 @@ class Ticket extends Model
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
+    }
+
+    /**
+     * @return BelongsTo<Ticket, $this>
+     */
+    public function mergedInto(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'merged_into_id');
     }
 
     /**

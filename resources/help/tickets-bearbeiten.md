@@ -28,6 +28,17 @@ Bei E-Mail-Tickets finden Sie oben im geöffneten Ticket die Schaltfläche **Spa
 
 Spam liegt 30 Tage im Spam-Ordner der Administration (siehe Hilfethema „Spam-Ordner“) und wird dann automatisch gelöscht. Die Sperre gilt nur für Ihr Team. Antworten auf ein bestehendes, normales Ticket werden weiterhin angehängt.
 
+## Tickets zusammenführen
+
+Schreibt ein Kunde mehrmals zum selben Anliegen, führen Sie die doppelten Tickets zu einem zusammen:
+
+1. Klicken Sie in der Ticketliste neben der Sortierung auf **Zusammenführen**.
+2. Haken Sie die Tickets an, die zusammengehören. Es lassen sich nur Tickets desselben Teams zusammenführen.
+3. Wählen Sie das **Zielticket**. Vorbelegt ist das älteste Ticket.
+4. Klicken Sie auf **… Tickets zusammenführen** und bestätigen Sie die Rückfrage.
+
+Alle Nachrichten, Anhänge und Zeiteinträge wandern ins Zielticket. Es übernimmt auch die Tags und die höchste Priorität. Die übrigen Tickets werden geschlossen, ohne dass der Kunde eine Mail erhält, und zeigen oben **Zusammengeführt in #…**. Antwortet der Kunde später auf eine alte Mail, landet die Antwort automatisch im Zielticket. In beiden Tickets hält eine interne Notiz fest, wer wann zusammengeführt hat. Das Zusammenführen lässt sich nicht rückgängig machen.
+
 ## Kunden antworten
 
 1. Öffnen Sie das Ticket und lesen Sie den Verlauf.

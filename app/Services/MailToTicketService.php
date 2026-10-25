@@ -59,7 +59,20 @@ class MailToTicketService
 
     private function findExistingTicket(Mailbox $mailbox, IncomingMailMessageData $data): ?Ticket
     {
-        return $this->findByHeaders($mailbox, $data) ?? $this->findBySubjectTag($mailbox, $data);
+        return $this->followMerges($this->findByHeaders($mailbox, $data) ?? $this->findBySubjectTag($mailbox, $data));
+    }
+
+    /**
+     * A merged ticket is only a closed stub; replies quoting its number
+     * belong to the ticket it was merged into. Bounded against cycles.
+     */
+    private function followMerges(?Ticket $ticket): ?Ticket
+    {
+        for ($hops = 0; $ticket?->merged_into_id && $hops < 10; $hops++) {
+            $ticket = $ticket->mergedInto;
+        }
+
+        return $ticket;
     }
 
     private function findByHeaders(Mailbox $mailbox, IncomingMailMessageData $data): ?Ticket

@@ -71,7 +71,33 @@
                         class="px-3 py-1 rounded-lg font-medium shrink-0 transition {{ $sortField === $value ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200' }}"
                     >{{ $label }}@if ($sortField === $value) {{ $sortDirection === 'asc' ? '↑' : '↓' }}@endif</button>
                 @endforeach
+                <button type="button" wire:click="toggleMergeMode" aria-pressed="{{ $mergeMode ? 'true' : 'false' }}"
+                    class="ml-auto px-3 py-1 rounded-lg font-medium shrink-0 transition {{ $mergeMode ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600 hover:bg-slatecalm-200' }}"
+                >{{ $mergeMode ? 'Abbrechen' : 'Zusammenführen' }}</button>
             </div>
+
+            @if ($mergeMode)
+                <div class="rounded-xl border border-calm-200 bg-calm-50 p-3 space-y-2 text-xs">
+                    <p class="text-slate-600">Tickets desselben Teams ankreuzen. Nachrichten, Anhänge und Zeiteinträge wandern ins Zielticket, die übrigen Tickets werden ohne Kundenmail geschlossen.</p>
+                    @if (count($mergeSelection) >= 2)
+                        <div class="flex flex-wrap items-center gap-2">
+                            <label for="merge-target" class="text-slate-600">Zielticket:</label>
+                            <select id="merge-target" wire:model="mergeTargetId" class="border border-slatecalm-200 rounded-lg px-2 py-1">
+                                @foreach (collect($mergeSelection)->map(fn ($id) => (int) $id)->unique()->sort() as $id)
+                                    <option value="{{ $id }}">#{{ $id }}</option>
+                                @endforeach
+                            </select>
+                            <button type="button" wire:click="mergeTickets" wire:confirm="{{ count($mergeSelection) }} Tickets wirklich zusammenführen? Das lässt sich nicht rückgängig machen."
+                                class="px-3 py-1 rounded-lg bg-calm-600 hover:bg-calm-700 text-white font-medium">{{ count($mergeSelection) }} Tickets zusammenführen</button>
+                        </div>
+                    @endif
+                    @error('merge') <p class="text-red-600">{{ $message }}</p> @enderror
+                </div>
+            @endif
+
+            @if ($mergeStatus)
+                <p class="text-xs text-calm-800 bg-calm-50 rounded-xl px-3 py-2" role="status">{{ $mergeStatus }}</p>
+            @endif
         </div>
 
         <div class="flex-1 overflow-y-auto divide-y divide-slatecalm-200">
@@ -82,6 +108,10 @@
                     class="p-4 cursor-pointer hover:bg-calm-50/60 transition border-l-4 {{ \App\Models\Ticket::PRIORITY_STRIPES[$item->priority] ?? 'border-l-slate-300' }} {{ $ticketId === $item->id ? 'bg-calm-50/90' : '' }}"
                 >
                     <div class="flex items-center justify-between mb-1">
+                        @if ($mergeMode)
+                            <input type="checkbox" wire:model.live="mergeSelection" value="{{ $item->id }}" @click.stop
+                                aria-label="Ticket #{{ $item->id }} zum Zusammenführen auswählen" class="mr-2 rounded border-slatecalm-300 text-calm-600">
+                        @endif
                         {{-- Dot + bold subject + screen-reader text: unread is never signalled by colour alone. --}}
                         <span class="flex items-center gap-1.5">
                             @if ($item->has_unread)
@@ -137,6 +167,9 @@
                                 </span>
                             </div>
                             <h2 class="text-lg font-semibold text-slatecalm-900 mt-1">{{ $ticket->subject }}</h2>
+                            @if ($ticket->merged_into_id)
+                                <p class="mt-1 text-xs text-slate-600">Zusammengeführt in <button type="button" wire:click="selectTicket({{ $ticket->merged_into_id }})" class="font-medium text-calm-700 hover:underline">#{{ $ticket->merged_into_id }}</button></p>
+                            @endif
                             @if ($ticket->error_mail_status)
                                 <p class="mt-1 inline-block text-xs font-medium text-amber-800 bg-amber-100 rounded-md px-2 py-0.5">HTTP-Fehlermail {{ $ticket->error_mail_status }} – keine E-Mails an den Absender</p>
                             @endif
