@@ -42,7 +42,7 @@ modules. Custovis includes all of it from day one:
 
 | Area | Features |
 |---|---|
-| **Ticket core** | IMAP import per mailbox, replies via SMTP through the team's mailbox, email layout and signature per team, internal notes, canned responses, tags, spam filter per team, real-time collision detection |
+| **Ticket core** | IMAP import per mailbox, replies via SMTP through the team's mailbox, email layout and signature per team, internal notes, canned responses, tags, spam filter per team, HTTP error mail filter, real-time collision detection |
 | **Channels** | Email, WhatsApp Business (Meta Cloud API), REST API with team-managed API keys, GitHub/GitLab issues, phone via MCP |
 | **ITIL** | Incident, problem, change with CAB approval, service requests from the service catalogue, SLA engine with business hours and customer SLAs, CMDB |
 | **AI layer** | Swappable providers (OpenAI, Anthropic, Ollama, custom endpoint), summaries, reply suggestions, triage, similar tickets, budgets per team, optional PII redaction |
@@ -98,6 +98,9 @@ thread. The workspace at `/agent` shows the ticket list and the ticket side by s
 - spam filter: mark email tickets as spam with one click and block the sender address
   or the whole domain for the team; future emails go to the spam folder in the
   administration area, can be released from there and are deleted after 30 days
+- HTTP error mail filter (4xx/5xx) per team: error reports from web applications or
+  monitoring become tickets without the sender receiving an automatic mail or agent
+  reply; evaluation by status code in the team and management dashboards
 - filters such as "Assigned to me"; filter and sort settings are saved per user;
   agents only see tickets of their own teams
 - collision detection: see in real time who is currently working on a ticket

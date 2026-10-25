@@ -8,6 +8,25 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-10-25
+
+### Hinzugefügt
+
+- **Filter für HTTP-Fehlermails (4xx/5xx) je Team:** Unter „Automatische
+  E-Mails“ einschaltbar, optional beschränkt auf bestimmte Absender oder
+  Domains. Erkannt wird ein HTTP-Statuscode im Betreff (z. B. „Error 500“,
+  „502 Bad Gateway“). Aus solchen Mails entstehen Tickets, zu denen weder
+  automatische Mails noch Agenten-Antworten an den Absender gehen, nur interne
+  Notizen.
+- **Auswertung der HTTP-Fehlermails:** Team- und Management-Dashboard zeigen
+  die Fehlermails der letzten 30 Tage nach 4xx/5xx, offenen Tickets und
+  Statuscode; die Kachel öffnet die gefilterte Ticketliste.
+
+### Geändert
+
+- Migration ergänzt die Filtereinstellungen je Team und den Statuscode am
+  Ticket (`/admin/system/migrate` nach dem Update ausführen).
+
 ## [0.14.0] - 2026-10-17
 
 ### Hinzugefügt
