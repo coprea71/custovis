@@ -5,8 +5,10 @@ namespace App\Services;
 use App\DataTransferObjects\IncomingMailMessageData;
 use App\Models\Mailbox;
 use App\Models\SpamRule;
+use App\Models\TeamMailLayout;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
+use App\Support\HttpErrorMail;
 use Illuminate\Support\Str;
 
 /**
@@ -106,6 +108,7 @@ class MailToTicketService
             // Set on creation so the SLA policy of the right priority applies.
             'priority' => $data->priority ?? 'normal',
             'spam_at' => SpamRule::matches($mailbox->team_id, $data->fromEmail) ? now() : null,
+            'error_mail_status' => HttpErrorMail::detect(TeamMailLayout::forTeam($mailbox->team), $data->fromEmail, $data->subject),
         ]);
     }
 }

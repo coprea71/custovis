@@ -55,7 +55,7 @@ class TicketAutoMailService
 
     private function send(Ticket $ticket, string $type): bool
     {
-        if (! $ticket->sendsMail() || $ticket->spam_at || ! $ticket->requester_email) {
+        if (! $ticket->sendsMail() || $ticket->spam_at || $ticket->blocksMailReplies() || ! $ticket->requester_email) {
             return false;
         }
 

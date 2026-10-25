@@ -1,4 +1,4 @@
-@props(['data', 'openTicketsUrl' => null])
+@props(['data', 'openTicketsUrl' => null, 'errorMailsUrl' => null])
 {{-- Tiles shared by the management and the team dashboard (7.md, DRY). --}}
 @php
     $typeLabels = ['support_ticket' => 'Support-Ticket', 'incident' => 'Incident', 'problem' => 'Problem', 'change' => 'Change', 'service_request' => 'Service-Request'];
@@ -26,3 +26,14 @@
     <x-dashboard.breakdown title="Überfällig nach Typ" :items="$data['overdue_by_type']" :labels="$typeLabels" />
     <x-dashboard.breakdown title="Offen nach Priorität" :items="$data['open_by_priority']" :labels="$priorityLabels" />
 </div>
+
+{{-- Snapshots generated before the error mail filter existed lack the key until their next refresh. --}}
+@isset($data['error_mails'])
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <x-dashboard.kpi label="HTTP-Fehlermails (30 Tage)" :value="$data['error_mails']['total']" :href="$errorMailsUrl"
+                         :hint="'4xx: '.$data['error_mails']['client'].' · 5xx: '.$data['error_mails']['server'].' · davon offen: '.$data['error_mails']['open']" />
+        <div class="md:col-span-2">
+            <x-dashboard.breakdown title="HTTP-Fehlermails nach Statuscode" :items="$data['error_mails']['by_status']" />
+        </div>
+    </div>
+@endisset

@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <x-dashboard.overview :data="$snapshot->data" :open-tickets-url="$openTicketsUrl" />
+    <x-dashboard.overview :data="$snapshot->data" :open-tickets-url="$openTicketsUrl" :error-mails-url="$errorMailsUrl" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <x-dashboard.breakdown title="Offene Tickets je Team" :items="$snapshot->data['open_by_team']" :links="$teamTicketLinks" />

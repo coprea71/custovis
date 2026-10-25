@@ -50,7 +50,7 @@ class TeamMailLayout extends Model
     protected $fillable = [
         'team_id', 'accent_color', 'font', 'logo_path', 'header_text', 'signature', 'footer_text',
         'acknowledgement_enabled', 'acknowledgement_text', 'resolved_enabled', 'resolved_text',
-        'status_change_enabled', 'status_change_text',
+        'status_change_enabled', 'status_change_text', 'error_mail_filter_enabled', 'error_mail_senders',
     ];
 
     protected $attributes = [
@@ -59,6 +59,7 @@ class TeamMailLayout extends Model
         'acknowledgement_enabled' => true,
         'resolved_enabled' => true,
         'status_change_enabled' => false,
+        'error_mail_filter_enabled' => false,
     ];
 
     protected function casts(): array
@@ -67,6 +68,7 @@ class TeamMailLayout extends Model
             'acknowledgement_enabled' => 'boolean',
             'resolved_enabled' => 'boolean',
             'status_change_enabled' => 'boolean',
+            'error_mail_filter_enabled' => 'boolean',
         ];
     }
 

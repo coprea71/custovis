@@ -49,6 +49,11 @@ class TicketWorkspace extends Component
     #[Url(as: 'team', except: null)]
     public ?int $teamFilter = null;
 
+    /** Set by the dashboard's error mail tile (?error_mails=1); locked like the team filter. */
+    #[Locked]
+    #[Url(as: 'error_mails', except: false)]
+    public bool $errorMailsOnly = false;
+
     public string $sortField = 'priority';
 
     public string $sortDirection = 'desc';
@@ -76,6 +81,7 @@ class TicketWorkspace extends Component
         }
 
         $this->ticketId = $ticket?->id;
+        $this->resetReplyVisibility($ticket);
         $this->restoreFilters();
         $this->applyLinkFilters();
         $this->rememberReadPosition();
@@ -117,6 +123,12 @@ class TicketWorkspace extends Component
         $this->resetPage();
     }
 
+    public function clearErrorMailFilter(): void
+    {
+        $this->errorMailsOnly = false;
+        $this->resetPage();
+    }
+
     /**
      * Stored values are re-checked against the whitelists, because the
      * allowed statuses or sort fields may change between releases.
@@ -155,9 +167,16 @@ class TicketWorkspace extends Component
     {
         $this->ticketId = $ticketId;
         $this->replyBody = '';
-        $this->replyVisibility = TicketMessage::VISIBILITY_PUBLIC;
+        $this->resetReplyVisibility(Ticket::query()->visibleTo(auth()->user())->find($ticketId));
         $this->rememberReadPosition();
         $this->dispatch('focus-reply');
+    }
+
+    private function resetReplyVisibility(?Ticket $ticket): void
+    {
+        $this->replyVisibility = $ticket?->blocksMailReplies()
+            ? TicketMessage::VISIBILITY_INTERNAL_NOTE
+            : TicketMessage::VISIBILITY_PUBLIC;
     }
 
     private function rememberReadPosition(): void
@@ -294,6 +313,12 @@ class TicketWorkspace extends Component
 
         abort_unless($ticket, 404);
 
+        if ($ticket->blocksMailReplies() && $this->replyVisibility === TicketMessage::VISIBILITY_PUBLIC) {
+            $this->addError('replyBody', 'An HTTP-Fehlermails wird nicht geantwortet – bitte als interne Notiz speichern.');
+
+            return;
+        }
+
         // Resolved before storing so the history shows exactly what the customer received.
         $body = strtr($this->replyBody, TeamMailLayout::placeholderValues($ticket, auth()->user()));
         $message = $ticket->messages()->create([
@@ -429,6 +454,7 @@ class TicketWorkspace extends Component
         return Ticket::query()
             ->visibleTo(auth()->user())
             ->when($this->teamFilter !== null, fn ($query) => $query->where('team_id', $this->teamFilter))
+            ->when($this->errorMailsOnly, fn ($query) => $query->whereNotNull('error_mail_status'))
             ->when($assignee === 'mine', fn ($query) => $query->where('assigned_to', auth()->id()))
             ->when($this->statusFilter === 'unresolved', fn ($query) => $query->where('status', '!=', 'closed'))
             ->when(in_array($this->statusFilter, Ticket::STATUSES, true), fn ($query) => $query->where('status', $this->statusFilter))

@@ -96,6 +96,7 @@ class Ticket extends Model
         'closed_at',
         'spam_at',
         'auto_mails_muted',
+        'error_mail_status',
     ];
 
     protected function casts(): array
@@ -108,6 +109,7 @@ class Ticket extends Model
             'sla_breached_at' => 'datetime',
             'spam_at' => 'datetime',
             'auto_mails_muted' => 'boolean',
+            'error_mail_status' => 'integer',
         ];
     }
 
@@ -211,6 +213,16 @@ class Ticket extends Model
     public function sendsMail(): bool
     {
         return in_array($this->source, self::MAIL_SOURCES, true) && $this->mailbox_id !== null;
+    }
+
+    /**
+     * HTTP error reports (see HttpErrorMail) come from robots: any mail back,
+     * automatic or by an agent, would at best be lost and at worst start a
+     * mail loop. Internal notes stay possible.
+     */
+    public function blocksMailReplies(): bool
+    {
+        return $this->error_mail_status !== null;
     }
 
     public function reopen(string $actorName, ?int $authorUserId = null): void

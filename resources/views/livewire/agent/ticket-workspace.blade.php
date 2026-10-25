@@ -43,6 +43,13 @@
                 </div>
             @endif
 
+            @if ($errorMailsOnly)
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                    <span class="px-3 py-1 rounded-lg bg-amber-100 text-amber-800 font-medium">Nur HTTP-Fehlermails</span>
+                    <button type="button" wire:click="clearErrorMailFilter" class="text-calm-700 hover:underline font-medium">Alle Tickets anzeigen</button>
+                </div>
+            @endif
+
             <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
                 <button
                     type="button"
@@ -130,6 +137,9 @@
                                 </span>
                             </div>
                             <h2 class="text-lg font-semibold text-slatecalm-900 mt-1">{{ $ticket->subject }}</h2>
+                            @if ($ticket->error_mail_status)
+                                <p class="mt-1 inline-block text-xs font-medium text-amber-800 bg-amber-100 rounded-md px-2 py-0.5">HTTP-Fehlermail {{ $ticket->error_mail_status }} – keine E-Mails an den Absender</p>
+                            @endif
                         </div>
 
                         <div class="flex items-center gap-3">
@@ -217,11 +227,15 @@
                     <div class="border-t border-slatecalm-200 bg-white p-4 shrink-0">
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-2 text-xs">
                             <div class="flex items-center gap-2">
-                                <button
-                                    type="button"
-                                    wire:click="$set('replyVisibility', '{{ \App\Models\TicketMessage::VISIBILITY_PUBLIC }}')"
-                                    class="px-3 py-1.5 rounded-lg font-medium transition {{ $replyVisibility === 'public' ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600' }}"
-                                >Öffentliche Antwort</button>
+                                @if ($ticket->blocksMailReplies())
+                                    <span class="text-slate-500">Keine Antwort an den Absender (HTTP-Fehlermail)</span>
+                                @else
+                                    <button
+                                        type="button"
+                                        wire:click="$set('replyVisibility', '{{ \App\Models\TicketMessage::VISIBILITY_PUBLIC }}')"
+                                        class="px-3 py-1.5 rounded-lg font-medium transition {{ $replyVisibility === 'public' ? 'bg-calm-600 text-white' : 'bg-slatecalm-100 text-slate-600' }}"
+                                    >Öffentliche Antwort</button>
+                                @endif
                                 <button
                                     type="button"
                                     wire:click="$set('replyVisibility', '{{ \App\Models\TicketMessage::VISIBILITY_INTERNAL_NOTE }}')"

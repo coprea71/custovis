@@ -25,6 +25,7 @@ class ManagementDashboard extends Component
             'snapshot' => $snapshots->forScope(null),
             'failingMailboxCount' => Gate::allows('mailboxes.manage') ? Mailbox::query()->withFetchError()->count() : 0,
             'openTicketsUrl' => $canSeeAllTickets ? route('agent.tickets.index', ['status' => 'unresolved']) : null,
+            'errorMailsUrl' => $canSeeAllTickets ? route('agent.tickets.index', ['error_mails' => 1, 'status' => 'unresolved']) : null,
             'teamTicketLinks' => $canSeeAllTickets ? $this->teamTicketLinks() : [],
         ]);
     }

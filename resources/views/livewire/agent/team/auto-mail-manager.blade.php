@@ -41,6 +41,17 @@
                 </div>
             @endforeach
 
+            <div class="bg-white border border-slatecalm-200 rounded-2xl p-6 space-y-3">
+                <label class="flex items-center gap-2 font-medium text-slatecalm-900">
+                    <input type="checkbox" wire:model="errorMailFilterEnabled" class="rounded border-slatecalm-300">
+                    Filter für HTTP-Fehlermails (4xx/5xx)
+                </label>
+                <p class="text-xs text-slate-500">Erkennt Fehlermeldungen von Webanwendungen oder Monitoring am Betreff (z. B. „Error 500“, „HTTP 503“, „404 Not Found“). Daraus entstehen normale Tickets, aber ohne jede automatische E-Mail. Im Team-Dashboard werden sie gesondert ausgewertet.</p>
+                <label for="error-mail-senders" class="block text-xs font-medium text-slate-600">Nur von diesen Absendern (eine Adresse oder Domain pro Zeile, leer = alle Absender)</label>
+                <textarea id="error-mail-senders" wire:model="errorMailSenders" rows="3" maxlength="2000" placeholder="monitoring@firma.de&#10;shop.example" class="w-full border border-slatecalm-200 rounded-xl px-3 py-2"></textarea>
+                @error('errorMailSenders') <p class="text-xs text-red-600">{{ $message }}</p> @enderror
+            </div>
+
             <div class="text-xs text-slate-500">
                 <p class="mb-1">Platzhalter:</p>
                 <ul class="space-y-0.5">

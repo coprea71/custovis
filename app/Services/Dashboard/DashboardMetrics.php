@@ -21,6 +21,8 @@ class DashboardMetrics
 
     private const VOLUME_DAYS = 14;
 
+    private const ERROR_MAIL_WINDOW_DAYS = 30;
+
     /**
      * @return array<string, mixed>
      */
@@ -34,6 +36,7 @@ class DashboardMetrics
             'change_success' => $this->changeSuccess($team),
             'volume' => $this->volume($team),
             'ai_usage' => $this->aiUsage($team),
+            'error_mails' => $this->errorMails($team),
         ];
 
         return $team
@@ -126,6 +129,28 @@ class DashboardMetrics
             ->map(fn (int $offset) => $start->copy()->addDays($offset)->toDateString())
             ->mapWithKeys(fn (string $day) => [$day => (int) ($counts[$day] ?? 0)])
             ->all();
+    }
+
+    /**
+     * HTTP error mails (see HttpErrorMail) of the last 30 days: client (4xx)
+     * vs. server (5xx) errors, still open ones and the count per status code.
+     *
+     * @return array{total: int, client: int, server: int, open: int, by_status: array<string, int>}
+     */
+    private function errorMails(?Team $team): array
+    {
+        $recent = $this->tickets($team)->whereNotNull('error_mail_status')
+            ->where('created_at', '>=', now()->subDays(self::ERROR_MAIL_WINDOW_DAYS));
+        $byStatus = $this->countBy((clone $recent)->orderBy('error_mail_status'), 'error_mail_status');
+        $client = array_sum(array_filter($byStatus, fn (int $status) => $status < 500, ARRAY_FILTER_USE_KEY));
+
+        return [
+            'total' => array_sum($byStatus),
+            'client' => $client,
+            'server' => array_sum($byStatus) - $client,
+            'open' => $recent->where('status', '!=', 'closed')->count(),
+            'by_status' => collect($byStatus)->mapWithKeys(fn (int $total, int $status) => ["HTTP {$status}" => $total])->all(),
+        ];
     }
 
     /**

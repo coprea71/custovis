@@ -23,6 +23,18 @@ Unter **Automatische E-Mails** legen Administratoren und – sofern freigegeben 
 - **Je Kunde:** In der Kundenverwaltung lassen sich Eingangsbestätigung, „Problem behoben“ und Statuswechsel-Mail einzeln an- oder abhaken. Eingangsbestätigung und „Problem behoben“ sind dort standardmäßig angehakt, die Statuswechsel-Mail nicht.
 - **Je Ticket:** In der Ticket-Seitenleiste unter **Bearbeitung** schaltet **Keine automatischen Mails zu diesem Ticket** die Mails „Problem behoben“ und Statuswechsel für dieses Ticket ab. Die Eingangsbestätigung ist dann bereits verschickt.
 
+## HTTP-Fehlermails ohne automatische Antwort
+
+Webanwendungen oder Monitoring-Dienste können ihre Fehlermeldungen direkt an eine Team-Mailbox schicken, damit daraus Tickets werden. Damit der Absender keine automatische Mail und keine Agenten-Antwort erhält, gibt es je Team den **Filter für HTTP-Fehlermails (4xx/5xx)**:
+
+1. Öffnen Sie **Einstellungen → Automatische E-Mails** und haken Sie **Filter für HTTP-Fehlermails (4xx/5xx)** an.
+2. Tragen Sie optional die Absender ein, von denen Fehlermails kommen – eine E-Mail-Adresse oder Domain pro Zeile. Eine Domain gilt auch für ihre Subdomains. Leer lassen heißt: alle Absender.
+3. Klicken Sie auf **Speichern**.
+
+Erkannt wird eine Mail am Betreff: Er muss einen HTTP-Statuscode 400–451 oder 500–511 mit HTTP-Bezug enthalten, z. B. „Error 500“, „HTTP 503“, „Fehler 404“ oder „502 Bad Gateway“. Eine bloße Zahl wie „Bestellung 404“ zählt nicht. Der Filter wirkt auf neu eingehende Mails, bereits bestehende Tickets bleiben unverändert.
+
+Aus einer erkannten Mail entsteht ein normales Ticket mit dem Hinweis **HTTP-Fehlermail** und dem Statuscode. Zu diesem Ticket geht keine E-Mail an den Absender, weder automatisch noch als Antwort eines Agenten. Agenten können nur interne Notizen schreiben. Im Team- und Management-Dashboard zeigt die Kachel **HTTP-Fehlermails (30 Tage)** die Anzahl, aufgeteilt in 4xx und 5xx und offene Tickets, dazu eine Auswertung nach Statuscode. Ein Klick auf die Kachel öffnet die Ticketliste gefiltert auf diese Tickets.
+
 ## Gut zu wissen
 
 - Nutzer mit dem Recht `team.auto_mails.manage` (z. B. Systemadministratoren) bearbeiten die automatischen E-Mails jedes Teams.
