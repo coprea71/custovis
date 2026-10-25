@@ -8,6 +8,13 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.15.1] - 2026-10-25
+
+### Sicherheit
+
+- Livewire auf 4.4.8 aktualisiert (GHSA-mhf7-xp6r-6qrc: Umgehung von
+  `#[Authorize]`), dazu kleinere Symfony-Updates.
+
 ## [0.15.0] - 2026-10-25
 
 ### Hinzugefügt
