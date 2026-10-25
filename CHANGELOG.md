@@ -8,6 +8,22 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-10-25
+
+### Hinzugefügt
+
+- **Tickets zusammenführen:** In der Ticketliste lassen sich doppelte Tickets
+  desselben Teams ankreuzen und zu einem Zielticket (vorbelegt: das älteste)
+  zusammenführen. Nachrichten, Anhänge, Zeiteinträge, Tags und die höchste
+  Priorität gehen ins Zielticket; die übrigen Tickets werden ohne Kundenmail
+  geschlossen und verweisen auf das Zielticket. Kundenantworten auf alte Mails
+  oder alte Ticketnummern landen automatisch im Zielticket.
+
+### Geändert
+
+- Migration ergänzt `tickets.merged_into_id` (`/admin/system/migrate` nach dem
+  Update ausführen).
+
 ## [0.15.1] - 2026-10-25
 
 ### Sicherheit
