@@ -188,7 +188,8 @@ the ticket. Data syncs automatically as soon as a connection is available again.
 Two-factor authentication is mandatory for agents and admins, passkeys are supported.
 Security-relevant changes are recorded in the audit log, credentials for external
 systems are stored encrypted. Server URLs of external systems must not point to
-internal addresses (SSRF protection). For the GDPR there is data export and
+internal addresses (SSRF protection). Security headers (HSTS, clickjacking
+protection, nosniff, referrer and permissions policy) are set. For the GDPR there is data export and
 anonymisation per customer as well as configurable retention periods.
 
 ## Tech stack

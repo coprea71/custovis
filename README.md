@@ -204,7 +204,8 @@ da ist, wird automatisch synchronisiert.
 Zwei-Faktor-Authentifizierung ist für Agenten und Admins Pflicht, Passkeys werden
 unterstützt. Sicherheitsrelevante Änderungen landen im Audit-Log, Zugangsdaten
 externer Systeme werden verschlüsselt gespeichert. Server-URLs externer Systeme
-dürfen nicht auf interne Adressen zeigen (SSRF-Schutz). Für die DSGVO gibt es Auskunft und
+dürfen nicht auf interne Adressen zeigen (SSRF-Schutz). Security-Header (HSTS,
+Clickjacking-Schutz, nosniff, Referrer- und Permissions-Policy) sind gesetzt. Für die DSGVO gibt es Auskunft und
 Anonymisierung je Kunde sowie konfigurierbare Aufbewahrungsfristen.
 
 ## Tech-Stack

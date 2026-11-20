@@ -8,6 +8,19 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+## [0.16.1] - 2026-11-20
+
+### Sicherheit
+
+- Laravel (12.73.0) und Symfony-Komponenten (7.4.22/7.4.23) aktualisiert:
+  behebt 16 Sicherheitswarnungen, u. a. Umgehungen im HTML-Sanitizer
+  (srcset, Link-Hosts), vom Client wählbare Hosts in erzeugten URLs und
+  Header-Injection in Mails.
+- Security-Header für alle Antworten: `Strict-Transport-Security` (nur HTTPS),
+  `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
+  `Referrer-Policy` und `Permissions-Policy`. Eine Content-Security-Policy ist
+  zunächst nur im Report-Only-Modus aktiv.
+
 ## [0.16.0] - 2026-10-25
 
 ### Hinzugefügt
