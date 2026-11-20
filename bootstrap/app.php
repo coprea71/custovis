@@ -8,6 +8,7 @@ use App\Http\Middleware\EnsureTwoFactorIsConfirmed;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\ScopePasskeysToRequestHost;
 use App\Http\Middleware\ScopeTicketsToCustomer;
+use App\Http\Middleware\SetSecurityHeaders;
 use App\Mcp\Servers\CustovisServer;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -72,6 +73,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['module' => EnsureModuleIsAvailable::class]);
+        $middleware->append(SetSecurityHeaders::class);
 
         // The installation runs under several domains (APP_URL + APP_HOSTS).
         // Without APP_HOSTS nothing is restricted, so the web installer still
